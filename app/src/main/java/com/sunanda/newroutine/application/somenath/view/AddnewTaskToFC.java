@@ -923,7 +923,6 @@ public class AddnewTaskToFC extends AppCompatActivity {
                                             public void onClick(DialogInterface dialog, int which) {
                                                 facilitatorName = "";
                                                 dialog.dismiss();
-                                                //easyFlipView.flipTheView();
                                                 overridePendingTransition(R.anim.trans_right_in, R.anim.trans_left_out);
                                                 finish();
                                             }
