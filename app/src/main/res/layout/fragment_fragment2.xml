@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background_1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/button_backgroung_round"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/raleway"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="Create Facilitator"
+                android:textColor="@color/colorPrimary"
+                android:textSize="15sp"
+                android:textAllCaps="true"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:background="@android:drawable/dialog_holo_light_frame"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="120dp"
+                        android:layout_height="70dp"
+                        android:fontFamily="@font/raleway"
+                        android:gravity="center"
+                        android:text="Enter Name"
+                        android:textColor="@color/Black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/Gray" />
+
+                    <EditText
+                        android:id="@+id/name"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:layout_margin="5dp"
+                        android:fontFamily="@font/raleway"
+                        android:gravity="center_vertical"
+                        android:hint="Enter Name"
+                        android:imeOptions="actionNext"
+                        android:inputType="textPersonName|textCapWords"
+                        android:paddingLeft="5dp"
+                        android:textColor="@color/Black"
+                        android:textSize="15sp" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:background="@android:drawable/dialog_holo_light_frame"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="120dp"
+                        android:layout_height="70dp"
+                        android:fontFamily="@font/raleway"
+                        android:gravity="center"
+                        android:text="Enter Email-Id"
+                        android:textColor="@color/Black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/Gray" />
+
+                    <EditText
+                        android:id="@+id/email"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:layout_margin="5dp"
+                        android:fontFamily="@font/raleway"
+                        android:gravity="center_vertical"
+                        android:hint="Enter Email"
+                        android:imeOptions="actionNext"
+                        android:inputType="textEmailAddress"
+                        android:paddingLeft="5dp"
+                        android:textColor="@color/Black"
+                        android:textSize="16sp" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:background="@android:drawable/dialog_holo_light_frame"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="120dp"
+                        android:layout_height="70dp"
+                        android:fontFamily="@font/raleway"
+                        android:gravity="center"
+                        android:text="Enter Mobile"
+                        android:textColor="@color/Black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/Gray" />
+
+                    <EditText
+                        android:id="@+id/mobile"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:layout_margin="5dp"
+                        android:fontFamily="@font/raleway"
+                        android:gravity="center_vertical"
+                        android:hint="Enter Mobile"
+                        android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:maxLength="10"
+                        android:paddingLeft="5dp"
+                        android:textColor="@color/Black"
+                        android:textSize="16sp" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@android:drawable/dialog_holo_light_frame"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="120dp"
+                        android:layout_height="70dp"
+                        android:fontFamily="@font/raleway"
+                        android:gravity="center"
+                        android:text="User Name"
+                        android:textColor="@color/Black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/Gray" />
+
+                    <TextView
+                        android:id="@+id/uname"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:layout_margin="5dp"
+                        android:fontFamily="@font/raleway"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="5dp"
+                        android:textColor="@color/Black"
+                        android:textSize="16sp" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:background="@android:drawable/dialog_holo_light_frame"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="120dp"
+                        android:layout_height="70dp"
+                        android:fontFamily="@font/raleway"
+                        android:gravity="center"
+                        android:text="Enter Password"
+                        android:textColor="@color/Black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/Gray" />
+
+                    <EditText
+                        android:id="@+id/pass"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:layout_margin="5dp"
+                        android:imeOptions="actionDone"
+                        android:inputType="textPassword"
+                        android:fontFamily="@font/raleway"
+                        android:gravity="center_vertical"
+                        android:hint="Enter Password"
+                        android:paddingLeft="5dp"
+                        android:textColor="@color/Black"
+                        android:paddingStart="5dp"
+                        android:textSize="16sp" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@android:drawable/dialog_holo_light_frame"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="120dp"
+                        android:layout_height="60dp"
+                        android:fontFamily="@font/raleway"
+                        android:gravity="center"
+                        android:text="Choose Block"
+                        android:textColor="@color/Black"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/Gray" />
+
+                    <Spinner
+                        android:id="@+id/spBlock"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginLeft="5dp" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:drawable/dialog_holo_light_frame"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/raleway"
+                        android:gravity="center"
+                        android:text="Choose Panchayat"
+                        android:textColor="@color/Black"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/Gray" />
+
+                    <TextView
+                        android:id="@+id/tvPanchayat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:drawableRight="@drawable/tap"
+                        android:drawablePadding="10dp"
+                        android:fontFamily="@font/raleway"
+                        android:gravity="center_vertical"
+                        android:hint="Choose Panchayat"
+                        android:paddingLeft="5dp"
+                        android:textColor="@color/Black"
+                        android:textSize="15sp" />
+                </TableRow>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/btnSubmit"
+                        android:layout_width="150dp"
+                        android:layout_height="70dp"
+                        android:layout_margin="10dp"
+                        android:background="@android:drawable/dialog_holo_light_frame"
+                        android:fontFamily="@font/raleway"
+                        android:text="CREATE NEW"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+</LinearLayout>
+
+    <!--
+    <?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/cricketpitch"
+        android:orientation="vertical"
+        tools:context=".fragmnet.CreateFacilitator">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="@color/DarkRed" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Wicket Kipper "
+                android:textColor="@color/DarkRed" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="AAAAA"
+                        android:textColor="@color/DarkRed" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="AAAAA"
+                        android:textColor="@color/DarkRed" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="AAAAA"
+                        android:textColor="@color/DarkRed" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="AAAAA"
+                        android:textColor="@color/DarkRed" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="AAAAA"
+                        android:textColor="@color/DarkRed" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Wicket Kipper "
+                android:textColor="@color/DarkRed" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Wicket Kipper "
+                android:textColor="@color/DarkRed" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Wicket Kipper "
+                android:textColor="@color/DarkRed" />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>-->

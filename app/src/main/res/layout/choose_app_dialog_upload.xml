@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/SkyBlue"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="1dp"
+            android:text="UPLOAD DATA"
+            android:textColor="@color/White"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/ll1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/llRoutine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/back_circular2"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/ivRoutine"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/routine" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/ivRoutine"
+                        android:gravity="center"
+                        android:text="UPLOAD ROUTINE"
+                        android:textColor="@color/RoyalBlue"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvCountDataRoutine"
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
+                        android:layout_alignTop="@+id/ivRoutine"
+                        android:layout_alignEnd="@+id/ivRoutine"
+                        android:layout_alignRight="@+id/ivRoutine"
+                        android:layout_marginTop="3dp"
+                        android:background="@drawable/bg_circle_red"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textColor="@color/White"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/llSchool"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/back_circular2"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/ivSchool"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/school" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/ivSchool"
+                        android:gravity="center"
+                        android:text="UPLOAD SCHOOL"
+                        android:textColor="@color/RoyalBlue"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvCountDataSchool"
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
+                        android:layout_alignTop="@+id/ivSchool"
+                        android:layout_alignEnd="@+id/ivSchool"
+                        android:layout_alignRight="@+id/ivSchool"
+                        android:layout_marginTop="3dp"
+                        android:background="@drawable/bg_circle_red"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textColor="@color/White"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/llOMAS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/back_circular2"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/ivOMAS"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/omas" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/ivOMAS"
+                        android:gravity="center"
+                        android:text="UPLOAD OMAS"
+                        android:textColor="@color/RoyalBlue"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvCountDataOMAS"
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
+                        android:layout_alignTop="@+id/ivOMAS"
+                        android:layout_alignEnd="@+id/ivOMAS"
+                        android:layout_alignRight="@+id/ivOMAS"
+                        android:layout_marginTop="3dp"
+                        android:background="@drawable/bg_circle_red"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textColor="@color/White"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/llSchoolOMAS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/back_circular2"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/ivSchoolOMAS"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/school_omas" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/ivSchoolOMAS"
+                        android:gravity="center"
+                        android:text="UPLOAD SCHOOL"
+                        android:textColor="@color/RoyalBlue"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvCountDataSchoolOMAS"
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
+                        android:layout_alignTop="@+id/ivSchoolOMAS"
+                        android:layout_alignEnd="@+id/ivSchoolOMAS"
+                        android:layout_alignRight="@+id/ivSchoolOMAS"
+                        android:layout_marginTop="3dp"
+                        android:background="@drawable/bg_circle_red"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textColor="@color/White"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</LinearLayout>

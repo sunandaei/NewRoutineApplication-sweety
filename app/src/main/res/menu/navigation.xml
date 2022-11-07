@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/one"
+        android:icon="@drawable/locationpointer"
+        android:title="Work Area" />
+    <item
+        android:id="@+id/two"
+        android:icon="@drawable/adduser"
+        android:title="Create New" />
+    <item
+        android:id="@+id/three"
+        android:icon="@drawable/three"
+        android:title="Facilitators" />
+    <item
+        android:visible="false"
+        android:id="@+id/four"
+        android:icon="@drawable/pending"
+        android:title="Pending Tasks" />
+    <item
+        android:visible="true"
+        android:id="@+id/five"
+        android:icon="@drawable/task"
+        android:title="Work Status" />
+</menu>

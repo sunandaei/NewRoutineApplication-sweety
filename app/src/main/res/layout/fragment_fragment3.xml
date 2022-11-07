@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".fragmnet.FacilitatorLists">
+
+    <LinearLayout
+        android:id="@+id/ll1"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="#0553c6"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginTop="1dp"
+            android:background="@drawable/gradient_background"
+            android:gravity="center"
+            android:padding="1dp"
+            android:textColor="@color/Black"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <!--<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:drawable/dialog_holo_light_frame"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tvLabName"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/button_backgroung_round"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/Black"
+            android:textSize="14sp" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/llFacilitator"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/White"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <RelativeLayout
+                        android:id="@+id/rlSampleCollection"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/button_backgroung_round_1"
+                        android:padding="1dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:background="@drawable/button_backgroung_round_1"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/bg1" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:background="@drawable/button_backgroung_round_1"
+                            android:gravity="center"
+                            android:text="@string/sample_collection"
+                            android:textColor="@color/White"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rlSearch"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/button_backgroung_round_1"
+                        android:padding="1dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/bg3" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:background="@drawable/button_backgroung_round_1"
+                            android:gravity="center"
+                            android:text="@string/search"
+                            android:textColor="@color/White"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rlDataUpload"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/button_backgroung_round_1"
+                        android:padding="1dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/bg2" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:background="@drawable/button_backgroung_round_1"
+                            android:gravity="center"
+                            android:text="@string/data_upload"
+                            android:textColor="@color/White"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvCountData"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:gravity="center"
+                            android:text="100"
+                            android:textColor="@color/Red"
+                            android:textSize="16sp" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llLab"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/White"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <RelativeLayout
+                        android:id="@+id/rlAssignFacilitator"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:layout_margin="10dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:background="@drawable/button_backgroung_round_1"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/bg1" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:background="@drawable/button_backgroung_round_1"
+                            android:fontFamily="@font/raleway"
+                            android:gravity="center"
+                            android:text="@string/assign_facilitator"
+                            android:textColor="@color/White"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rlCreateFacilitator"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:layout_margin="10dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:background="@drawable/button_backgroung_round_1"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/bg3_1" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:background="@drawable/button_backgroung_round_1"
+                            android:fontFamily="@font/raleway"
+                            android:gravity="center"
+                            android:text="@string/create_facilitator"
+                            android:textColor="@color/White"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rlFacilitatorList"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:layout_margin="10dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:background="@drawable/button_backgroung_round_1"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/bg2" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:background="@drawable/button_backgroung_round_1"
+                            android:fontFamily="@font/raleway"
+                            android:gravity="center"
+                            android:text="@string/facilitator_list"
+                            android:textColor="@color/White"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/colorAccent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:background="@drawable/button_backgroung_round"
+            android:fontFamily="@font/raleway"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="List of Facilitators"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimary"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorAccent"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/editTextSearch"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/rectangle3"
+            android:drawableStart="@drawable/search2"
+            android:drawableLeft="@drawable/search2"
+            android:fontFamily="@font/raleway"
+            android:drawablePadding="10dp"
+            android:gravity="center"
+            android:padding="5dp"
+            android:hint="Search Facilitator by Name"
+            android:textColorHint="@color/DarkGray"
+            android:visibility="visible" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/Blue"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/active"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="@color/DarkRed"
+                android:drawableStart="@drawable/checked"
+                android:drawableLeft="@drawable/checked"
+                android:fontFamily="@font/raleway"
+                android:padding="5dp"
+                android:text="ACTIVE\nFACILITATOR"
+                android:textColor="@color/White"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/inactive"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="@color/OrangeRed"
+                android:fontFamily="@font/raleway"
+                android:padding="5dp"
+                android:text="INACTIVE\nFACILITATOR"
+                android:textColor="@color/White"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeToRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvFacilitatorList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/gradient_background_1"
+                android:padding="5dp" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

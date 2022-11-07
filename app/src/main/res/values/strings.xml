@@ -1,0 +1,180 @@
+<resources>
+    <string name="app_name">Water Quality</string>
+    <string name="seipl">© Sunanda Enviromental International Pvt. Ltd.</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <!--Navigation-->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="openDrawer">open_drawer</string>
+    <string name="closeDrawer">close_drawer</string>
+    <string name="nav_sample_collection">Sample Collection</string>
+    <string name="nav_search">Search</string>
+    <string name="nav_data_upload">Data Upload</string>
+    <string name="nav_show_in_map">Show in Map</string>
+    <string name="data_upload">Data Upload</string>
+    <string name="image_upload">Image Upload</string>
+    <string name="search">Search</string>
+    <string name="sample_collection">Sample Collection</string>
+
+    <string name="login">LOGIN</string>
+    <string name="cart">My Cart</string>
+    <string name="wishlist">My Wishlist</string>
+    <string name="orders">My Orders</string>
+    <string name="account">My Account</string>
+    <string name="store">Stores</string>
+    <string name="notification">Notification</string>
+    <string name="logout">Logout</string>
+
+    <string name="cart_">&#xf107;</string>
+    <string name="wishlist_">&#xf106;</string>
+    <string name="orders_">&#xf105;</string>
+    <string name="account_">&#xf104;</string>
+    <string name="notification_">&#xf102;</string>
+    <string name="logout_">&#xf101;</string>
+    <string name="profile_">&#xf103;</string>
+    <string name="login_">&#xf100;</string>
+
+    <string name="user_name">USER NAME</string>
+    <string name="password">PASSWORD</string>
+    <string name="select_source_site">Select Source Site</string>
+    <string name="is_it_special_drive">Is it special drive?</string>
+    <string name="select_name_of_the_special_drive">Select name of the special drive</string>
+    <string name="time_of_date_collection">Time of Data Collection</string>
+    <string name="type_of_locality">Type of Locality</string>
+    <string name="water_source_type">Water Source Type</string>
+    <string name="name_of_the_town">Name of the Town</string>
+    <string name="ward_number">Ward Number</string>
+    <string name="block">Block</string>
+    <string name="panchayat">Panchayat</string>
+    <string name="village_name">Village Name</string>
+    <string name="is_this_a_new_location">Is this a new location?</string>
+    <string name="select_health_facility">Select Health Facility</string>
+    <string name="description_of_the_location">Description of the location</string>
+    <string name="hand_pump_category">Hand Pump Category</string>
+    <string name="select_scheme">Select Scheme</string>
+    <string name="select_source">Select Source</string>
+    <string name="select_enter_zone_number">Select/Enter Zone Number</string>
+    <string name="enter_zone_number">Enter Zone Number</string>
+    <string name="select_enter_big_dia_tube_well_number">Select/Enter Big Dia Tube Well Number</string>
+    <string name="enter_big_dia_tube_well_number">Enter Big Dia Tube Well Number</string>
+    <string name="enter_location_description">Enter Location Description</string>
+    <string name="enter_location_description1">Enter Location Description</string>
+    <string name="how_many_pipes_are_in_the_tube_well">How many pipes are in the Tube Well?</string>
+    <string name="how_many_pipes_are_in_the_tube_well1">How many pipes are in the Tube Well?</string>
+    <string name="enter_sample_bottle_number">Enter Sample Bottle Number</string>
+    <string name="enter_sample_bottle_number1">Enter Sample Bottle Number</string>
+    <string name="take_picture_of_the_source">Take Picture of the Source</string>
+    <string name="take_image">Take Image</string>
+    <string name="your_location">Your Location</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    <string name="get_device_location">Get Device Location</string>
+    <string name="who_is_collecting_the_sample">Who is collecting the sample?</string>
+    <string name="next">NEXT</string>
+    <string name="category">Category</string>
+    <string name="from_date">From Date</string>
+    <string name="to_date">To Date</string>
+    <string name="save_and_exit">Save And Exit</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="album_name">/Sunanda_EI</string>
+    <string name="sync">Sync</string>
+    <string name="logout1">Logout</string>
+    <string name="residual_chlorine">Residual Chlorine</string>
+    <string name="free_residual_chlorine_result">Free Residual Chlorine Result</string>
+    <string name="free_residual_chlorine_result_description">Free Residual Chlorine Result Description</string>
+    <string name="residual_chlorine_value">Residual Chlorine Value</string>
+    <string name="whether_free_residual_chlorine_tested_or_not">Whether free Residual Chlorine tested or not</string>
+    <string name="take_picture_of_the_sample_bottle">Take Picture of the Sample Bottle</string>
+    <string name="water_sub_source_type">Water Sub Source Type</string>
+    <string name="scheme_name">Scheme Name</string>
+    <string name="sub_source_type">Sub Source Type</string>
+    <string name="facilitator_list">Facilitator List</string>
+    <string name="create_facilitator">Create Facilitator</string>
+    <string name="assign_facilitator">Assign Facilitator</string>
+    <string name="email">Email</string>
+    <string name="district">District</string>
+    <string name="village">Village</string>
+    <string name="submit">SUBMIT</string>
+    <string name="lab">Lab</string>
+    <string name="habitation">Habitation</string>
+    <string name="sign_in">Sign In</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBFU5gnbjnv7j_dGF1PwSQu49S3nyB1Hnc</string>
+    <string name="laboratory_staff">LABORATORY STAFF</string>
+    <string name="facilitator">FACILITATOR</string>
+    <string name="condition_of_the_source">Condition of the Source</string>
+    <string name="recycle_bin">Recycle Bin</string>
+
+    <string name="select_school">Select School</string>
+    <string name="select_anganwadi">Select Anganwadi</string>
+    <string name="stand_post_situated">Stand post situated?</string>
+    <string name="status_of_accommodation">Status of Accommodation\nথাকার অবস্থা</string>
+    <string name="shared_with">Shared with</string>
+    <string name="is_this_a_shared_source">Is this a Shared Source?</string>
+    <string name="type_others">Type Others</string>
+    <string name="sample_id">Sample Id</string>
+
+    <string name="school_management">School Management\nবিদ্যালয় পরিচালন ব্যবস্থা</string>
+    <string name="school_category">School Category\nবিদ্যালয়ের শ্রেণী</string>
+    <string name="school_type">School Type\nবিদ্যালয়ের ধরণ</string>
+
+    <string name="no_of_students_in_the_school">No. of students in the School\nবিদ্যালয়ে মোট ছাত্রছাত্রীর সংখ্যা</string>
+    <string name="no_of_students_in_the_anganwadi">No. of students in the Anganwadi\nঅঙ্গনওয়াড়ি মোট ছাত্রছাত্রীর সংখ্যা</string>
+
+    <string name="no_of_boys_in_the_school">No. of boys in the School\nবিদ্যালয়ে ছাত্রের সংখ্যা</string>
+    <string name="no_of_boys_in_the_anganwadi">No. of boys in the Anganwadi\nঅঙ্গনওয়াড়ি ছাত্রের সংখ্যা</string>
+
+    <string name="no_of_girls_in_the_school">No. of girls in the School\nবিদ্যালয়ে ছাত্রীর সংখ্যা</string>
+    <string name="no_of_girls_in_the_anganwadi">No. of girls in the Anganwadi\nঅঙ্গনওয়াড়ি ছাত্রীর সংখ্যা</string>
+
+    <string name="availability_of_electricity_in_school">Availability of Electricity in School\nবিদ্যালয়ে কি বিদ্যুৎ সরবরাহ রয়েছে?</string>
+    <string name="availability_of_electricity_in_anganwadi">Availability of Electricity in Anganwadi\nঅঙ্গনওয়াড়ি কি বিদ্যুৎ সরবরাহ রয়েছে?</string>
+
+    <string name="is_there_an_arrangement_for_distribution_of_water_being_mechanically_pumped_from_the_tubewell">Is there an arrangement for distribution of water being mechanically pumped from the TubeWell?\nনলকুপ থেকে যান্ত্রিক ভাবে জল উত্তোলনের পর সেই জল সরবরাহের কোনো ব্যবস্থা আছে?</string>
+    <string name="save">Save</string>
+    <string name="has_the_existing_drinking_water_source_been_tested_before">Has the existing drinking water source been tested before?\nবর্তমান পানীয় জলের উৎস টি কি আগে পরীক্ষা করা হয়েছে?</string>
+    <string name="when_was_the_water_source_last_tested">When was the water source last tested?\nপানীয় জলের উৎস টি শেষ কবে পরীক্ষা করা হয়েছে?</string>
+    <string name="more_than_a_year_ago">More than a year ago\nএক বছরেরও আগে</string>
+    <string name="within_the_last_6_months">Within the last 6 months\nগত ছয় মাসের মধ্যে</string>
+
+    <string name="is_the_water_quality_test_report_shared_with_the_school_authority">Is the water quality test report shared with the school authority?\nপানীয় জলের গুণগত মান পরীক্ষার রিপোর্ট কি বিদ্যালয় কর্তৃপক্ষকে জানানো হয়?</string>
+    <string name="is_the_water_quality_test_report_shared_with_the_anganwadi_authority">Is the water quality test report shared with the Anganwadi authority?\nপানীয় জলের গুণগত মান পরীক্ষার রিপোর্ট কি অঙ্গনওয়াড়ি কর্তৃপক্ষকে জানানো হয়?</string>
+
+    <string name="if_the_source_is_found_to_be_bacteriologically_contaminated_when_is_it_disinfected">If the source is found to be bacteriologically contaminated, when is it disinfected?\nজলের উৎস টি জীবাণুসংক্রমিত হলে সেটি কত শীগ্র জীবাণুমুক্ত করা হয়?</string>
+    <string name="within_a_week">Within a Week\nএক সপ্তাহের মধ্যে</string>
+    <string name="within_a_month">Within a month\nএক মাসের মধ্যে</string>
+    <string name="not_fixed">Not Fixed\nতেমন ভাবে কিছু স্থির করা নেই</string>
+
+    <string name="is_toilet_facility_available_in_the_school">Is toilet facility available in the school?\nবিদ্যালয়ে কি শৌচালয়ের সুবিধা রয়েছে?</string>
+    <string name="is_toilet_facility_available_in_the_anganwadi">Is toilet facility available in the Anganwadi?\nঅঙ্গনওয়াড়ি কি শৌচালয়ের সুবিধা রয়েছে?</string>
+
+    <string name="is_running_water_available_in_toilets">Is running water available in toilets?\nবিদ্যালয়ে শৌচালয়ে কি কলের জল রয়েছে?</string>
+    <string name="are_there_separate_toilets_for_boys_and_girls">Are there separate toilets for boys and girls?\nছেলে ও মেয়েদের জন্য কি আলাদা শৌচালয়ের ব্যবস্থা আছে?</string>
+    <string name="number_of_toilets_for_boys">Number of toilets for Boys\nছেলেদের জন্য শৌচালয়ের সংখ্যা?</string>
+    <string name="number_of_toilets_for_girls">Number of toilets for Girls\nমেয়েদের জন্য শৌচালয়ের সংখ্যা?</string>
+
+    <string name="number_of_general_toilets_school">Number of general toilet(s) in the School\nবিদ্যালয়ে সাধারণ শৌচালয়ের সংখ্যা?</string>
+    <string name="number_of_general_toilets_anganwadi">Number of general toilet(s) in the Anganwadi\nঅঙ্গনওয়াড়ি সাধারণ শৌচালয়ের সংখ্যা?</string>
+
+    <string name="is_there_separate_toilet_s_available_for_teachers">Is there separate toilet(s) available for teachers?\nশিক্ষক-শিক্ষিকাদের জন্য কি আলাদা শৌচালয় রয়েছে?</string>
+    <string name="number_of_toilet_s_for_teachers">Number of toilet(s) for teachers\nশিক্ষক-শিক্ষিকাদের শৌচালয়ের সংখ্যা?</string>
+    <string name="take_photo_of_the_sanitation_facility">Take Photo of the Sanitation Facility\nশৌচালয় ব্যাবহার ছবি তুলুন</string>
+
+    <string name="is_hand_washing_facility_available_in_the_school">Is hand washing facility available in the school?\nবিদ্যালয়ে কি হাত ধোয়ার সুব্যাবস্থা রয়েছে?</string>
+    <string name="is_hand_washing_facility_available_in_the_anganwadi">Is hand washing facility available in the Anganwadi?\nঅঙ্গনওয়াড়ি কি হাত ধোয়ার সুব্যাবস্থা রয়েছে?</string>
+
+    <string name="is_running_water_available_for_hand_washing">Is running water available for hand washing?\nহাত ধোয়ার জন্য কি কলের জলের ব্যবস্থা রয়েছে?</string>
+    <string name="is_the_wash_basin_within_reach_of_all_the_children">Is the wash basin within reach of all the children?\nহাত ধোয়ার বেসিন বাচ্চাদের  নাগালের মধ্যে আছে কি?</string>
+    <string name="take_photo_of_the_wash_basin">Take Photo of the Wash Basin\nহাত ধোওয়ার বেসিনে এর ছবি তুলুন</string>
+    <string name="is_running_water_available_in_kitchen_s">Is running water available in Kitchen(s)?\nবিদ্যালয়ের রান্নাঘরে কি কলের জলের ব্যবস্থা আছে?</string>
+
+    <string name="go_to_source_identification">Go To Source Identification</string>
+    <string name="go_to_sanitary_survey">Go To Sanitary Survey</string>
+    <string name="go_to_school_info">Go To School Info</string>
+    <string name="go_to_wash_page">Go To Wash Page</string>
+
+</resources>

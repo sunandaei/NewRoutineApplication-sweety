@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="5dp"
+            android:layout_marginStart="10dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/img_facilitator" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_centerVertical="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="85dp"
+            android:layout_marginTop="3dp"
+            android:fontFamily="@font/raleway"
+            android:layout_marginRight="85dp"
+            android:gravity="center"
+            android:layout_toEndOf="@+id/imageView"
+            android:layout_toRightOf="@+id/imageView"
+            android:text=""
+            android:textColor="@color/Black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_margin="3dp"
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="85dp"
+            android:fontFamily="@font/raleway"
+            android:layout_marginRight="85dp"
+            android:layout_toEndOf="@+id/imageView"
+            android:layout_toRightOf="@+id/imageView"
+            android:text=""
+            android:visibility="gone"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tvShow"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="3dp"
+            android:fontFamily="@font/raleway"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:background="@drawable/buttonshape"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/White"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

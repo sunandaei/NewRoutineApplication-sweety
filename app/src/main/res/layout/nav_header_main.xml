@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/view_container"
+    android:layout_width="match_parent"
+    android:layout_height="160dp"
+    android:background="@drawable/nav_background"
+    android:orientation="vertical"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+    <TextView
+        android:id="@+id/tvVersionCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="5dp"
+        android:padding="5dp"
+        android:text="v3.1.3"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/LightGrey"
+        android:textSize="11sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvVersionCode"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp"
+        android:text="Govt. of West Bengal"
+        android:textColor="@color/White"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/img_profile"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:adjustViewBounds="true"
+            app:srcCompat="@drawable/routine" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:text="@string/app_name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/White"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/seipl"
+            android:textColor="@color/LightGrey"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.EditAccountActivity">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:background="@drawable/gradian_color"
+                android:elevation="5dp">
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:orientation="vertical">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/image_first"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:layout_gravity="center"
+                        android:elevation="5dp"
+                        android:orientation="vertical"
+                        android:src="@drawable/index" />
+
+                    <ImageView
+                        android:id="@+id/edit_imageview"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="right|bottom"
+                        android:layout_marginBottom="0dp"
+                        android:elevation="5dp"
+                        android:src="@drawable/camera" />
+
+                </FrameLayout>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/divider2"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp">
+
+                    <EditText
+                        android:id="@+id/input_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/raleway"
+                        android:hint="First Name"
+                        android:inputType="textCapWords" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp">
+
+                    <EditText
+                        android:id="@+id/input_last_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/raleway"
+                        android:hint="Last Name"
+                        android:inputType="textCapWords" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/submit_btn"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="140dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                android:background="@color/Green"
+                android:fontFamily="@font/raleway"
+                android:text="SUBMIT"
+                android:textColor="@color/White"
+                android:theme="@style/MyButton" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:fontFamily="@font/raleway"
+                android:text="Mobile Number"
+                android:textSize="15sp" />
+
+
+            <TextView
+                android:id="@+id/phone_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:text="8420272314"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/raleway"
+                android:text="Mobile Number"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/email_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/raleway"
+                android:text="somenath@gmail.com"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="18sp" />
+
+            <View
+                android:id="@+id/view4"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_marginTop="40dp"
+                android:background="@color/colorAccent" />
+
+            <TextView
+                android:id="@+id/changepassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/imagesettion"
+                android:fontFamily="@font/raleway"
+                android:padding="10dp"
+                android:text="Change Password"
+                android:textColor="@color/Black"
+                android:textSize="18sp" />
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/colorAccent" />
+
+            <TextView
+                android:id="@+id/deactivateaccount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/imagesettion"
+                android:fontFamily="@font/raleway"
+                android:padding="10dp"
+                android:text="Deactivate Account"
+                android:textColor="@color/Black"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

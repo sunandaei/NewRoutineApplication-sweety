@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/abl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/AppTheme.AppBarOverlay">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="?attr/colorPrimary"
+                    app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="Edit Sample"
+                        android:textColor="@color/White"
+                        android:textSize="20sp" />
+
+                </androidx.appcompat.widget.Toolbar>
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/abl"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvSampleCollection"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/background_green"
+                    android:gravity="center"
+                    android:text="@string/go_to_source_identification"
+                    android:textColor="@color/LawnGreen"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/tvSanitarySurvey"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/background_blue"
+                    android:gravity="center"
+                    android:text="@string/go_to_sanitary_survey"
+                    android:textColor="@color/Red"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/tvSchoolInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/background_blue"
+                    android:gravity="center"
+                    android:text="@string/go_to_school_info"
+                    android:textColor="@color/Green"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/tvWashPage"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/background_blue"
+                    android:gravity="center"
+                    android:text="@string/go_to_wash_page"
+                    android:textColor="@color/DodgerBlue"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+        </RelativeLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:visibility="visible"
+        app:headerLayout="@layout/nav_header_main"
+        app:menu="@menu/activity_main_drawer" />
+
+</LinearLayout>

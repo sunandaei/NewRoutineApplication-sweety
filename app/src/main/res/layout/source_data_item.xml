@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/box_background"
+        android:orientation="vertical"
+        android:padding="2dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/cbItem"
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:buttonTint="@color/White"
+                android:fontFamily="@font/raleway"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/raleway"
+                android:gravity="center"
+                android:padding="3dp"
+                android:textColor="@color/White"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="130dp"
+                android:layout_height="155dp" />
+
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="5dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/coll_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/raleway"
+                    android:gravity="center_vertical"
+                    android:padding="5dp"
+                    android:textColor="@color/Black"
+                    android:textSize="12sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/Gray"
+                    android:fontFamily="@font/raleway" />
+
+                <TextView
+                    android:id="@+id/test_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/raleway"
+                    android:gravity="center_vertical"
+                    android:padding="5dp"
+                    android:textColor="@color/Black"
+                    android:textSize="12sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/Gray"
+                    android:fontFamily="@font/raleway" />
+
+                <TextView
+                    android:id="@+id/lat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/raleway"
+                    android:gravity="center_vertical"
+                    android:padding="5dp"
+                    android:textColor="@color/Black"
+                    android:textSize="12sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/Gray"
+                    android:fontFamily="@font/raleway" />
+
+                <TextView
+                    android:id="@+id/lon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/raleway"
+                    android:gravity="center_vertical"
+                    android:padding="5dp"
+                    android:textColor="@color/Black"
+                    android:textSize="12sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/Gray"
+                    android:fontFamily="@font/raleway" />
+
+                <TextView
+                    android:id="@+id/sourceType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/raleway"
+                    android:gravity="center_vertical"
+                    android:padding="5dp"
+                    android:textColor="@color/Black"
+                    android:textSize="12sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/Gray"
+                    android:fontFamily="@font/raleway" />
+
+                <TextView
+                    android:id="@+id/distance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/raleway"
+                    android:gravity="center_vertical"
+                    android:padding="5dp"
+                    android:textColor="@color/Green"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

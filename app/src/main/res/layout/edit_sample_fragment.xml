@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/RoyalBlue"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/dialog_holo_light_frame"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <RadioGroup
+                android:id="@+id/rAppName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/White"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rbRoutine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:text="Routine"
+                    android:textColor="@color/app_Color"
+                    android:textSize="10sp" />
+
+                <RadioButton
+                    android:id="@+id/rbSchool"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:text="School"
+                    android:textColor="@color/app_Color"
+                    android:textSize="10sp" />
+
+                <RadioButton
+                    android:id="@+id/rbOMAS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:text="OMAS"
+                    android:textColor="@color/app_Color"
+                    android:textSize="10sp" />
+
+                <RadioButton
+                    android:id="@+id/rbSchoolOMAS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:text="SchoolOMAS"
+                    android:textColor="@color/app_Color"
+                    android:textSize="10sp" />
+
+            </RadioGroup>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/bg_sp_back"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:background="@color/DeepSkyBlue"
+                    android:gravity="center"
+                    android:text="@string/from_date"
+                    android:textColor="@color/White"
+                    android:textSize="16sp" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/White" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:background="@color/DeepSkyBlue"
+                    android:gravity="center"
+                    android:text="@string/to_date"
+                    android:textColor="@color/White"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@android:drawable/dialog_holo_light_frame"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvFromDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/from_date"
+                    android:textColor="@color/Gray"
+                    android:textSize="16sp" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/LightGrey" />
+
+                <TextView
+                    android:id="@+id/tvToDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/to_date"
+                    android:textColor="@color/Gray"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:background="@android:drawable/dialog_holo_light_frame"
+                android:orientation="vertical"
+                android:padding="2dp">
+
+                <Button
+                    android:id="@+id/btnSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/button_backgroung"
+                    android:text="@string/search"
+                    android:textColor="@color/White"
+                    android:textSize="17sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvSearchList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/RoyalBlue" />
+
+    </LinearLayout>
+</LinearLayout>

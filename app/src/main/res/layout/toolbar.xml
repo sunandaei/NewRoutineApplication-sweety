@@ -1,0 +1,8 @@
+<androidx.appcompat.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="@drawable/gradian_color"
+    android:theme="@style/ToolbarColoredBackArrow">
+
+</androidx.appcompat.widget.Toolbar>

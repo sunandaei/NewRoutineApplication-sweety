@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/abl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/abl"
+            android:layout_marginBottom="42dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/llSchoolManagement"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bg_sp_back"
+                    android:orientation="vertical"
+                    android:padding="1dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/LightGrey1"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text="@string/school_management"
+                        android:textColor="@color/Gray"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tvSchoolManagement"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/White"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text=""
+                        android:textColor="@color/Black"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/etSchoolManagement"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="text"
+                        android:textColor="@color/Black"
+                        android:textSize="16sp"
+                        android:theme="@style/MyEditText" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llSchoolCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bg_sp_back"
+                    android:orientation="vertical"
+                    android:padding="1dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/LightGrey1"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text="@string/school_category"
+                        android:textColor="@color/Gray"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tvSchoolCategory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/White"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text=""
+                        android:textColor="@color/Black"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/etSchoolCategory"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="text"
+                        android:textColor="@color/Black"
+                        android:textSize="16sp"
+                        android:theme="@style/MyEditText" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llSchoolType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bg_sp_back"
+                    android:orientation="vertical"
+                    android:padding="1dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/LightGrey1"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text="@string/school_type"
+                        android:textColor="@color/Gray"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tvSchoolType"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/White"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text=""
+                        android:textColor="@color/Black"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/etSchoolType"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="text"
+                        android:textColor="@color/Black"
+                        android:textSize="16sp"
+                        android:theme="@style/MyEditText" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llNoOfStudentsInTheSchool"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bg_sp_back"
+                    android:orientation="vertical"
+                    android:padding="1dp">
+
+                    <TextView
+                        android:id="@+id/tvEdit1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/LightGrey1"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text="@string/no_of_students_in_the_school"
+                        android:textColor="@color/Gray"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/etNoOfStudentsInTheSchool"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/White"
+                        android:gravity="center_vertical"
+                        android:inputType="number"
+                        android:padding="5dp"
+                        android:text=""
+                        android:textColor="@color/Black"
+                        android:textCursorDrawable="@drawable/color_cursor"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llNoOfBoysInTheSchool"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bg_sp_back"
+                    android:orientation="vertical"
+                    android:padding="1dp">
+
+                    <TextView
+                        android:id="@+id/tvEdit2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/LightGrey1"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text="@string/no_of_boys_in_the_school"
+                        android:textColor="@color/Gray"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/etNoOfBoysInTheSchool"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/White"
+                        android:gravity="center_vertical"
+                        android:inputType="number"
+                        android:padding="5dp"
+                        android:text=""
+                        android:textColor="@color/Black"
+                        android:textCursorDrawable="@drawable/color_cursor"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llNoOfGirlsInTheSchool"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bg_sp_back"
+                    android:orientation="vertical"
+                    android:padding="1dp">
+
+                    <TextView
+                        android:id="@+id/tvEdit3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/LightGrey1"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text="@string/no_of_girls_in_the_school"
+                        android:textColor="@color/Gray"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/etNoOfGirlsInTheSchool"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/White"
+                        android:gravity="center_vertical"
+                        android:inputType="number"
+                        android:padding="5dp"
+                        android:text=""
+                        android:textColor="@color/Black"
+                        android:textCursorDrawable="@drawable/color_cursor"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bg_sp_back"
+                    android:orientation="vertical"
+                    android:padding="1dp">
+
+                    <TextView
+                        android:id="@+id/tvEdit4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/LightGrey1"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text="@string/availability_of_electricity_in_school"
+                        android:textColor="@color/Gray"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rbElectricitySchoolYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:saveEnabled="true"
+                            android:text="@string/yes" />
+
+                        <RadioButton
+                            android:id="@+id/rbElectricitySchoolNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:text="@string/no" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bg_sp_back"
+                    android:orientation="vertical"
+                    android:padding="1dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/LightGrey1"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text="@string/is_there_an_arrangement_for_distribution_of_water_being_mechanically_pumped_from_the_tubewell"
+                        android:textColor="@color/Gray"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rbTubeWellYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:saveEnabled="true"
+                            android:text="@string/yes" />
+
+                        <RadioButton
+                            android:id="@+id/rbTubeWellNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:text="@string/no" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llStatusAccommodation"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/bg_sp_back"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="1dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@color/LightGrey1"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="10dp"
+                        android:text="@string/status_of_accommodation"
+                        android:textColor="@color/Gray"
+                        android:textSize="17sp" />
+
+                    <Spinner
+                        android:id="@+id/spStatusAccommodation"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@drawable/spinner_background"
+                        android:spinnerMode="dropdown" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
+        <Button
+            android:id="@+id/btnSaveAndExit"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/app_Color"
+            android:padding="10dp"
+            android:text="@string/next"
+            android:textColor="@color/White"
+            android:textSize="16sp" />
+    </RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

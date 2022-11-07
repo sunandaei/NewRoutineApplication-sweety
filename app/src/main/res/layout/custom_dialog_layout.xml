@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:fontFamily="@font/raleway"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="Select a Village"
+        android:textColor="#fff"
+        android:textSize="20dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
+        android:layout_below="@+id/title"
+        android:layout_gravity="center_horizontal" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recycler_view"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/cancel_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:background="#046907"
+            android:text="Cancel"
+            android:fontFamily="@font/raleway"
+            android:textStyle="bold"
+            android:textColor="#fff" />
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="#fff" />
+
+        <Button
+            android:id="@+id/done_dialog"
+            android:textStyle="bold"
+            android:fontFamily="@font/raleway"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight=".5"
+            android:background="#046907"
+            android:text="Done"
+            android:textColor="#fff" />
+
+    </LinearLayout>
+
+</RelativeLayout>

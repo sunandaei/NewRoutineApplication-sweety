@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/rectangle2"
+        android:fontFamily="@font/raleway"
+        android:padding="7dp"
+        android:text="34/667/4455"
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="normal" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_margin="5dp"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="3dp"
+                android:drawablePadding="10dp"
+                android:fontFamily="@font/raleway"
+                android:gravity="center|left"
+                android:text="test"
+                android:textColor="@color/Black"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_margin="5dp"
+                android:src="@drawable/more" />
+
+            <LinearLayout
+                android:id="@+id/llview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imageView"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/title2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:fontFamily="@font/raleway"
+                    android:gravity="center"
+                    android:text=""
+                    android:textColor="@color/Black"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="3dp"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/raleway"
+                    android:padding="5dp"
+                    android:text="(Lab Name/District Name/Block Name/Panchayat Name/Village Name/Habitation Name)"
+                    android:textColor="@color/Gray"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/noofsource"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/raleway"
+                    android:padding="5dp"
+                    android:text=""
+                    android:textStyle="bold"
+                    android:textColor="@color/Black"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/noofcollection"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/raleway"
+                    android:padding="5dp"
+                    android:text=""
+                    android:textStyle="bold"
+                    android:textColor="@color/Black"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/timeElapsed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/raleway"
+                    android:padding="5dp"
+                    android:text=""
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".fragmnet.FCWOrkAreaFragment">
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@android:drawable/dialog_holo_light_frame"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="45dp"
+            android:fontFamily="@font/raleway"
+            android:gravity="center"
+            android:text="@string/lab"
+            android:textColor="@color/Black"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/Gray" />
+
+        <TextView
+            android:id="@+id/tvLabName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:fontFamily="@font/raleway"
+            android:gravity="center_vertical"
+            android:paddingLeft="5dp"
+            android:textColor="@color/Black"
+            android:textSize="15sp" />
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@android:drawable/dialog_holo_light_frame"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="45dp"
+            android:fontFamily="@font/raleway"
+            android:gravity="center"
+            android:text="@string/district"
+            android:textColor="@color/Black"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/Gray" />
+
+        <TextView
+            android:id="@+id/tvDistrictName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:fontFamily="@font/raleway"
+            android:gravity="center_vertical"
+            android:paddingLeft="5dp"
+            android:textColor="@color/Black"
+            android:textSize="15sp" />
+
+    </TableRow>
+
+    <TextView
+        android:layout_marginTop="5dp"
+        android:background="@drawable/rectangle3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/raleway"
+        android:gravity="center"
+        android:text="List of Blocks"
+        android:textAllCaps="true"
+        android:textColor="@color/Black"
+        android:textSize="16sp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="5dp"
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+    <TextView
+        android:background="@drawable/rectangle3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/raleway"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:text="List of Panchayats"
+        android:textAllCaps="true"
+        android:textColor="@color/Black"
+        android:textSize="16sp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/txtPan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:fontFamily="@font/raleway"
+            android:padding="5dp"
+            android:textColor="@color/Black"
+            android:textSize="14sp" />
+
+    </ScrollView>
+
+</LinearLayout>

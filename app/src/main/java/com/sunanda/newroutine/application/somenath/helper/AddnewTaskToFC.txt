@@ -1,0 +1,883 @@
+package com.sunanda.newroutine.application.somenath;
+
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.Spinner;
+import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.sunanda.newroutine.application.R;
+import com.sunanda.newroutine.application.adapter.FacilitatorAdapter;
+import com.sunanda.newroutine.application.adapter.SourceDataAdapter;
+import com.sunanda.newroutine.application.database.DatabaseHandler;
+import com.sunanda.newroutine.application.fragmnet.AssignTask;
+import com.sunanda.newroutine.application.fragmnet.CreateFacilitator;
+import com.sunanda.newroutine.application.modal.CommonModel;
+import com.sunanda.newroutine.application.modal.ResponseSourceData;
+import com.sunanda.newroutine.application.util.CGlobal;
+import com.sunanda.newroutine.application.util.Constants;
+import com.sunanda.newroutine.application.util.LoadingDialog;
+import com.sunanda.newroutine.application.util.PostInterface;
+import com.wajahatkarim3.easyflipview.EasyFlipView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
+
+public class AddnewTaskToFC extends AppCompatActivity implements VillageAdapter.RecyclerViewItemClickListener{
+
+    ArrayList<String> cmaBlockId = new ArrayList<>();
+    ArrayList<String> blockName = new ArrayList<>();
+    ArrayList<String> blockCode = new ArrayList<>();
+
+    ArrayList<String> cmaPanchayatId = new ArrayList<>();
+    ArrayList<String> cmaPanchayatName = new ArrayList<>();
+    ArrayList<String> cmaPanchayatCode = new ArrayList<>();
+
+    ArrayList<String> cmaVillageId = new ArrayList<>();
+    ArrayList<String> cmaVillageName = new ArrayList<>();
+    ArrayList<String> cmaVillageCode = new ArrayList<>();
+
+    ArrayList<String> cmaHabitationId = new ArrayList<>();
+    ArrayList<String> cmaHabitationName = new ArrayList<>();
+    ArrayList<String> cmaHabitationCode = new ArrayList<>();
+
+    ArrayList<HabitationPojo> habitationPojoArrayList = new ArrayList<>();
+    ArrayList<HabitationPojo> habitationPojoArrayListIsNotTestHab = new ArrayList<>();
+    ArrayList<HabitationPojo> habitationPojoArrayListIsPreviousFinancialYearsSource = new ArrayList<>();
+    ArrayList<HabitationPojo> habitationPojoArrayListIsCurrentFinancialYearsSource = new ArrayList<>();
+
+    SourceDataAdapter sourceDataAdapter;
+
+    Spinner spBlock;
+    LoadingDialog loadingDialog;
+    String sBlockName, sBlockCode;
+    TextView tvLabName, tvDistrictName, tvPanchayat, tvVillage, tvHabitation, location, labDetail;
+    AlertDialog.Builder alertdialogbuilder1, alertdialogbuilder2, alertdialogbuilder3;
+    boolean[] selectedtruefalse;
+    String[] alertDialogItems1, alertDialogItems2, alertDialogItems3;
+    String pan_name = "", pan_code = "", vill_name = "";
+    String districtCode = "", vill_code = "", hab_code = "", hab_name = "", facilitatorName = "", facilitatorId = "";
+
+    private EasyFlipView easyFlipView;
+    private RecyclerView sourceRecycler;
+    ProgressDialog progressdialog;
+    Switch simpleSwitch;
+    String statusSwitch;
+    String selectedHabName = "";
+    ArrayList<NewVillagePojo> newVillagePojoArrayList;
+    TextView title;
+    CustomListViewDialog customDialog;
+
+    RecyclerView recyclerView;
+    MultiAdapter adapter;
+
+    ArrayList<SourceForLaboratoryPOJO> sourceForLaboratoryPOJOArrayList;
+    DatabaseHandler databaseHandler;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_addnew_task_to_fc);
+        
+        spBlock = findViewById(R.id.spBlock);
+
+        this.recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+
+        loadingDialog = new LoadingDialog(this);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+
+        title = findViewById(R.id.title);
+        facilitatorName = getIntent().getStringExtra("FCNAME");
+        facilitatorId = getIntent().getStringExtra("FCID");
+        title.setText("Assign Task to : " + getIntent().getStringExtra("FCNAME"));
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
+        final Drawable upArrow = getResources().getDrawable(R.drawable.leftarrow);
+        upArrow.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.leftarrow);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        findViewById(R.id.facilitatorSpinner).setVisibility(View.GONE);
+
+        tvPanchayat = findViewById(R.id.tvPanchayat);
+        tvVillage = findViewById(R.id.tvVillage);
+        tvLabName = findViewById(R.id.tvLabName);
+        tvDistrictName = findViewById(R.id.tvDistrictName);
+        tvHabitation = findViewById(R.id.tvHabitation);
+        sourceRecycler = findViewById(R.id.sourceRecycler);
+        location = findViewById(R.id.location);
+        labDetail = findViewById(R.id.labDetail);
+
+        simpleSwitch = (Switch) findViewById(R.id.simpleSwitch);
+        if (simpleSwitch.isChecked())
+            statusSwitch = simpleSwitch.getTextOn().toString();
+        else
+            statusSwitch = simpleSwitch.getTextOff().toString();
+        simpleSwitch.setText(statusSwitch);
+        simpleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (simpleSwitch.isChecked()) {
+                    statusSwitch = simpleSwitch.getTextOn().toString();
+                    simpleSwitch.setText(statusSwitch);
+                    sourceDataAdapter.selectAll();
+                } else {
+                    statusSwitch = simpleSwitch.getTextOff().toString();
+                    simpleSwitch.setText(statusSwitch);
+                    sourceDataAdapter.unselectall();
+                }
+            }
+        });
+
+
+        tvLabName.setText(CGlobal.getInstance().getPersistentPreference(this)
+                .getString(Constants.PREFS_USER_LAB_NAME, ""));
+
+
+        findViewById(R.id.btnNext).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (facilitatorName.contains("Choose")) {
+                    //Toast.makeText(getActivity(), "Please Select Facilitator", Toast.LENGTH_SHORT).show();
+                    showMessage("Please Select Facilitator");
+                } else if (TextUtils.isEmpty(vill_code)) {
+                    //Toast.makeText(getActivity(), "Please Select Village", Toast.LENGTH_SHORT).show();
+                    showMessage("Please Select Village");
+                } else {
+                    getHabitation();
+                    habitationPojoArrayList = new ArrayList<>();
+                    habitationPojoArrayList.addAll(habitationPojoArrayListIsNotTestHab);
+                    habitationPojoArrayList.addAll(habitationPojoArrayListIsPreviousFinancialYearsSource);
+                    habitationPojoArrayList.addAll(habitationPojoArrayListIsCurrentFinancialYearsSource);
+                    adapter = new MultiAdapter(AddnewTaskToFC.this, habitationPojoArrayList);
+                    recyclerView.setAdapter(adapter);
+                    easyFlipView.flipTheView();
+                }
+            }
+        });
+        findViewById(R.id.btnPrev).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                easyFlipView.flipTheView();
+            }
+        });
+        findViewById(R.id.btnSubmit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(getActivity(), "SUBMIT", Toast.LENGTH_SHORT).show();
+                //submitData();
+                new AlertDialog.Builder(AddnewTaskToFC.this)
+                        //.setTitle("Do you want to submit?")
+                        .setMessage("Are you sure you want to submit this entry?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (adapter.getSelected().size() > 0) {
+                                    StringBuilder stringBuilder = new StringBuilder();
+                                    for (int i = 0; i < adapter.getSelected().size(); i++) {
+                                        /*stringBuilder.append(adapter.getSelected().get(i).getName());
+                                        stringBuilder.append("-");
+                                        stringBuilder.append(adapter.getSelected().get(i).getId());
+                                        stringBuilder.append("-");
+                                        stringBuilder.append(adapter.getSelected().get(i).getCode());
+                                        stringBuilder.append("\n");*/
+                                        stringBuilder.append(adapter.getSelected().get(i).getCode());
+                                        if (i < adapter.getSelected().size() - 1)
+                                            stringBuilder.append(",");
+                                    }
+                                    //showToast(stringBuilder.toString().trim());
+                                    submitData(String.valueOf(stringBuilder));
+                                } else {
+                                    //showToast("Please select Habitation to assign");
+                                    showMessage("Please select Habitation to assign");
+                                }
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null)
+                        .setCancelable(false)
+                        //.setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
+        });
+
+
+        easyFlipView = (EasyFlipView) findViewById(R.id.easyFlipView);
+        easyFlipView.setFlipDuration(1000);
+        //easyFlipView.setFlipEnabled(true);
+
+        // Smooth scrolling recyclerview
+        sourceRecycler.setNestedScrollingEnabled(false);
+
+        tvPanchayat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getpanchayat();
+            }
+        });
+        tvVillage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getVillage();
+            }
+        });
+        tvHabitation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getHabitation();
+            }
+        });
+
+        getRecords();
+    }
+
+    private void showToast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    private void getHabitation() {
+
+        cmaHabitationId = new ArrayList<>();
+        cmaHabitationName = new ArrayList<>();
+        cmaHabitationCode = new ArrayList<>();
+        //habitationPojoArrayList = new ArrayList<>();
+        habitationPojoArrayListIsNotTestHab = new ArrayList<>();
+        habitationPojoArrayListIsPreviousFinancialYearsSource = new ArrayList<>();
+        habitationPojoArrayListIsCurrentFinancialYearsSource = new ArrayList<>();
+
+        if (!TextUtils.isEmpty(vill_code)) {
+
+            //tvHabitation.setText("");
+            //alertdialogbuilder3 = new AlertDialog.Builder(getActivity());
+
+            for (int i = 0; i < sourceForLaboratoryPOJOArrayList.size(); i++) {
+
+                if (sourceForLaboratoryPOJOArrayList.get(i).getVillage_Code().equalsIgnoreCase(vill_code)) {
+
+                    if (cmaHabitationCode.size() > 0) {
+                        if (!cmaHabitationId.contains(sourceForLaboratoryPOJOArrayList.get(i).getHabId())) {
+                            cmaHabitationId.add(sourceForLaboratoryPOJOArrayList.get(i).getHabId());
+                            cmaHabitationName.add(sourceForLaboratoryPOJOArrayList.get(i).getHabitationName());
+                            cmaHabitationCode.add(sourceForLaboratoryPOJOArrayList.get(i).getHabitation_Code());
+
+                            HabitationPojo habitationPojo = new HabitationPojo();
+                            habitationPojo.setCode(sourceForLaboratoryPOJOArrayList.get(i).getHabitation_Code());
+                            habitationPojo.setId(sourceForLaboratoryPOJOArrayList.get(i).getHabId());
+                            habitationPojo.setName(sourceForLaboratoryPOJOArrayList.get(i).getHabitationName());
+                            habitationPojo.setIsCurrentFinancialYearsSource(sourceForLaboratoryPOJOArrayList.get(i).getIsCurrentFinancialYearsSource());
+                            habitationPojo.setIsNotTestHab(sourceForLaboratoryPOJOArrayList.get(i).getIsNotTestHab());
+                            habitationPojo.setIsPreviousFinancialYearsSource(sourceForLaboratoryPOJOArrayList.get(i).getIsPreviousFinancialYearsSource());
+                            habitationPojo.setChecked(false);
+                            habitationPojo.setXcount(sourceForLaboratoryPOJOArrayList.get(i).getXcount());
+
+                            if (sourceForLaboratoryPOJOArrayList.get(i).getIsNotTestHab().equalsIgnoreCase("yes")) {
+                                habitationPojoArrayListIsNotTestHab.add(habitationPojo);
+                            } else if (sourceForLaboratoryPOJOArrayList.get(i).getIsPreviousFinancialYearsSource().equalsIgnoreCase("yes")) {
+                                habitationPojoArrayListIsPreviousFinancialYearsSource.add(habitationPojo);
+                            } else {
+                                habitationPojoArrayListIsCurrentFinancialYearsSource.add(habitationPojo);
+                            }
+                            //habitationPojoArrayList.add(habitationPojo);
+                        }
+                    } else {
+                        cmaHabitationId.add(sourceForLaboratoryPOJOArrayList.get(i).getHabId());
+                        cmaHabitationName.add(sourceForLaboratoryPOJOArrayList.get(i).getHabitationName());
+                        cmaHabitationCode.add(sourceForLaboratoryPOJOArrayList.get(i).getHabitation_Code());
+
+                        HabitationPojo habitationPojo = new HabitationPojo();
+                        habitationPojo.setCode(sourceForLaboratoryPOJOArrayList.get(i).getHabitation_Code());
+                        habitationPojo.setId(sourceForLaboratoryPOJOArrayList.get(i).getHabId());
+                        habitationPojo.setName(sourceForLaboratoryPOJOArrayList.get(i).getHabitationName());
+                        habitationPojo.setIsCurrentFinancialYearsSource(sourceForLaboratoryPOJOArrayList.get(i).getIsCurrentFinancialYearsSource());
+                        habitationPojo.setIsNotTestHab(sourceForLaboratoryPOJOArrayList.get(i).getIsNotTestHab());
+                        habitationPojo.setIsPreviousFinancialYearsSource(sourceForLaboratoryPOJOArrayList.get(i).getIsPreviousFinancialYearsSource());
+                        habitationPojo.setChecked(false);
+                        habitationPojo.setXcount(sourceForLaboratoryPOJOArrayList.get(i).getXcount());
+
+                        if (sourceForLaboratoryPOJOArrayList.get(i).getIsNotTestHab().equalsIgnoreCase("yes")) {
+                            habitationPojoArrayListIsNotTestHab.add(habitationPojo);
+                        } else if (sourceForLaboratoryPOJOArrayList.get(i).getIsPreviousFinancialYearsSource().equalsIgnoreCase("yes")) {
+                            habitationPojoArrayListIsPreviousFinancialYearsSource.add(habitationPojo);
+                        } else {
+                            habitationPojoArrayListIsCurrentFinancialYearsSource.add(habitationPojo);
+                        }
+                        //habitationPojoArrayList.add(habitationPojo);
+                    }
+                }
+            }
+
+            /*selectedtruefalse = new boolean[]{};
+            selectedtruefalse = new boolean[cmaHabitationCode.size()];
+
+            alertDialogItems3 = new String[cmaHabitationName.size()];
+            for (int a = 0; a < cmaHabitationName.size(); a++) {
+                selectedtruefalse[a] = false;
+                alertDialogItems3[a] = cmaHabitationName.get(a);
+            }
+
+            *//*alertdialogbuilder3.setSingleChoiceItems(alertDialogItems3, -1, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //Toast.makeText(getContext(), alertDialogItems[which], Toast.LENGTH_SHORT).show();
+                    hab_name = alertDialogItems3[which];
+                    hab_code = cmaHabitationCode.get(which);
+                }
+            });*//*
+            alertdialogbuilder3.setMultiChoiceItems(alertDialogItems3, selectedtruefalse, new DialogInterface.OnMultiChoiceClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                    selectedtruefalse[which] = isChecked;
+                }
+            });
+            alertdialogbuilder3.setCancelable(false);
+            alertdialogbuilder3.setTitle("Select Habitation");
+
+            *//*alertdialogbuilder3.setPositiveButton("Choose", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    if (!tvHabitation.getText().toString().equalsIgnoreCase(hab_name))
+                        tvHabitation.setText("");
+                    else
+                        tvHabitation.setText(hab_name);
+                    //hab_code = databaseHandler.getHabCode(hab_name);
+                    Log.d("hab_code", hab_code);
+                }
+            });*//*
+            alertdialogbuilder3.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    int a = 0;
+                    while (a < selectedtruefalse.length) {
+                        boolean value = selectedtruefalse[a];
+                        if (value) {
+                            String name1 = cmaHabitationName.get(a);
+                            if (!TextUtils.isEmpty(selectedHabName)) {
+                                selectedHabName = selectedHabName + "," + name1;
+                            } else {
+                                selectedHabName = name1;
+                            }
+                        }
+                        a++;
+                    }
+                    tvHabitation.setText(selectedHabName);
+                }
+            }).setNeutralButton("Discard", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            AlertDialog dialog = alertdialogbuilder3.create();
+            dialog.show();*/
+        } else {
+            //Toast.makeText(getActivity(), "Select Village", Toast.LENGTH_SHORT).show();
+            showMessage("Select Village");
+        }
+    }
+
+    private void getVillage() {
+
+        cmaVillageId = new ArrayList<>();
+        cmaVillageName = new ArrayList<>();
+        cmaVillageCode = new ArrayList<>();
+
+        if (!TextUtils.isEmpty(pan_code)) {
+
+            //tvVillage.setText("");
+            alertdialogbuilder2 = new AlertDialog.Builder(AddnewTaskToFC.this);
+
+            for (int i = 0; i < sourceForLaboratoryPOJOArrayList.size(); i++) {
+
+                if (sourceForLaboratoryPOJOArrayList.get(i).getPan_code().equalsIgnoreCase(pan_code)) {
+
+                    if (cmaVillageId.size() > 0) {
+                        if (!cmaVillageId.contains(sourceForLaboratoryPOJOArrayList.get(i).getVillageID())) {
+                            cmaVillageId.add(sourceForLaboratoryPOJOArrayList.get(i).getVillageID());
+                            cmaVillageCode.add(sourceForLaboratoryPOJOArrayList.get(i).getVillage_Code());
+                            cmaVillageName.add(sourceForLaboratoryPOJOArrayList.get(i).getVillageName());
+                        }
+                    } else {
+                        cmaVillageId.add(sourceForLaboratoryPOJOArrayList.get(i).getVillageID());
+                        cmaVillageCode.add(sourceForLaboratoryPOJOArrayList.get(i).getVillage_Code());
+                        cmaVillageName.add(sourceForLaboratoryPOJOArrayList.get(i).getVillageName());
+                    }
+                }
+            }
+
+            /*alertDialogItems2 = new String[cmaVillageId.size()];
+            for (int a = 0; a < cmaVillageName.size(); a++) {
+                alertDialogItems2[a] = cmaVillageName.get(a);
+            }*/
+
+            newVillagePojoArrayList = new ArrayList<>();
+            for (int i = 0; i < cmaVillageCode.size(); i++) {
+                int totCnt = databaseHandler.getTotalCountByVillage(cmaVillageCode.get(i));
+                NewVillagePojo newVillagePojo = databaseHandler.getDataByVillage(cmaVillageCode.get(i), String.valueOf(totCnt));
+                if (!newVillagePojo.getTestedHab().equalsIgnoreCase("0"))
+                    newVillagePojoArrayList.add(newVillagePojo);
+            }
+
+            VillageAdapter dataAdapter = new VillageAdapter(newVillagePojoArrayList, this);
+            customDialog = new CustomListViewDialog(AddnewTaskToFC.this, dataAdapter);
+            customDialog.show();
+            customDialog.setCanceledOnTouchOutside(false);
+
+           /*  alertdialogbuilder2.setSingleChoiceItems(alertDialogItems2, -1, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //Toast.makeText(getContext(), alertDialogItems[which], Toast.LENGTH_SHORT).show();
+                    vill_name = alertDialogItems2[which];
+                    vill_code = cmaVillageCode.get(which);
+                }
+            });
+            alertdialogbuilder2.setCancelable(false);
+            alertdialogbuilder2.setTitle("Select Village");
+            alertdialogbuilder2.setPositiveButton("Choose", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    if (!tvVillage.getText().toString().equalsIgnoreCase(vill_name)) {
+                        hab_code = "";
+                        hab_name = "";
+                        tvHabitation.setText("");
+                    }
+                    tvVillage.setText(vill_name);
+                    Log.d("vill_code", vill_code);
+                }
+            });
+
+            alertdialogbuilder2.setNeutralButton("Discard", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            AlertDialog dialog = alertdialogbuilder2.create();
+            dialog.show();*/
+        } else {
+            //Toast.makeText(getActivity(), "Select Panchayat", Toast.LENGTH_SHORT).show();
+            showMessage("Select Panchayat");
+        }
+    }
+
+    private void getpanchayat() {
+
+        cmaPanchayatId = new ArrayList<>();
+        cmaPanchayatName = new ArrayList<>();
+        cmaPanchayatCode = new ArrayList<>();
+
+        if (!TextUtils.isEmpty(sBlockCode)) {
+
+            alertDialogItems1 = new String[]{};
+            //tvPanchayat.setText("");
+            alertdialogbuilder1 = new AlertDialog.Builder(AddnewTaskToFC.this);
+
+            cmaPanchayatId = new ArrayList<>();
+
+            for (int i = 0; i < sourceForLaboratoryPOJOArrayList.size(); i++) {
+
+                if (sourceForLaboratoryPOJOArrayList.get(i).getBlock_code().equalsIgnoreCase(sBlockCode)) {
+
+                    if (cmaPanchayatId.size() > 0) {
+                        if (!cmaPanchayatId.contains(sourceForLaboratoryPOJOArrayList.get(i).getPanchayatID())) {
+                            cmaPanchayatId.add(sourceForLaboratoryPOJOArrayList.get(i).getPanchayatID());
+                            cmaPanchayatName.add(sourceForLaboratoryPOJOArrayList.get(i).getPanchayatName());
+                            cmaPanchayatCode.add(sourceForLaboratoryPOJOArrayList.get(i).getPan_code());
+                        }
+                    } else {
+                        cmaPanchayatId.add(sourceForLaboratoryPOJOArrayList.get(i).getPanchayatID());
+                        cmaPanchayatName.add(sourceForLaboratoryPOJOArrayList.get(i).getPanchayatName());
+                        cmaPanchayatCode.add(sourceForLaboratoryPOJOArrayList.get(i).getPan_code());
+                    }
+                }
+            }
+
+            alertDialogItems1 = new String[cmaPanchayatId.size()];
+            for (int a = 0; a < cmaPanchayatId.size(); a++) {
+                alertDialogItems1[a] = cmaPanchayatName.get(a);
+            }
+
+            alertdialogbuilder1.setSingleChoiceItems(alertDialogItems1, -1, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //Toast.makeText(getContext(), alertDialogItems[which], Toast.LENGTH_SHORT).show();
+                    pan_name = alertDialogItems1[which];
+                    pan_code = cmaPanchayatCode.get(which);
+                }
+            });
+            alertdialogbuilder1.setCancelable(false);
+            alertdialogbuilder1.setTitle("Select Panchayat");
+
+            alertdialogbuilder1.setPositiveButton("Choose", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    if (!tvPanchayat.getText().toString().equalsIgnoreCase(pan_name)) {
+                        vill_code = "";
+                        vill_name = "";
+                        tvVillage.setText("");
+
+                        hab_code = "";
+                        hab_name = "";
+                        tvHabitation.setText("");
+                    }
+                    tvPanchayat.setText(pan_name);
+                    //pan_code = cmaPanchayatCode.get(which);
+                    Log.d("pan_code", pan_code);
+                }
+            });
+
+            alertdialogbuilder1.setNeutralButton("Discard", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            AlertDialog dialog = alertdialogbuilder1.create();
+            dialog.show();
+        } else {
+            //Toast.makeText(getActivity(), "Select Block", Toast.LENGTH_SHORT).show();
+            showMessage("Select Block");
+        }
+    }
+
+    private void getRecords() {
+
+        databaseHandler = new DatabaseHandler(AddnewTaskToFC.this);
+        databaseHandler.deleteAssignHabitationList();
+        //loadingDialog.showDialog();
+        progressdialog = new ProgressDialog(AddnewTaskToFC.this);
+
+        sourceForLaboratoryPOJOArrayList = new ArrayList<>();
+        cmaBlockId = new ArrayList<>();
+        blockName = new ArrayList<>();
+        blockCode = new ArrayList<>();
+
+        boolean isConnected = CGlobal.getInstance().isConnected(AddnewTaskToFC.this);
+        if (isConnected) {
+
+            progressdialog.setMessage("Please Hold-On....");
+            progressdialog.setCancelable(false);
+            progressdialog.show();
+
+            OkHttpClient httpClient = new OkHttpClient.Builder()
+                    .connectTimeout(60, TimeUnit.SECONDS)
+                    .readTimeout(60, TimeUnit.SECONDS)
+                    .writeTimeout(60, TimeUnit.SECONDS)
+                    .addInterceptor(new Interceptor() {
+                        @Override
+                        public okhttp3.Response intercept(Chain chain) throws IOException {
+                            Request.Builder ongoing = chain.request().newBuilder();
+                            return chain.proceed(ongoing.build());
+                        }
+                    })
+                    .build();
+
+            String sLabId = CGlobal.getInstance().getPersistentPreference(AddnewTaskToFC.this)
+                    .getString(Constants.PREFS_USER_LAB_ID, "");
+            //Log.d("LABID", sLabId);
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(PostInterface.JSONURL)
+                    .client(httpClient)
+                    //.addConverterFactory(ScalarsConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            PostInterface api = retrofit.create(PostInterface.class);
+
+           /* Map<String, String> mapdata = new HashMap<>();
+            mapdata.put("LabID", "922");
+            mapdata.put("AppKey", "Idgz1PE3zO9iNc0E3oeH3CHDPX9MzZe3");*/
+
+            Call<List<SourceForLaboratoryPOJO>> call = api.getSourceForLaboratory(sLabId, "Idgz1PE3zO9iNc0E3oeH3CHDPX9MzZe3");
+
+            call.enqueue(new Callback<List<SourceForLaboratoryPOJO>>() {
+                @Override
+                public void onResponse(Call<List<SourceForLaboratoryPOJO>> call, Response<List<SourceForLaboratoryPOJO>> response) {
+                    //Log.i("Responsestring!!", response.body().size() + "");
+                    //loadingDialog.hideDialog();
+                    if (response.isSuccessful()) {
+                        if (response.body() != null) {
+                            sourceForLaboratoryPOJOArrayList.addAll(response.body());
+
+                            cmaBlockId.add("0");
+                            blockName.add("Choose");
+                            blockCode.add("0");
+
+                            tvDistrictName.setText(sourceForLaboratoryPOJOArrayList.get(0).getDistrictName());
+                            districtCode = sourceForLaboratoryPOJOArrayList.get(0).getDist_code();
+
+                            if (databaseHandler.getSourceForLaboratoryCount() != 0) {
+                                databaseHandler.deleteSOURCE_FOR_LAB();
+                            }
+
+                            for (int i = 0; i < sourceForLaboratoryPOJOArrayList.size(); i++) {
+
+                                if (cmaBlockId.size() > 1) {
+                                    if (!blockCode.contains(sourceForLaboratoryPOJOArrayList.get(i).getBlock_code())) {
+                                        cmaBlockId.add(sourceForLaboratoryPOJOArrayList.get(i).getBlockId());
+                                        blockName.add(sourceForLaboratoryPOJOArrayList.get(i).getBlockName());
+                                        blockCode.add(sourceForLaboratoryPOJOArrayList.get(i).getBlock_code());
+                                    }
+                                } else {
+                                    cmaBlockId.add(sourceForLaboratoryPOJOArrayList.get(i).getBlockId());
+                                    blockName.add(sourceForLaboratoryPOJOArrayList.get(i).getBlockName());
+                                    blockCode.add(sourceForLaboratoryPOJOArrayList.get(i).getBlock_code());
+                                }
+
+                                String NoOfSourceCollect = sourceForLaboratoryPOJOArrayList.get(i).getNoOfSourceCollect();
+                                String DistrictID = sourceForLaboratoryPOJOArrayList.get(i).getDistrictID();
+                                String dist_code = sourceForLaboratoryPOJOArrayList.get(i).getDist_code();
+                                String DistrictName = sourceForLaboratoryPOJOArrayList.get(i).getDistrictName();
+                                String BlockId = sourceForLaboratoryPOJOArrayList.get(i).getBlockId();
+                                String block_code = sourceForLaboratoryPOJOArrayList.get(i).getBlock_code();
+                                String BlockName = sourceForLaboratoryPOJOArrayList.get(i).getBlockName();
+                                String PanchayatID = sourceForLaboratoryPOJOArrayList.get(i).getPanchayatID();
+                                String pan_code = sourceForLaboratoryPOJOArrayList.get(i).getPan_code();
+                                String PanchayatName = sourceForLaboratoryPOJOArrayList.get(i).getPanchayatName();
+                                String VillageID = sourceForLaboratoryPOJOArrayList.get(i).getVillageID();
+                                String Village_Code = sourceForLaboratoryPOJOArrayList.get(i).getVillage_Code();
+                                String VillageName = sourceForLaboratoryPOJOArrayList.get(i).getVillageName();
+                                String HabId = sourceForLaboratoryPOJOArrayList.get(i).getHabId();
+                                String Habitation_Code = sourceForLaboratoryPOJOArrayList.get(i).getHabitation_Code();
+                                String IsNotTestHab = sourceForLaboratoryPOJOArrayList.get(i).getIsNotTestHab();
+                                String IsCurrentFinancialYearsSource = sourceForLaboratoryPOJOArrayList.get(i).getIsCurrentFinancialYearsSource();
+                                String IsPreviousFinancialYearsSource = sourceForLaboratoryPOJOArrayList.get(i).getIsPreviousFinancialYearsSource();
+                                String xcount = sourceForLaboratoryPOJOArrayList.get(i).getXcount();
+                                String allocation_date = "2019-11-10";
+                                String finished_date = "2019-11-17";
+
+                                databaseHandler.insertSourceForLaboratory(String.valueOf(i + 1), NoOfSourceCollect, DistrictID,
+                                        dist_code, DistrictName, BlockId, block_code, BlockName, PanchayatID, pan_code, PanchayatName,
+                                        VillageID, Village_Code, VillageName, HabId, Habitation_Code, IsNotTestHab,
+                                        IsCurrentFinancialYearsSource, IsPreviousFinancialYearsSource, xcount, allocation_date, finished_date);
+                            }
+
+                            MySpinnerAdapter block_adapter = new MySpinnerAdapter(AddnewTaskToFC.this, blockName);
+                            spBlock.setAdapter(block_adapter);
+                            spBlock.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                    sBlockName = blockName.get(position);
+                                    if (sBlockName.equalsIgnoreCase("Choose")) {
+                                        return;
+                                    }
+                                    sBlockCode = blockCode.get(position);
+                                    // Reset all drill down values
+                                    pan_name = "";
+                                    pan_code = "";
+                                    tvPanchayat.setText("");
+
+                                    vill_code = "";
+                                    vill_name = "";
+                                    tvVillage.setText("");
+
+                                    hab_code = "";
+                                    hab_name = "";
+                                    tvHabitation.setText("");
+                                }
+
+                                @Override
+                                public void onNothingSelected(AdapterView<?> parent) {
+
+                                }
+                            });
+                        } else {
+                            //Log.i("onEmptyResponse", "Returned empty response");
+                        }
+                        progressdialog.dismiss();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<SourceForLaboratoryPOJO>> call, Throwable t) {
+                    //loadingDialog.hideDialog();
+                    progressdialog.dismiss();
+                    //Log.i("onEmptyResponse", "Returned empty response");
+                }
+            });
+        } else {
+            new android.support.v7.app.AlertDialog.Builder(AddnewTaskToFC.this)
+                    .setMessage("Please check your Internet connection. Please try again")
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
+
+        /*// Calling method of activity from fragment
+        ((DashBoard_Activity)getActivity()).Test();*/
+    }
+
+    private void submitData(String HabIds) {
+
+        progressdialog = new ProgressDialog(AddnewTaskToFC.this);
+
+        boolean isConnected = CGlobal.getInstance().isConnected(AddnewTaskToFC.this);
+        if (isConnected) {
+
+            OkHttpClient httpClient = new OkHttpClient.Builder()
+                    .connectTimeout(60, TimeUnit.SECONDS)
+                    .readTimeout(60, TimeUnit.SECONDS)
+                    .writeTimeout(60, TimeUnit.SECONDS)
+                    .addInterceptor(new Interceptor() {
+                        @Override
+                        public okhttp3.Response intercept(Chain chain) throws IOException {
+                            Request.Builder ongoing = chain.request().newBuilder();
+                            return chain.proceed(ongoing.build());
+                        }
+                    })
+                    .build();
+
+            progressdialog.setMessage("Please Wait....");
+            progressdialog.setCancelable(false);
+            progressdialog.show();
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(PostInterface.JSONURL)
+                    .client(httpClient)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            PostInterface api = retrofit.create(PostInterface.class);
+            String sLabId = CGlobal.getInstance().getPersistentPreference(AddnewTaskToFC.this)
+                    .getString(Constants.PREFS_USER_LAB_ID, "");
+
+            long unixTime = System.currentTimeMillis() / 1000L;
+
+            Call<ResponseBody> call = api.AssignTaskToFacilitor(HabIds, districtCode, sBlockCode, pan_code,
+                    vill_code, sLabId, facilitatorId, "Idgz1PE3zO9iNc0E3oeH3CHDPX9MzZe3");
+
+            /*Log.d("TEST", sLabId + "#" + facilitatorId + "#" + HabIds + "#" + districtCode
+                    + "#" + sBlockCode + "#" + pan_code + "#" + vill_code);*/
+
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                    progressdialog.dismiss();
+                    if (response.body() != null) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response.body().string());
+                            if (jsonObject.getBoolean("response")) {
+                                new android.support.v7.app.AlertDialog.Builder(AddnewTaskToFC.this)
+                                        .setMessage("Task assigned successfully")
+                                        .setPositiveButton("DONE", new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                facilitatorName = "";
+                                                dialog.dismiss();
+                                                easyFlipView.flipTheView();
+                                            }
+                                        })
+                                        .setIcon(android.R.drawable.ic_dialog_info)
+                                        .show();
+                            } else {
+                                showMessage("Already assigned");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        showMessage("Unable to add task.");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    progressdialog.dismiss();
+                    //Log.i("onEmptyResponse", "Returned empty response");
+                    showMessage("Something went wrong.");
+                }
+            });
+        } else {
+            new android.support.v7.app.AlertDialog.Builder(this)
+                    .setMessage("Please check your Internet connection. Please try again")
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
+    }
+
+    @Override
+    public void clickOnItem(NewVillagePojo data) {
+        //Toast.makeText(getContext(), data.getVillageName() + " #" + data.getVillageCode(), Toast.LENGTH_SHORT).show();
+        vill_code = data.getVillageCode();
+        tvVillage.setText(data.getVillageName());
+    }
+
+    private void showMessage(String msg) {
+        Snackbar.make(findViewById(android.R.id.content),
+                "⚠ " + msg, Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        overridePendingTransition(R.anim.trans_right_in, R.anim.trans_left_out);
+        finish();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        if (menuItem.getItemId() == android.R.id.home) {
+            overridePendingTransition(R.anim.trans_right_in, R.anim.trans_left_out);
+            finish();
+        }
+        return (super.onOptionsItemSelected(menuItem));
+    }
+}

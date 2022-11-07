@@ -1,0 +1,798 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/abl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/abl"
+            android:layout_marginBottom="42dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/llTestedBefore"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bg_sp_back"
+                    android:orientation="vertical"
+                    android:padding="1dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/LightGrey1"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text="@string/has_the_existing_drinking_water_source_been_tested_before"
+                        android:textColor="@color/Gray"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rbTestedBeforeYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:saveEnabled="true"
+                            android:text="@string/yes" />
+
+                        <RadioButton
+                            android:id="@+id/rbTestedBeforeNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:text="@string/no" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llLastTested"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bg_sp_back"
+                    android:orientation="vertical"
+                    android:padding="1dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/LightGrey1"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text="@string/when_was_the_water_source_last_tested"
+                        android:textColor="@color/Gray"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <RadioButton
+                            android:id="@+id/rbMoreThanYearAgo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:saveEnabled="true"
+                            android:text="@string/more_than_a_year_ago" />
+
+                        <RadioButton
+                            android:id="@+id/rbWithinTheLastMonths"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:text="@string/within_the_last_6_months" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llSchoolAuthority"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bg_sp_back"
+                    android:orientation="vertical"
+                    android:padding="1dp">
+
+                    <TextView
+                        android:id="@+id/tvEdit5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/LightGrey1"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text="@string/is_the_water_quality_test_report_shared_with_the_school_authority"
+                        android:textColor="@color/Gray"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rbSchoolAuthorityYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:saveEnabled="true"
+                            android:text="@string/yes" />
+
+                        <RadioButton
+                            android:id="@+id/rbSchoolAuthorityNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:text="@string/no" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llDisinfected"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bg_sp_back"
+                    android:orientation="vertical"
+                    android:padding="1dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/LightGrey1"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text="@string/if_the_source_is_found_to_be_bacteriologically_contaminated_when_is_it_disinfected"
+                        android:textColor="@color/Gray"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <RadioButton
+                            android:id="@+id/rbWithinWeek"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:saveEnabled="true"
+                            android:text="@string/within_a_week" />
+
+                        <RadioButton
+                            android:id="@+id/rbWithinMonth"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:text="@string/within_a_month" />
+
+                        <RadioButton
+                            android:id="@+id/rbNotFixed"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:text="@string/not_fixed" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llToiletSchool"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bg_sp_back"
+                    android:orientation="vertical"
+                    android:padding="1dp">
+
+                    <TextView
+                        android:id="@+id/tvEdit6"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/LightGrey1"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text="@string/is_toilet_facility_available_in_the_school"
+                        android:textColor="@color/Gray"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rbToiletSchoolYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:saveEnabled="true"
+                            android:text="@string/yes" />
+
+                        <RadioButton
+                            android:id="@+id/rbToiletSchoolNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:text="@string/no" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llRunningWater"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bg_sp_back"
+                    android:orientation="vertical"
+                    android:padding="1dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/LightGrey1"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text="@string/is_running_water_available_in_toilets"
+                        android:textColor="@color/Gray"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rbRunningWaterYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:saveEnabled="true"
+                            android:text="@string/yes" />
+
+                        <RadioButton
+                            android:id="@+id/rbRunningWaterNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:text="@string/no" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llSeparateToilets"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bg_sp_back"
+                    android:orientation="vertical"
+                    android:padding="1dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/LightGrey1"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text="@string/are_there_separate_toilets_for_boys_and_girls"
+                        android:textColor="@color/Gray"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rbSeparateToiletsYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:saveEnabled="true"
+                            android:text="@string/yes" />
+
+                        <RadioButton
+                            android:id="@+id/rbSeparateToiletsNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:text="@string/no" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llNumberToiletsBoys"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bg_sp_back"
+                    android:orientation="vertical"
+                    android:padding="1dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/LightGrey1"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text="@string/number_of_toilets_for_boys"
+                        android:textColor="@color/Gray"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/etNumberToiletsBoys"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/White"
+                        android:gravity="center_vertical"
+                        android:inputType="number"
+                        android:padding="5dp"
+                        android:text=""
+                        android:textColor="@color/Black"
+                        android:textCursorDrawable="@drawable/color_cursor"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llNumberToiletsGirls"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bg_sp_back"
+                    android:orientation="vertical"
+                    android:padding="1dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/LightGrey1"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text="@string/number_of_toilets_for_girls"
+                        android:textColor="@color/Gray"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/etNumberToiletsGirls"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/White"
+                        android:gravity="center_vertical"
+                        android:inputType="number"
+                        android:padding="5dp"
+                        android:text=""
+                        android:textColor="@color/Black"
+                        android:textCursorDrawable="@drawable/color_cursor"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llGeneralToilets"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bg_sp_back"
+                    android:orientation="vertical"
+                    android:padding="1dp">
+
+                    <TextView
+                        android:id="@+id/tvEdit7"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/LightGrey1"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text="@string/number_of_general_toilets_school"
+                        android:textColor="@color/Gray"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/etGeneralToilets"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/White"
+                        android:gravity="center_vertical"
+                        android:inputType="number"
+                        android:padding="5dp"
+                        android:text=""
+                        android:textColor="@color/Black"
+                        android:textCursorDrawable="@drawable/color_cursor"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llTeacherToilets"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bg_sp_back"
+                    android:orientation="vertical"
+                    android:padding="1dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/LightGrey1"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text="@string/is_there_separate_toilet_s_available_for_teachers"
+                        android:textColor="@color/Gray"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rbTeacherToiletsYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:saveEnabled="true"
+                            android:text="@string/yes" />
+
+                        <RadioButton
+                            android:id="@+id/rbTeacherToiletsNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:text="@string/no" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llNumberToiletsTeachers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bg_sp_back"
+                    android:orientation="vertical"
+                    android:padding="1dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/LightGrey1"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text="@string/number_of_toilet_s_for_teachers"
+                        android:textColor="@color/Gray"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/etNumberToiletsTeachers"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/White"
+                        android:gravity="center_vertical"
+                        android:inputType="number"
+                        android:padding="5dp"
+                        android:text=""
+                        android:textColor="@color/Black"
+                        android:textCursorDrawable="@drawable/color_cursor"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llSanitationFacility"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/bg_sp_back"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="1dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@color/LightGrey1"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="10dp"
+                        android:text="@string/take_photo_of_the_sanitation_facility"
+                        android:textColor="@color/Gray"
+                        android:textSize="17sp" />
+
+                    <ImageView
+                        android:id="@+id/ivPictureSanitationFacility"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:padding="5dp" />
+
+                    <Button
+                        android:id="@+id/btnTakeImageSanitationFacility"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/MediumSeaGreen"
+                        android:drawableStart="@drawable/ic_camera"
+                        android:drawableLeft="@drawable/ic_camera"
+                        android:padding="10dp"
+                        android:text="@string/take_image"
+                        android:textColor="@color/White"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llWashingFacility"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bg_sp_back"
+                    android:orientation="vertical"
+                    android:padding="1dp">
+
+                    <TextView
+                        android:id="@+id/tvEdit8"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/LightGrey1"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text="@string/is_hand_washing_facility_available_in_the_school"
+                        android:textColor="@color/Gray"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rbWashingFacilityYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:saveEnabled="true"
+                            android:text="@string/yes" />
+
+                        <RadioButton
+                            android:id="@+id/rbWashingFacilityNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:text="@string/no" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llHandWashing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bg_sp_back"
+                    android:orientation="vertical"
+                    android:padding="1dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/LightGrey1"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text="@string/is_running_water_available_for_hand_washing"
+                        android:textColor="@color/Gray"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rbHandWashingYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:saveEnabled="true"
+                            android:text="@string/yes" />
+
+                        <RadioButton
+                            android:id="@+id/rbHandWashingNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:text="@string/no" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llWashBasin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bg_sp_back"
+                    android:orientation="vertical"
+                    android:padding="1dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/LightGrey1"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text="@string/is_the_wash_basin_within_reach_of_all_the_children"
+                        android:textColor="@color/Gray"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rbWashBasinYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:saveEnabled="true"
+                            android:text="@string/yes" />
+
+                        <RadioButton
+                            android:id="@+id/rbWashBasinNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:text="@string/no" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llWashBasinPicture"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/bg_sp_back"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="1dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@color/LightGrey1"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="10dp"
+                        android:text="@string/take_photo_of_the_wash_basin"
+                        android:textColor="@color/Gray"
+                        android:textSize="17sp" />
+
+                    <ImageView
+                        android:id="@+id/ivPictureWashBasin"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:padding="5dp" />
+
+                    <Button
+                        android:id="@+id/btnTakeImageWashBasin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/MediumSeaGreen"
+                        android:drawableStart="@drawable/ic_camera"
+                        android:drawableLeft="@drawable/ic_camera"
+                        android:padding="10dp"
+                        android:text="@string/take_image"
+                        android:textColor="@color/White"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llWaterKitchen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:background="@drawable/bg_sp_back"
+                    android:orientation="vertical"
+                    android:padding="1dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/LightGrey1"
+                        android:gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text="@string/is_running_water_available_in_kitchen_s"
+                        android:textColor="@color/Gray"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rbWaterKitchenYes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:saveEnabled="true"
+                            android:text="@string/yes" />
+
+                        <RadioButton
+                            android:id="@+id/rbWaterKitchenNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:checked="false"
+                            android:text="@string/no" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/app_Color"
+            android:padding="10dp"
+            android:text="@string/save_and_exit"
+            android:textColor="@color/White"
+            android:textSize="16sp" />
+    </RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

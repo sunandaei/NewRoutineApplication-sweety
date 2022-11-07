@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/abl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Assign Facilitator"
+                        android:textColor="@color/White"
+                        android:textSize="15sp" />
+                </LinearLayout>
+            </androidx.appcompat.widget.Toolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/gradient_background_1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_margin="5dp"
+                    android:background="@android:drawable/dialog_holo_light_frame"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="70dp"
+                        android:gravity="center"
+                        android:text="@string/lab"
+                        android:textColor="@color/Black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/Gray" />
+
+                    <TextView
+                        android:id="@+id/tvLabName"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:background="@drawable/background_blue"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="5dp"
+                        android:textColor="@color/Black"
+                        android:textSize="15sp" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_margin="5dp"
+                    android:background="@android:drawable/dialog_holo_light_frame"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="70dp"
+                        android:gravity="center"
+                        android:text="@string/district"
+                        android:textColor="@color/Black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/Gray" />
+
+                    <TextView
+                        android:id="@+id/tvDistrictName"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:background="@drawable/background_blue"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="5dp"
+                        android:textColor="@color/Black"
+                        android:textSize="16sp" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_margin="5dp"
+                    android:background="@android:drawable/dialog_holo_light_frame"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="70dp"
+                        android:gravity="center"
+                        android:text="@string/block"
+                        android:textColor="@color/Black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/Gray" />
+
+                    <Spinner
+                        android:id="@+id/spBlock"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_margin="5dp"
+                    android:background="@android:drawable/dialog_holo_light_frame"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="70dp"
+                        android:gravity="center"
+                        android:text="@string/panchayat"
+                        android:textColor="@color/Black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/Gray" />
+
+                    <TextView
+                        android:id="@+id/tvPanchayat"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:background="@drawable/background_blue"
+                        android:gravity="center_vertical"
+                        android:hint="Select Panchayat"
+                        android:paddingLeft="5dp"
+                        android:textColor="@color/Black"
+                        android:textSize="16sp" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_margin="5dp"
+                    android:background="@android:drawable/dialog_holo_light_frame"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="70dp"
+                        android:gravity="center"
+                        android:text="@string/village"
+                        android:textColor="@color/Black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/Gray" />
+
+                    <TextView
+                        android:id="@+id/tvVillage"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:background="@drawable/background_blue"
+                        android:gravity="center_vertical"
+                        android:hint="Select Village"
+                        android:paddingLeft="5dp"
+                        android:textColor="@color/Black"
+                        android:textSize="16sp" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:layout_margin="5dp"
+                    android:background="@android:drawable/dialog_holo_light_frame"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="70dp"
+                        android:gravity="center"
+                        android:text="@string/habitation"
+                        android:textColor="@color/Black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/Gray" />
+
+                    <TextView
+                        android:id="@+id/tvHabitation"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:background="@drawable/background_blue"
+                        android:gravity="center_vertical"
+                        android:hint="Select Habitation"
+                        android:paddingLeft="5dp"
+                        android:textColor="@color/Black"
+                        android:textSize="16sp" />
+                </TableRow>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/btnSubmit"
+                        android:layout_width="150dp"
+                        android:layout_height="70dp"
+                        android:layout_margin="10dp"
+                        android:background="@android:drawable/dialog_holo_light_frame"
+                        android:text="@string/submit" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

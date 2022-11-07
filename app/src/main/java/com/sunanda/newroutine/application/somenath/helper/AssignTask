@@ -1,0 +1,760 @@
+package com.sunanda.newroutine.application.fragmnet;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.location.Location;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.Spinner;
+import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.sunanda.newroutine.application.R;
+import com.sunanda.newroutine.application.adapter.Block_Adapter;
+import com.sunanda.newroutine.application.adapter.FacilitatorAdapter;
+import com.sunanda.newroutine.application.adapter.SourceDataAdapter;
+import com.sunanda.newroutine.application.database.DatabaseHandler;
+import com.sunanda.newroutine.application.modal.CommonModel;
+import com.sunanda.newroutine.application.modal.ResponseSourceData;
+import com.sunanda.newroutine.application.ui.MapsActivity;
+import com.sunanda.newroutine.application.util.CGlobal;
+import com.sunanda.newroutine.application.util.Constants;
+import com.sunanda.newroutine.application.util.PostInterface;
+import com.wajahatkarim3.easyflipview.EasyFlipView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
+
+public class AssignTask extends Fragment {
+
+    ArrayList<CommonModel> cmaBlock = new ArrayList<>();
+    ArrayList<CommonModel> cmaPanchayat = new ArrayList<>();
+    ArrayList<CommonModel> cmaVillage = new ArrayList<>();
+    ArrayList<CommonModel> cmaHabitation = new ArrayList<>();
+    ArrayList<ResponseSourceData> checkedLists = new ArrayList<>();
+    ArrayList<ResponseSourceData> arrayList, tempList;
+    SourceDataAdapter sourceDataAdapter;
+
+    Spinner spBlock, facilitatorSpinner;
+    DatabaseHandler databaseHandler;
+    String sBlockName, sBlockCode;
+    TextView tvLabName, tvDistrictName, tvPanchayat, tvVillage, tvHabitation, location, labDetail;
+    AlertDialog.Builder alertdialogbuilder1, alertdialogbuilder2, alertdialogbuilder3;
+    boolean[] selectedtruefalse;
+    String[] alertDialogItems1, alertDialogItems2, alertDialogItems3;
+    String pan_name = "", pan_code = "", labid = "", labName = "", vill_name = "";
+    String sDistrict = "", vill_code = "", hab_code = "", hab_name = "", facilitatorName = "", facilitatorId = "";
+
+    View myView;
+    private EasyFlipView easyFlipView;
+    private RecyclerView sourceRecycler;
+    ProgressDialog progressdialog;
+    Switch simpleSwitch;
+    String statusSwitch;
+
+    static String response;
+    private String jsonresponse = "";
+
+    public static AssignTask newInstance(String res) {
+        response = res;
+        return new AssignTask();
+    }
+
+    public AssignTask() {
+        // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            addFacilatorEvent = (AddFacilatorEvent) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement AddFacilatorEvent");
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        myView = inflater.inflate(R.layout.fragment_fragment4, container, false);
+
+        spBlock = myView.findViewById(R.id.spBlock);
+        facilitatorSpinner = myView.findViewById(R.id.facilitatorSpinner);
+
+        tvPanchayat = myView.findViewById(R.id.tvPanchayat);
+        tvVillage = myView.findViewById(R.id.tvVillage);
+        tvLabName = myView.findViewById(R.id.tvLabName);
+        tvDistrictName = myView.findViewById(R.id.tvDistrictName);
+        tvHabitation = myView.findViewById(R.id.tvHabitation);
+        sourceRecycler = myView.findViewById(R.id.sourceRecycler);
+        location = myView.findViewById(R.id.location);
+        labDetail = myView.findViewById(R.id.labDetail);
+
+        simpleSwitch = (Switch) myView.findViewById(R.id.simpleSwitch);
+        if (simpleSwitch.isChecked())
+            statusSwitch = simpleSwitch.getTextOn().toString();
+        else
+            statusSwitch = simpleSwitch.getTextOff().toString();
+        simpleSwitch.setText(statusSwitch);
+        simpleSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (simpleSwitch.isChecked()) {
+                    statusSwitch = simpleSwitch.getTextOn().toString();
+                    simpleSwitch.setText(statusSwitch);
+                    sourceDataAdapter.selectAll();
+                } else {
+                    statusSwitch = simpleSwitch.getTextOff().toString();
+                    simpleSwitch.setText(statusSwitch);
+                    sourceDataAdapter.unselectall();
+                }
+            }
+        });
+
+        databaseHandler = new DatabaseHandler(getActivity());
+
+        getBlock();
+        getPanchayat();
+        getVillage();
+        getHabitation();
+
+        labid = CGlobal.getInstance().getPersistentPreference(getActivity())
+                .getString(Constants.PREFS_USER_LAB_ID, "");
+        DatabaseHandler databaseHandler1 = new DatabaseHandler(getActivity());
+        labName = databaseHandler1.getLabName();
+        tvLabName.setText(labName);
+
+        sDistrict = databaseHandler1.getDistrictName();
+        tvDistrictName.setText(sDistrict);
+
+        myView.findViewById(R.id.btnNext).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (facilitatorName.equalsIgnoreCase("choose")) {
+                    Toast.makeText(getActivity(), "Please Select Facilitator", Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(hab_code)) {
+                    Toast.makeText(getActivity(), "Please Select Habitation", Toast.LENGTH_SHORT).show();
+                } else {
+                    loadSourceData(1);
+                }
+            }
+        });
+        myView.findViewById(R.id.btnNext2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (facilitatorName.equalsIgnoreCase("choose")) {
+                    Toast.makeText(getActivity(), "Please Select Facilitator", Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(hab_code)) {
+                    Toast.makeText(getActivity(), "Please Select Habitation", Toast.LENGTH_SHORT).show();
+                } else {
+                    loadSourceData(2);
+                }
+            }
+        });
+        myView.findViewById(R.id.btnSubmit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(getActivity(), "SUBMIT", Toast.LENGTH_SHORT).show();
+                submitData();
+            }
+        });
+        myView.findViewById(R.id.btnPrev).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                easyFlipView.flipTheView();
+            }
+        });
+        myView.findViewById(R.id.btnDist).
+
+                setOnClickListener(new View.OnClickListener() {
+                    @SuppressLint({"SetTextI18n", "DefaultLocale"})
+                    @Override
+                    public void onClick(View v) {
+                        if (checkedLists.size() == 2) {
+                            AlertDialog dialog = new AlertDialog.Builder(getActivity()).setMessage("").show();
+                            TextView textView = (TextView) dialog.findViewById(android.R.id.message);
+                            Typeface face = Typeface.createFromAsset(getActivity().getAssets(), "proxima_nova_light.ttf");
+                            textView.setTextSize(18f);
+                            textView.setTextColor(Color.RED);
+                            textView.setTypeface(face);
+
+                            Location startPoint = new Location("locationA");
+                            startPoint.setLatitude(Double.parseDouble(checkedLists.get(0).getLatitude()));
+                            startPoint.setLongitude(Double.parseDouble(checkedLists.get(0).getLongitude()));
+                            Location endPoint = new Location("locationA");
+                            endPoint.setLatitude(Double.parseDouble(checkedLists.get(1).getLatitude()));
+                            endPoint.setLongitude(Double.parseDouble((checkedLists.get(1).getLongitude())));
+                            double distance = startPoint.distanceTo(endPoint) / 1000;
+
+                            //Toast.makeText(getActivity(), String.format("%.2f", distance), Toast.LENGTH_SHORT).show();
+
+                    /*textView.setText("Distance between (" + checkedLists.get(0).getLatitude() + " , " +
+                            checkedLists.get(0).getLongitude() + ") & (" + checkedLists.get(1).getLatitude() + " , " +
+                            checkedLists.get(1).getLongitude() + ") : " + String.format("%.2f",
+                            distance(Double.parseDouble(checkedLists.get(0).getLatitude()),
+                                    Double.parseDouble(checkedLists.get(0).getLongitude()),
+                                    Double.parseDouble(checkedLists.get(1).getLatitude()),
+                                    Double.parseDouble((checkedLists.get(1).getLongitude())))) + " KM");*/
+                        } else {
+                            Toast.makeText(getActivity(), "Please Select Two Source", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+        myView.findViewById(R.id.addNewUser).
+
+                setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        addFacilatorEvent.addNewOne(CreateFacilitator.newInstance());
+                    }
+                });
+        myView.findViewById(R.id.addNewUser).
+
+                setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        addFacilatorEvent.addNewOne(CreateFacilitator.newInstance());
+                    }
+                });
+
+        easyFlipView = (EasyFlipView) myView.findViewById(R.id.easyFlipView);
+        easyFlipView.setFlipDuration(1000);
+        //easyFlipView.setFlipEnabled(true);
+
+        // Smooth scrolling recyclerview
+        sourceRecycler.setNestedScrollingEnabled(false);
+
+        getFacilitatorListResponse(response);
+
+        return myView;
+    }
+
+
+    private void getFacilitatorListResponse(String response) {
+
+        final ArrayList<CommonModel> commonModelArrayList = new ArrayList<>();
+        try {
+
+            JSONArray aFacilitator = new JSONArray(response);
+            for (int i = 0; i < aFacilitator.length(); i++) {
+                JSONObject oFacilitator = aFacilitator.getJSONObject(i);
+
+                JSONObject o_id = oFacilitator.getJSONObject("_id");
+                String oid = CGlobal.getInstance().isNullNotDefined(o_id, "$oid") ? "" : o_id.getString("$oid");
+                String name = CGlobal.getInstance().isNullNotDefined(oFacilitator, "name") ? "" : oFacilitator.getString("name");
+                CommonModel commonModel = new CommonModel();
+                commonModel.setName(name);
+                commonModel.setId(oid);
+                commonModelArrayList.add(commonModel);
+            }
+            CommonModel commonModel = new CommonModel();
+            commonModel.setName("Choose");
+            commonModelArrayList.add(0, commonModel);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        FacilitatorAdapter temp = new FacilitatorAdapter(getActivity(), commonModelArrayList);
+        facilitatorSpinner.setAdapter(temp);
+
+        facilitatorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                facilitatorName = commonModelArrayList.get(position).getName();
+                if (facilitatorName.equalsIgnoreCase("Choose")) {
+                    return;
+                }
+                facilitatorId = commonModelArrayList.get(position).getId();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+
+    private void getHabitation() {
+
+        tvHabitation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (!TextUtils.isEmpty(vill_code)) {
+
+                    tvHabitation.setText("");
+                    alertdialogbuilder3 = new AlertDialog.Builder(getActivity());
+                    cmaHabitation = databaseHandler.getHabitationName(vill_code);
+                    alertDialogItems3 = new String[cmaHabitation.size()];
+                    for (int a = 0; a < cmaHabitation.size(); a++) {
+                        alertDialogItems3[a] = cmaHabitation.get(a).getHabitationname();
+                    }
+
+                    alertdialogbuilder3.setSingleChoiceItems(alertDialogItems3, -1, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //Toast.makeText(getContext(), alertDialogItems[which], Toast.LENGTH_SHORT).show();
+                            hab_name = alertDialogItems3[which];
+                        }
+                    });
+                    alertdialogbuilder3.setCancelable(false);
+                    alertdialogbuilder3.setTitle("Select Habitation");
+
+                    alertdialogbuilder3.setPositiveButton("Choose", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            tvHabitation.setText(hab_name);
+                            hab_code = databaseHandler.getHabCode(hab_name);
+                            Log.d("hab_code", hab_code);
+                        }
+                    });
+
+                    alertdialogbuilder3.setNeutralButton("Discard", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    AlertDialog dialog = alertdialogbuilder3.create();
+                    dialog.show();
+                } else {
+                    Toast.makeText(getActivity(), "Select Village", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void getVillage() {
+
+        tvVillage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!TextUtils.isEmpty(pan_code)) {
+
+                    tvVillage.setText("");
+                    alertdialogbuilder2 = new AlertDialog.Builder(getActivity());
+                    cmaVillage = databaseHandler.getVillageName(pan_code);
+                    alertDialogItems2 = new String[cmaVillage.size()];
+                    for (int a = 0; a < cmaVillage.size(); a++) {
+                        alertDialogItems2[a] = cmaVillage.get(a).getVillagename();
+                    }
+                    /*alertdialogbuilder.setMultiChoiceItems(alertDialogItems, selectedtruefalse, new DialogInterface.OnMultiChoiceClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+
+                        }
+                    });*/
+                    alertdialogbuilder2.setSingleChoiceItems(alertDialogItems2, -1, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //Toast.makeText(getContext(), alertDialogItems[which], Toast.LENGTH_SHORT).show();
+                            vill_name = alertDialogItems2[which];
+                        }
+                    });
+                    alertdialogbuilder2.setCancelable(false);
+                    alertdialogbuilder2.setTitle("Select Village");
+                    /*alertdialogbuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            int a = 0;
+                            while (a < selectedtruefalse.length) {
+                                boolean value = selectedtruefalse[a];
+                                if (value) {
+                                    String name1 = cmaPanchayat.get(a).getPanchayatname();
+                                    if (!TextUtils.isEmpty(name)) {
+                                        name = name + "," + name1;
+                                    } else {
+                                        name = name1;
+                                    }
+                                }
+                                a++;
+                            }
+                            tvPanchayat.setText(name);
+                        }
+                    });*/
+
+                    alertdialogbuilder2.setPositiveButton("Choose", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            tvVillage.setText(vill_name);
+                            vill_code = databaseHandler.getVillCode(vill_name);
+                            Log.d("vill_code", vill_code);
+                        }
+                    });
+
+                    alertdialogbuilder2.setNeutralButton("Discard", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    AlertDialog dialog = alertdialogbuilder2.create();
+                    dialog.show();
+                } else {
+                    Toast.makeText(getActivity(), "Select Panchayat", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void getPanchayat() {
+
+        tvPanchayat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!TextUtils.isEmpty(sBlockCode)) {
+
+                    selectedtruefalse = new boolean[]{};
+                    alertDialogItems1 = new String[]{};
+                    tvPanchayat.setText("");
+                    alertdialogbuilder1 = new AlertDialog.Builder(getActivity());
+                    cmaPanchayat = databaseHandler.getPanchayatList(sBlockCode);
+                    selectedtruefalse = new boolean[cmaPanchayat.size()];
+                    alertDialogItems1 = new String[cmaPanchayat.size()];
+                    for (int a = 0; a < cmaPanchayat.size(); a++) {
+                        selectedtruefalse[a] = false;
+                        alertDialogItems1[a] = cmaPanchayat.get(a).getPanchayatname();
+                    }
+
+                    alertdialogbuilder1.setSingleChoiceItems(alertDialogItems1, -1, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //Toast.makeText(getContext(), alertDialogItems[which], Toast.LENGTH_SHORT).show();
+                            pan_name = alertDialogItems1[which];
+                        }
+                    });
+                    alertdialogbuilder1.setCancelable(false);
+                    alertdialogbuilder1.setTitle("Select Panchayat");
+
+                    alertdialogbuilder1.setPositiveButton("Choose", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            tvPanchayat.setText(pan_name);
+                            pan_code = databaseHandler.getPanCode(pan_name);
+                            Log.d("pan_code", pan_code);
+                        }
+                    });
+
+                    alertdialogbuilder1.setNeutralButton("Discard", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    AlertDialog dialog = alertdialogbuilder1.create();
+                    dialog.show();
+                } else {
+                    Toast.makeText(getActivity(), "Select Block", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void getBlock() {
+        CommonModel commonModel = new CommonModel();
+        cmaBlock = databaseHandler.getBlockList();
+        commonModel.setBlockname("Choose");
+        cmaBlock.add(0, commonModel);
+        Block_Adapter block_adapter = new Block_Adapter(getActivity(), cmaBlock);
+        spBlock.setAdapter(block_adapter);
+
+        spBlock.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                sBlockName = cmaBlock.get(position).getBlockname();
+                if (sBlockName.equalsIgnoreCase("Choose")) {
+                    return;
+                }
+                sBlockCode = cmaBlock.get(position).getBlockcode();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+
+    private void loadSourceData(final int val) {
+
+        final ProgressDialog progressdialog;
+        progressdialog = new ProgressDialog(getActivity());
+        progressdialog.setMessage("Please Wait....");
+        progressdialog.setCancelable(false);
+
+        boolean isConnected = CGlobal.getInstance().isConnected(getActivity());
+        if (isConnected) {
+            try {
+                progressdialog.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            OkHttpClient httpClient = new OkHttpClient.Builder()
+                    .connectTimeout(60, TimeUnit.SECONDS)
+                    .readTimeout(60, TimeUnit.SECONDS)
+                    .writeTimeout(60, TimeUnit.SECONDS)
+                    .addInterceptor(new Interceptor() {
+                        @Override
+                        public okhttp3.Response intercept(Chain chain) throws IOException {
+                            Request.Builder ongoing = chain.request().newBuilder();
+                            return chain.proceed(ongoing.build());
+                        }
+                    })
+                    .build();
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(PostInterface.JSONURL)
+                    .client(httpClient)
+                    .addConverterFactory(ScalarsConverterFactory.create())
+                    .build();
+
+            PostInterface api = retrofit.create(PostInterface.class);
+
+            Call<String> call = api.getSource(hab_code);
+
+            call.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, retrofit2.Response<String> response) {
+                    //Log.i("Responsestring", jsonResponse.body());
+                    progressdialog.dismiss();
+                    if (response.isSuccessful()) {
+                        if (response.body() != null) {
+                            //Log.i("onSuccess", jsonResponse.body());
+                            jsonresponse = response.body();
+                            getDataResponse(jsonresponse, val);
+
+                        } else {
+                            //Log.i("onEmptyResponse", "Returned empty jsonResponse");
+                            Toast.makeText(getContext(), "Unable to get data", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    //Log.i("onEmptyResponse", "Returned empty jsonResponse");
+                    progressdialog.dismiss();
+                    Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            new android.support.v7.app.AlertDialog.Builder(getActivity())
+                    .setMessage("Please check your Internet connection. Please try again")
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void getDataResponse(String jsonresponse, int val) {
+
+        arrayList = new ArrayList<>();
+        tempList = new ArrayList<>();
+        JSONArray arrayLabData = null;
+        try {
+            arrayLabData = new JSONArray(jsonresponse);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        for (int i = 0; i < arrayLabData.length(); i++) {
+            JSONObject objectLabData;
+            try {
+                objectLabData = arrayLabData.getJSONObject(i);
+                JSONObject object_id = objectLabData.getJSONObject("_id");
+                ResponseSourceData responseDTO = new ResponseSourceData();
+                responseDTO.setId(object_id.getString("$oid"));
+                responseDTO.setSourceDetails(objectLabData.getString("source_details"));
+                responseDTO.setLabName(objectLabData.getString("lab_Name"));
+                responseDTO.setImgSource(objectLabData.getString("img_source"));
+                responseDTO.setLatitude(objectLabData.getString("latitude"));
+                responseDTO.setLongitude(objectLabData.getString("longitude"));
+                responseDTO.setCollectionDate(objectLabData.getString("collection_date"));
+                responseDTO.setTestDate(objectLabData.getString("test_date"));
+                responseDTO.setWaterSourceType(objectLabData.getString("water_source_type"));
+                tempList.add(responseDTO);
+                responseDTO.setDistance(getDistance(i));
+                arrayList.add(responseDTO);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        // Sort the list wrt Distance
+        Collections.sort(arrayList, new DistanceSorter());
+
+        sourceDataAdapter = new SourceDataAdapter(getActivity(), arrayList, new BtnCheck() {
+            @Override
+            public void onBtnCheckValue(int position, CheckBox cbInstrumentItem) {
+                if (cbInstrumentItem.isChecked()) {
+                    checkedLists.add(arrayList.get(position));
+                    if (arrayList.size() == checkedLists.size()) {
+                        simpleSwitch.setChecked(true);
+                        simpleSwitch.setText("Deselect All");
+                    }
+                } else {
+                    simpleSwitch.setChecked(false);
+                    simpleSwitch.setText("Select All");
+                    checkedLists.remove(arrayList.get(position));
+                }
+            }
+        });
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        sourceRecycler.setLayoutManager(linearLayoutManager);
+        sourceRecycler.setItemAnimator(new DefaultItemAnimator());
+        sourceRecycler.setAdapter(sourceDataAdapter);
+
+        labDetail.setText(arrayList.get(0).getLabName());
+        location.setText(labName + " # " + sDistrict + " # " + sBlockName + " # " + pan_name + " # " + vill_name + " # " + hab_name);
+
+        if (val == 1)
+            easyFlipView.flipTheView();
+        else {
+            Intent i = new Intent(getContext(), MapsActivity.class);
+            i.putExtra("LISTS", jsonresponse);
+            startActivity(i);
+        }
+    }
+
+    private void submitData() {
+
+        progressdialog = new ProgressDialog(getActivity());
+        progressdialog.setMessage("Please Wait....");
+        progressdialog.setCancelable(false);
+        progressdialog.show();
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                if (checkedLists.size() > 0) {
+                    //String json = new Gson().toJson(checkedLists);
+                    String IDS = "";
+                    for (int i = 0; i < checkedLists.size(); i++) {
+                        if (i == 0)
+                            IDS = checkedLists.get(i).getId();
+                        else
+                            IDS += "#" + checkedLists.get(i).getId();
+                    }
+                    Log.d("VALUE#IDS#", IDS);
+                    Log.d("VALUE#UID#", facilitatorId);
+                   /* Log.d("VALUE#LABID#", CGlobal.getInstance().getPersistentPreference(getActivity())
+                            .getString(Constants.PREFS_USER_LAB_ID, ""));
+                    Log.d("VALUE#LABCODE#", CGlobal.getInstance().getPersistentPreference(getActivity())
+                            .getString(Constants.PREFS_USER_LAB_CODE, ""));
+                    Log.d("VALUE#", "");*/
+
+                } else {
+                    new android.support.v7.app.AlertDialog.Builder(getActivity())
+                            .setMessage("Please select Source Location")
+                            .setCancelable(false)
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            }).show();
+                }
+                progressdialog.dismiss();
+            }
+        }, 1500);
+    }
+
+    private double distance(double lat1, double lon1, double lat2, double lon2) {
+        double theta = lon1 - lon2;
+        double dist = Math.sin(deg2rad(lat1))
+                * Math.sin(deg2rad(lat2))
+                + Math.cos(deg2rad(lat1))
+                * Math.cos(deg2rad(lat2))
+                * Math.cos(deg2rad(theta));
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = dist * 60 * 1.1515;
+        return (dist);
+    }
+
+    private double deg2rad(double deg) {
+        return (deg * Math.PI / 180.0);
+    }
+
+    private double rad2deg(double rad) {
+        return (rad * 180.0 / Math.PI);
+    }
+
+    private double getDistance(int position) {
+        Location startPoint = new Location("locationA");
+        startPoint.setLatitude(Double.parseDouble(tempList.get(0).getLatitude()));
+        startPoint.setLongitude(Double.parseDouble(tempList.get(0).getLongitude()));
+        Location endPoint = new Location("locationA");
+        endPoint.setLatitude(Double.parseDouble(tempList.get(position).getLatitude()));
+        endPoint.setLongitude(Double.parseDouble((tempList.get(position).getLongitude())));
+
+        return startPoint.distanceTo(endPoint) / 1000;
+    }
+
+    public interface BtnCheck {
+        void onBtnCheckValue(int position, CheckBox cbInstrumentItem);
+    }
+
+
+    public class DistanceSorter implements Comparator<ResponseSourceData> {
+        @Override
+        public int compare(ResponseSourceData o1, ResponseSourceData o2) {
+            return String.valueOf(o1.getDistance()).compareToIgnoreCase(String.valueOf(o2.getDistance()));
+        }
+    }
+
+    public interface AddFacilatorEvent {
+        void addNewOne(Fragment s);
+
+    }
+
+    AddFacilatorEvent addFacilatorEvent;
+}

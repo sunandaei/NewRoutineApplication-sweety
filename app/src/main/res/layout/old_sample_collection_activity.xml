@@ -1,0 +1,922 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/abl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/AppTheme.AppBarOverlay">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="?attr/colorPrimary"
+                    app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/abl"
+                android:layout_marginBottom="42dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/White"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/llAppType"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/bg_sp_back"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="1dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@color/DodgerBlue"
+                            android:gravity="center_vertical"
+                            android:paddingStart="10dp"
+                            android:paddingLeft="10dp"
+                            android:text="Select Test Procedure Method"
+                            android:textColor="@color/White"
+                            android:textSize="17sp"
+                            tools:ignore="RtlSymmetry" />
+
+                        <Spinner
+                            android:id="@+id/spAppType"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:background="@drawable/spinner_background"
+                            android:spinnerMode="dropdown" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llSchoolNameAndAnganwadiName"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/bg_sp_back"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="1dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@color/DodgerBlue"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="10dp"
+                            android:text="@string/select_school"
+                            android:textColor="@color/White"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:id="@+id/tvSchoolNameAndAnganwadiName"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="10dp"
+                            android:text=""
+                            android:textColor="@color/Black"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/bg_sp_back"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="1dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@color/DodgerBlue"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="10dp"
+                            android:text="Enter PinCode"
+                            android:textColor="@color/White"
+                            android:textSize="17sp" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/tietPinCode"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:inputType="number"
+                                android:maxLength="6"
+                                android:textColor="@color/Black"
+                                android:textCursorDrawable="@drawable/color_cursor"
+                                android:textSize="16sp"
+                                android:theme="@style/MyEditText" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@android:drawable/dialog_holo_light_frame"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="1dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@color/DodgerBlue"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="10dp"
+                            android:text="@string/take_picture_of_the_source"
+                            android:textColor="@color/White"
+                            android:textSize="17sp" />
+
+                        <ImageView
+                            android:id="@+id/ivPicture"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:padding="5dp" />
+
+                        <Button
+                            android:id="@+id/btnTakeImage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/MediumSeaGreen"
+                            android:drawableStart="@drawable/ic_camera"
+                            android:drawableLeft="@drawable/ic_camera"
+                            android:padding="10dp"
+                            android:text="@string/take_image"
+                            android:textColor="@color/White"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/bg_sp_back"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="1dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@color/DodgerBlue"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="10dp"
+                            android:text="@string/your_location"
+                            android:textColor="@color/White"
+                            android:textSize="17sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tvLatitude"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="@drawable/bg_sp_back"
+                                android:gravity="center"
+                                android:hint="@string/latitude"
+                                android:textColor="@color/Black"
+                                android:textColorHint="@color/Gray"
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:id="@+id/tvLongitude"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:background="@drawable/bg_sp_back"
+                                android:gravity="center"
+                                android:hint="@string/longitude"
+                                android:textColor="@color/Black"
+                                android:textColorHint="@color/Gray"
+                                android:textSize="18sp" />
+                        </LinearLayout>
+
+                        <Button
+                            android:id="@+id/btnDeviceLocation"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/MediumSeaGreen"
+                            android:drawableStart="@drawable/ic_location"
+                            android:drawableLeft="@drawable/ic_location"
+                            android:padding="10dp"
+                            android:text="@string/get_device_location"
+                            android:textColor="@color/White"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/box_background"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="1dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@color/DodgerBlue"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="10dp"
+                            android:text="@string/enter_sample_bottle_number"
+                            android:textColor="@color/White"
+                            android:textSize="17sp" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/tietSampleBottleNumber"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:inputType="number"
+                                android:maxLength="2"
+                                android:textColor="@color/Black"
+                                android:textCursorDrawable="@drawable/color_cursor"
+                                android:textSize="16sp"
+                                android:theme="@style/MyEditText" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <!--Special Drive-->
+                    <LinearLayout
+                        android:id="@+id/llSpecialDrive"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/box_background"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="1dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:background="@color/DodgerBlue"
+                                android:gravity="center_vertical"
+                                android:paddingLeft="10dp"
+                                android:text="@string/is_it_special_drive"
+                                android:textColor="@color/White"
+                                android:textSize="17sp" />
+
+                            <Spinner
+                                android:id="@+id/spIsItSpecialDrive"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:background="@drawable/spinner_background"
+                                android:spinnerMode="dropdown" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/llNameSpecialDrive"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/box_background"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="1dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:background="@color/DodgerBlue"
+                                android:gravity="center_vertical"
+                                android:paddingLeft="10dp"
+                                android:text="@string/select_name_of_the_special_drive"
+                                android:textColor="@color/White"
+                                android:textSize="17sp" />
+
+                            <Spinner
+                                android:id="@+id/spNameSpecialDrive"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:background="@drawable/spinner_background"
+                                android:spinnerMode="dropdown" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llSelectScheme"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/bg_sp_back"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="1dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@color/DodgerBlue"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="10dp"
+                            android:text="@string/select_scheme"
+                            android:textColor="@color/White"
+                            android:textSize="17sp" />
+
+                        <Spinner
+                            android:id="@+id/spSelectScheme"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@drawable/spinner_background"
+                            android:spinnerMode="dropdown" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llSchemeName"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/bg_sp_back"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="1dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@color/DodgerBlue"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="10dp"
+                            android:text="@string/scheme_name"
+                            android:textColor="@color/White"
+                            android:textSize="17sp" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/tietSchemeName"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890.,-_ "
+                                android:inputType="text"
+                                android:textColor="@color/Black"
+                                android:textCursorDrawable="@drawable/color_cursor"
+                                android:textSize="16sp"
+                                android:theme="@style/MyEditText" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llChamberAvailable"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/box_background"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="1dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@color/DodgerBlue"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="10dp"
+                            android:text="Is there any special chamber available or not?"
+                            android:textColor="@color/White"
+                            android:textSize="17sp" />
+
+                        <Spinner
+                            android:id="@+id/spChamberAvailable"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:background="@drawable/spinner_background"
+                            android:spinnerMode="dropdown" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llWaterLevel"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/box_background"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="1dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@color/DodgerBlue"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="10dp"
+                            android:text="Static water level"
+                            android:textColor="@color/White"
+                            android:textSize="17sp" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/tietWaterLevel"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:inputType="number"
+                                android:textColor="@color/Black"
+                                android:textCursorDrawable="@drawable/color_cursor"
+                                android:textSize="16sp"
+                                android:theme="@style/MyEditText" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+                    <!--Special Drive-->
+
+                    <LinearLayout
+                        android:id="@+id/llSharedSource"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/bg_sp_back"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="1dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@color/DodgerBlue"
+                            android:gravity="center_vertical"
+                            android:paddingStart="10dp"
+                            android:paddingLeft="10dp"
+                            android:text="@string/is_this_a_shared_source"
+                            android:textColor="@color/White"
+                            android:textSize="17sp"
+                            tools:ignore="RtlSymmetry" />
+
+                        <Spinner
+                            android:id="@+id/spSharedSource"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:background="@drawable/spinner_background"
+                            android:spinnerMode="dropdown" />
+                    </LinearLayout>
+
+                    <!--SHARE WITH-->
+                    <LinearLayout
+                        android:id="@+id/llSharedWith"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/bg_sp_back"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="1dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@color/DodgerBlue"
+                            android:gravity="center_vertical"
+                            android:paddingStart="10dp"
+                            android:paddingLeft="10dp"
+                            android:text="@string/shared_with"
+                            android:textColor="@color/White"
+                            android:textSize="17sp"
+                            tools:ignore="RtlSymmetry" />
+
+                        <Spinner
+                            android:id="@+id/spSharedWith"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:background="@drawable/spinner_background"
+                            android:spinnerMode="dropdown" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llOthersType"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/bg_sp_back"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="1dp">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/tietOthersType"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890.,-_ "
+                            android:hint="@string/type_others"
+                            android:inputType="text"
+                            android:paddingLeft="10dp"
+                            android:textColor="@color/Black"
+                            android:textCursorDrawable="@drawable/color_cursor"
+                            android:textSize="16sp"
+                            android:theme="@style/MyEditText" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llListShow"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/bg_sp_back"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="1dp">
+
+                        <TextView
+                            android:id="@+id/tvListShow"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@color/DodgerBlue"
+                            android:gravity="center_vertical"
+                            android:paddingStart="10dp"
+                            android:paddingLeft="10dp"
+                            android:text=""
+                            android:textColor="@color/White"
+                            android:textSize="17sp"
+                            tools:ignore="RtlSymmetry" />
+
+                        <Spinner
+                            android:id="@+id/spListShow"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:background="@drawable/spinner_background"
+                            android:spinnerMode="dropdown" />
+                    </LinearLayout>
+
+                    <!--SHARE WITH-->
+
+                    <LinearLayout
+                        android:id="@+id/llPipesTubeWell"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/box_background"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="1dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@color/DodgerBlue"
+                            android:gravity="center_vertical"
+                            android:paddingLeft="10dp"
+                            android:text="@string/how_many_pipes_are_in_the_tube_well"
+                            android:textColor="@color/White"
+                            android:textSize="17sp" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/tietPipesTubeWell"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:inputType="number"
+                                android:maxLength="2"
+                                android:textColor="@color/Black"
+                                android:textCursorDrawable="@drawable/color_cursor"
+                                android:textSize="16sp"
+                                android:theme="@style/MyEditText" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:background="@android:drawable/dialog_holo_light_frame"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="1dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@color/DodgerBlue"
+                            android:gravity="center_vertical"
+                            android:paddingStart="10dp"
+                            android:paddingLeft="10dp"
+                            android:text="@string/who_is_collecting_the_sample"
+                            android:textColor="@color/White"
+                            android:textSize="17sp"
+                            tools:ignore="RtlSymmetry" />
+
+                        <Spinner
+                            android:id="@+id/spCollectingSample"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:background="@drawable/spinner_background"
+                            android:spinnerMode="dropdown" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llConditionOfSource"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/bg_sp_back"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="1dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@color/DodgerBlue"
+                            android:gravity="center_vertical"
+                            android:paddingStart="10dp"
+                            android:paddingLeft="10dp"
+                            android:text="@string/condition_of_the_source"
+                            android:textColor="@color/White"
+                            android:textSize="17sp"
+                            tools:ignore="RtlSymmetry" />
+
+                        <Spinner
+                            android:id="@+id/spConditionOfSource"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:background="@drawable/spinner_background"
+                            android:spinnerMode="dropdown" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llResidualChlorineTested"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:background="@android:drawable/dialog_holo_light_frame"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="1dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@color/DodgerBlue"
+                            android:gravity="center_vertical"
+                            android:paddingStart="10dp"
+                            android:paddingLeft="10dp"
+                            android:text="@string/whether_free_residual_chlorine_tested_or_not"
+                            android:textColor="@color/White"
+                            android:textSize="17sp"
+                            tools:ignore="RtlSymmetry" />
+
+                        <Spinner
+                            android:id="@+id/spResidualChlorineTested"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:background="@drawable/spinner_background"
+                            android:spinnerMode="dropdown" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llResidualChlorineRoutine"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/box_background"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="1dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@color/DodgerBlue"
+                            android:gravity="center_vertical"
+                            android:paddingStart="10dp"
+                            android:paddingLeft="10dp"
+                            android:text="@string/residual_chlorine"
+                            android:textColor="@color/White"
+                            android:textSize="17sp"
+                            tools:ignore="RtlSymmetry" />
+
+                        <Spinner
+                            android:id="@+id/spResidualChlorineRoutine"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:background="@drawable/spinner_background"
+                            android:spinnerMode="dropdown" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/tietResidualChlorineRoutine"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:hint="@string/residual_chlorine_value"
+                                android:inputType="numberDecimal"
+                                android:paddingLeft="5dp"
+                                android:textColor="@color/Black"
+                                android:textCursorDrawable="@drawable/color_cursor"
+                                android:textSize="16sp"
+                                android:theme="@style/MyEditText" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llResidualChlorineInputOMAS"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/bg_sp_back"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="1dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@color/DodgerBlue"
+                            android:gravity="center_vertical"
+                            android:paddingStart="10dp"
+                            android:paddingLeft="10dp"
+                            android:text="@string/residual_chlorine"
+                            android:textColor="@color/White"
+                            android:textSize="17sp" />
+
+                        <AutoCompleteTextView
+                            android:id="@+id/actvResidualChlorineInputOMAS"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:inputType="numberDecimal" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llResidualChlorineResultOMAS"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/bg_sp_back"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="1dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@color/DodgerBlue"
+                            android:gravity="center_vertical"
+                            android:paddingStart="10dp"
+                            android:paddingLeft="10dp"
+                            android:text="@string/free_residual_chlorine_result"
+                            android:textColor="@color/White"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:id="@+id/tvResidualChlorineResultOMAS"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:gravity="center_vertical"
+                            android:paddingStart="10dp"
+                            android:paddingLeft="10dp"
+                            android:text=""
+                            android:textColor="@color/Black"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llResidualChlorineDescriptionOMAS"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/bg_sp_back"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="1dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@color/DodgerBlue"
+                            android:gravity="center_vertical"
+                            android:paddingStart="10dp"
+                            android:paddingLeft="10dp"
+                            android:text="@string/free_residual_chlorine_result_description"
+                            android:textColor="@color/White"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:id="@+id/tvResidualChlorineDescriptionOMAS"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:gravity="center_vertical"
+                            android:paddingStart="10dp"
+                            android:paddingLeft="10dp"
+                            android:text=""
+                            android:textColor="@color/Black"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
+
+            <Button
+                android:id="@+id/btnNext"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/app_Color"
+                android:padding="10dp"
+                android:text="@string/next"
+                android:textColor="@color/White"
+                android:textSize="16sp" />
+        </RelativeLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</LinearLayout>

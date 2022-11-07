@@ -1,0 +1,89 @@
+package com.sunanda.newroutine.application.somenath.myadapter;
+
+import android.annotation.SuppressLint;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.sunanda.newroutine.application.R;
+import com.sunanda.newroutine.application.somenath.pojo.NewVillagePojo;
+
+import java.util.ArrayList;
+
+public class VillageAdapter extends RecyclerView.Adapter<VillageAdapter.ListViewHolder> {
+
+    private ArrayList<NewVillagePojo> mDataset;
+    private int checkedPosition = -1;
+    private VillageAdapter.RecyclerViewItemClickListener recyclerViewItemClickListener;
+
+    public VillageAdapter(ArrayList<NewVillagePojo> myDataset, VillageAdapter.RecyclerViewItemClickListener listener) {
+        mDataset = myDataset;
+        this.recyclerViewItemClickListener = listener;
+    }
+
+    @NonNull
+    @Override
+    public ListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
+
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
+
+        return new ListViewHolder(v);
+    }
+
+    @SuppressLint("SetTextI18n")
+    @Override
+    public void onBindViewHolder(@NonNull VillageAdapter.ListViewHolder myViewHolder, int i) {
+
+        if (checkedPosition == -1) {
+            myViewHolder.imageView.setVisibility(View.GONE);
+        } else {
+            if (checkedPosition == i) {
+                myViewHolder.imageView.setVisibility(View.VISIBLE);
+            } else {
+                myViewHolder.imageView.setVisibility(View.GONE);
+            }
+        }
+
+        myViewHolder.mTextView.setText(mDataset.get(i).getVillageName());
+        myViewHolder.textView2.setText("Total Hab : " + mDataset.get(i).getTotalHab() +
+                "  Touched Hab : " + mDataset.get(i).getTestedHab());
+    }
+
+    @Override
+    public int getItemCount() {
+        return mDataset.size();
+    }
+
+
+    public class ListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        TextView mTextView,textView2;
+        ImageView imageView;
+
+        ListViewHolder(View v) {
+            super(v);
+            mTextView = v.findViewById(R.id.textView);
+            textView2 = v.findViewById(R.id.textView2);
+            imageView = v.findViewById(R.id.imageView);
+            v.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            recyclerViewItemClickListener.clickOnItem(mDataset.get(getAdapterPosition()));
+            imageView.setVisibility(View.VISIBLE);
+            if (checkedPosition != getAdapterPosition()) {
+                notifyItemChanged(checkedPosition);
+                checkedPosition = getAdapterPosition();
+            }
+        }
+    }
+
+    public interface RecyclerViewItemClickListener {
+        void clickOnItem(NewVillagePojo data);
+    }
+}
