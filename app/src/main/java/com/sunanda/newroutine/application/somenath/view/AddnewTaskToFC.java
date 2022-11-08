@@ -28,6 +28,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -109,11 +110,13 @@ public class AddnewTaskToFC extends AppCompatActivity {
     Spinner spBlock;
     LoadingDialog loadingDialog;
     TextView tvLabName, tvDistrictName, tvPanchayat, tvVillage, tvHabitation, location, labDetail, tvBlock;
+    CheckBox cbPwssVillage, cbNonPwssVillage;
+    Button btnNext;
     AlertDialog.Builder alertdialogbuilder1;
     String[] alertDialogItems1;
     String pan_name = "", pan_code = "", vill_name = "";
     String districtCode = "", vill_code = "", hab_code = "", hab_name = "", facilitatorName = "", facilitatorId = "";
-
+    String sVillage = "";
     String selectedPanCodes[], selectedBlockCode = "", selectedBlockName = "";
 
     private EasyFlipView easyFlipView;
@@ -183,6 +186,10 @@ public class AddnewTaskToFC extends AppCompatActivity {
         location = findViewById(R.id.location);
         labDetail = findViewById(R.id.labDetail);
 
+        cbPwssVillage = findViewById(R.id.cbPwssVillage);
+        cbNonPwssVillage = findViewById(R.id.cbNonPwssVillage);
+        btnNext = findViewById(R.id.btnNext);
+
         simpleSwitch = (Switch) findViewById(R.id.simpleSwitch);
         if (simpleSwitch.isChecked())
             statusSwitch = simpleSwitch.getTextOn().toString();
@@ -207,7 +214,9 @@ public class AddnewTaskToFC extends AppCompatActivity {
         tvLabName.setText(CGlobal.getInstance().getPersistentPreference(this)
                 .getString(Constants.PREFS_USER_LAB_NAME, ""));
 
-        findViewById(R.id.btnNext).setOnClickListener(new View.OnClickListener() {
+        btnNext.setVisibility(View.GONE);
+
+        btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (facilitatorName.contains("Choose")) {
@@ -224,10 +233,27 @@ public class AddnewTaskToFC extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.btnNext2).setOnClickListener(new View.OnClickListener() {
+        cbNonPwssVillage.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (cbNonPwssVillage.isChecked()) {
+                    btnNext.setVisibility(View.VISIBLE);
+                    btnNext.setText("SUBMIT TO ALLOCATION");
+                    sVillage = "NonPwss";
+                    cbPwssVillage.setChecked(false);
+                }
+            }
+        });
 
+        cbPwssVillage.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (cbPwssVillage.isChecked()) {
+                    btnNext.setVisibility(View.VISIBLE);
+                    btnNext.setText("PWSS SOURCE ALLOCATION");
+                    sVillage = "Pwss";
+                    cbNonPwssVillage.setChecked(false);
+                }
             }
         });
 
@@ -339,7 +365,7 @@ public class AddnewTaskToFC extends AppCompatActivity {
         tvVillage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getVillage();
+                getVillage(sVillage);
             }
         });
 
@@ -637,7 +663,12 @@ public class AddnewTaskToFC extends AppCompatActivity {
         }
     }
 
-    private void getVillage() {
+    private void getVillage(String sVillage) {
+
+        if (TextUtils.isEmpty(sVillage) || sVillage.equalsIgnoreCase("")) {
+            showMessage("Please Select PWSS/Non PWSS Village");
+            return;
+        }
 
         cmaVillageName = new ArrayList<>();
         cmaVillageCode = new ArrayList<>();

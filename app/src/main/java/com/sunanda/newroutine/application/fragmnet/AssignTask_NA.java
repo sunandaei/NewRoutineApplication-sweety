@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Spinner;
@@ -101,12 +102,15 @@ public class AssignTask_NA extends Fragment implements VillageAdapter.RecyclerVi
     String districtCode = "", vill_code = "", hab_code = "", hab_name = "", facilitatorName = "", facilitatorId = "";
 
     View myView;
+    CheckBox cbPwssVillage, cbNonPwssVillage;
+    Button btnNext;
     private EasyFlipView easyFlipView;
     private RecyclerView sourceRecycler;
     ProgressDialog progressdialog;
     Switch simpleSwitch;
     String statusSwitch;
     String selectedHabName = "";
+    String sVillage = "";
     ArrayList<NewVillagePojo> newVillagePojoArrayList;
 
     CustomListViewDialog customDialog;
@@ -196,6 +200,10 @@ public class AssignTask_NA extends Fragment implements VillageAdapter.RecyclerVi
         location = myView.findViewById(R.id.location);
         labDetail = myView.findViewById(R.id.labDetail);
 
+        cbPwssVillage = myView.findViewById(R.id.cbPwssVillage);
+        cbNonPwssVillage = myView.findViewById(R.id.cbNonPwssVillage);
+        btnNext = myView.findViewById(R.id.btnNext);
+
         simpleSwitch = (Switch) myView.findViewById(R.id.simpleSwitch);
         if (simpleSwitch.isChecked())
             statusSwitch = simpleSwitch.getTextOn().toString();
@@ -220,8 +228,9 @@ public class AssignTask_NA extends Fragment implements VillageAdapter.RecyclerVi
         tvLabName.setText(CGlobal.getInstance().getPersistentPreference(getActivity())
                 .getString(Constants.PREFS_USER_LAB_NAME, ""));
 
+        btnNext.setVisibility(View.GONE);
 
-        myView.findViewById(R.id.btnNext).setOnClickListener(new View.OnClickListener() {
+        btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (facilitatorName.contains("Choose")) {
@@ -244,10 +253,25 @@ public class AssignTask_NA extends Fragment implements VillageAdapter.RecyclerVi
             }
         });
 
-        myView.findViewById(R.id.btnNext2).setOnClickListener(new View.OnClickListener() {
+        cbNonPwssVillage.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (cbNonPwssVillage.isChecked()) {
+                    btnNext.setVisibility(View.VISIBLE);
+                    btnNext.setText("SUBMIT TO ALLOCATION");
+                    sVillage = "NonPwss";
+                }
+            }
+        });
 
+        cbPwssVillage.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (cbPwssVillage.isChecked()) {
+                    btnNext.setVisibility(View.VISIBLE);
+                    btnNext.setText("PWSS SOURCE ALLOCATION");
+                    sVillage = "Pwss";
+                }
             }
         });
 
@@ -319,7 +343,7 @@ public class AssignTask_NA extends Fragment implements VillageAdapter.RecyclerVi
         tvVillage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getVillage();
+                getVillage(sVillage);
             }
         });
         tvHabitation.setOnClickListener(new View.OnClickListener() {
@@ -496,7 +520,7 @@ public class AssignTask_NA extends Fragment implements VillageAdapter.RecyclerVi
         }
     }
 
-    private void getVillage() {
+    private void getVillage(String sVillage) {
 
         cmaVillageId = new ArrayList<>();
         cmaVillageName = new ArrayList<>();

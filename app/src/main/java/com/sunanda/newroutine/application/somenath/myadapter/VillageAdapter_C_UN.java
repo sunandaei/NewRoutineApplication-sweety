@@ -125,12 +125,12 @@ public class VillageAdapter_C_UN extends RecyclerView.Adapter<VillageAdapter_C_U
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(context, HabitationDetails.class);
+                    /*Intent intent = new Intent(context, HabitationDetails.class);
                     intent.putExtra("HABITATION", habitation);
                     intent.putExtra("VILLNAME", villageCovUnCovPojo.getVillName());
                     intent.putExtra("TYPE", ((Activity) context).getIntent().getStringExtra("TYPE"));
                     ((Activity) context).overridePendingTransition(R.anim.trans_left_in, R.anim.trans_right_out);
-                    context.startActivity(intent);
+                    context.startActivity(intent);*/
                 }
             });
         }
