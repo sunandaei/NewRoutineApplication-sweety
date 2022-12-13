@@ -98,12 +98,12 @@ public class DataUploadOMAS_Activity extends AppCompatActivity {
                                             if (!TextUtils.isEmpty(sampleModelsDataCollection.get(position).getTakePicturesource_q_17())) {
                                                 String spl[] = new String[0];
                                                 try {
-                                                    spl = sampleModelsDataCollection.get(position).getTakePicturesource_q_17().split("Sunanda_EI/");
+                                                    spl = sampleModelsDataCollection.get(position).getTakePicturesource_q_17().split("/");
                                                 } catch (Exception e) {
                                                     Log.e("Sample Error", "");
                                                 }
                                                 try {
-                                                    uploadFileSource(spl[1], sampleModelsDataCollection.get(position).getTakePicturesource_q_17(), sampleModelsDataCollection.get(position));
+                                                    uploadFileSource(spl[spl.length - 1], sampleModelsDataCollection.get(position).getTakePicturesource_q_17(), sampleModelsDataCollection.get(position));
                                                 } catch (Exception e) {
                                                     Log.e("Sample Error", "");
                                                 }
@@ -196,12 +196,12 @@ public class DataUploadOMAS_Activity extends AppCompatActivity {
                                             if (!TextUtils.isEmpty(sampleModelsDataCollection.get(position1).getTakePicturesource_q_17())) {
                                                 String spl[] = new String[0];
                                                 try {
-                                                    spl = sampleModelsDataCollection.get(position1).getTakePicturesource_q_17().split("Sunanda_EI/");
+                                                    spl = sampleModelsDataCollection.get(position1).getTakePicturesource_q_17().split("/");
                                                 } catch (Exception e) {
                                                     Log.e("Sample Error", "");
                                                 }
                                                 try {
-                                                    uploadFileSource(spl[1], sampleModelsDataCollection.get(position1).getTakePicturesource_q_17(),
+                                                    uploadFileSource(spl[spl.length - 1], sampleModelsDataCollection.get(position1).getTakePicturesource_q_17(),
                                                             sampleModelsDataCollection.get(position1));
                                                 } catch (Exception e) {
                                                     Log.e("Sample Error", "");
@@ -399,7 +399,7 @@ public class DataUploadOMAS_Activity extends AppCompatActivity {
                             prettyDialog.setTitle(getString(R.string.app_name))
                                     .setTitleColor(R.color.colorPrimaryDark)
                                     .setIcon(R.drawable.pdlg_icon_close)
-                                    .setMessage("Please try again")
+                                    .setMessage(response)
                                     .setIconTint(R.color.pdlg_color_red)
                                     .addButton(
                                             "OK",
@@ -474,12 +474,12 @@ public class DataUploadOMAS_Activity extends AppCompatActivity {
                             if (!TextUtils.isEmpty(sampleModel.getImg_sanitary())) {
                                 String spl[] = new String[0];
                                 try {
-                                    spl = sampleModel.getImg_sanitary().split("Sunanda_EI/");
+                                    spl = sampleModel.getImg_sanitary().split("/");
                                 } catch (Exception e) {
                                     Log.e("Sample Error", "");
                                 }
                                 try {
-                                    uploadFileSurvey(spl[1], sampleModel.getImg_sanitary(), sampleModel);
+                                    uploadFileSurvey(spl[spl.length - 1], sampleModel.getImg_sanitary(), sampleModel);
                                 } catch (Exception e) {
                                     Log.e("Sample Error", "");
                                 }

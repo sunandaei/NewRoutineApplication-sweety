@@ -3,15 +3,16 @@ package com.sunanda.newroutine.application.adapter;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.SearchView;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,9 @@ import android.widget.TextView;
 import com.sunanda.newroutine.application.R;
 import com.sunanda.newroutine.application.database.DatabaseHandler;
 import com.sunanda.newroutine.application.modal.CommonModel;
+import com.sunanda.newroutine.application.newactivity.Head_PWSS_Source_Activity;
 import com.sunanda.newroutine.application.ui.DashBoard_Facilitator_Activity;
+import com.sunanda.newroutine.application.util.CGlobal;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,13 +41,17 @@ public class AssignedHabitationList_Adapter extends RecyclerView.Adapter<Assigne
     private Context context;
     double lat, lng;
     ProgressDialog progressdialog;
+    String sPWSS_Status = "";
 
-    public AssignedHabitationList_Adapter(ArrayList<CommonModel> commonModelArray, Context context, String type, double latitude, double longitude) {
+    public AssignedHabitationList_Adapter(ArrayList<CommonModel> commonModelArray,
+                                          Context context, String type, double latitude,
+                                          double longitude, String pWSS_Status) {
         this.commonModelArrayList = commonModelArray;
         this.context = context;
         this.type = type;
         this.lat = latitude;
         this.lng = longitude;
+        this.sPWSS_Status = pWSS_Status;
     }
 
     @Override
@@ -81,26 +88,41 @@ public class AssignedHabitationList_Adapter extends RecyclerView.Adapter<Assigne
 
         holder.tvVillName.setText(commonModelArrayList.get(position).getVillagename());
 
-        holder.tvHabitationName.setText(commonModelArrayList.get(position).getHabitationname());
+        if (sPWSS_Status.equalsIgnoreCase("YES")) {
+            holder.llHab.setVisibility(View.GONE);
+        } else {
+            holder.llHab.setVisibility(View.VISIBLE);
+            holder.tvHabitationName.setText(commonModelArrayList.get(position).getHabitationname());
+        }
 
         sourceCountArrayTotal = new ArrayList<>();
         sourceCountArrayRemaining = new ArrayList<>();
         sourceCountArrayComplete = new ArrayList<>();
 
         DatabaseHandler databaseHandler = new DatabaseHandler(context);
-
-        sourceCountArrayTotal = databaseHandler.getHabitationSourceCountTotal();
-        sourceCountArrayRemaining = databaseHandler.getHabitationSourceCountRemaining();
-        sourceCountArrayComplete = databaseHandler.getHabitationSourceCountComplete();
+        int villCount = databaseHandler.getVillageCount(commonModelArrayList.get(position).getDistrictcode(),
+                commonModelArrayList.get(position).getBlockcode(),
+                commonModelArrayList.get(position).getPancode(),
+                commonModelArrayList.get(position).getVillagecode());
+        sourceCountArrayTotal = databaseHandler.getHabitationSourceCountTotal(sPWSS_Status);
+        sourceCountArrayRemaining = databaseHandler.getHabitationSourceCountRemaining(sPWSS_Status);
+        sourceCountArrayComplete = databaseHandler.getHabitationSourceCountComplete(sPWSS_Status);
 
         for (int x = 0; x < sourceCountArrayTotal.size(); x++) {
             if (sourceCountArrayTotal.get(x).getDistrictcode().equalsIgnoreCase(commonModelArrayList.get(position).getDistrictcode())) {
                 if (sourceCountArrayTotal.get(x).getBlockcode().equalsIgnoreCase(commonModelArrayList.get(position).getBlockcode())) {
                     if (sourceCountArrayTotal.get(x).getPancode().equalsIgnoreCase(commonModelArrayList.get(position).getPancode())) {
                         if (sourceCountArrayTotal.get(x).getVillagename().equalsIgnoreCase(commonModelArrayList.get(position).getVillagename())) {
-                            if (sourceCountArrayTotal.get(x).getHabitationname().equalsIgnoreCase(commonModelArrayList.get(position).getHabitationname())) {
-                                holder.tvSourceCountTotal.setText(sourceCountArrayTotal.get(x).getSourceCount());
-
+                            if (Integer.parseInt(sourceCountArrayTotal.get(x).getSourceCount()) > 0) {
+                                if (sPWSS_Status.equalsIgnoreCase("YES") || sPWSS_Status.equalsIgnoreCase("head_site")) {
+                                    holder.tvSourceCountTotal.setText(String.valueOf(Integer.parseInt(sourceCountArrayTotal.get(x).getSourceCount()) / villCount));
+                                } else {
+                                    if (sourceCountArrayTotal.get(x).getHabitationname().equalsIgnoreCase(commonModelArrayList.get(position).getHabitationname())) {
+                                        holder.tvSourceCountTotal.setText(sourceCountArrayTotal.get(x).getSourceCount());
+                                    }
+                                }
+                            } else {
+                                holder.tvSourceCountTotal.setText("0");
                             }
                         }
                     }
@@ -113,9 +135,18 @@ public class AssignedHabitationList_Adapter extends RecyclerView.Adapter<Assigne
                     if (sourceCountArrayRemaining.get(x).getBlockcode().equalsIgnoreCase(commonModelArrayList.get(position).getBlockcode())) {
                         if (sourceCountArrayRemaining.get(x).getPancode().equalsIgnoreCase(commonModelArrayList.get(position).getPancode())) {
                             if (sourceCountArrayRemaining.get(x).getVillagename().equalsIgnoreCase(commonModelArrayList.get(position).getVillagename())) {
-                                if (sourceCountArrayRemaining.get(x).getHabitationname().equalsIgnoreCase(commonModelArrayList.get(position).getHabitationname())) {
-                                    if (!sourceCountArrayRemaining.get(x).getSourceCount().equalsIgnoreCase("0")) {
-                                        holder.tvSourceCountRemaining.setText(sourceCountArrayRemaining.get(x).getSourceCount());
+                                if (!sourceCountArrayRemaining.get(x).getSourceCount().equalsIgnoreCase("0")) {
+                                    //holder.tvSourceCountRemaining.setText(sourceCountArrayRemaining.get(x).getSourceCount());
+                                    if (Integer.parseInt(sourceCountArrayRemaining.get(x).getSourceCount()) > 0) {
+                                        if (sPWSS_Status.equalsIgnoreCase("YES") || sPWSS_Status.equalsIgnoreCase("head_site")) {
+                                            holder.tvSourceCountRemaining.setText(String.valueOf(Integer.parseInt(sourceCountArrayRemaining.get(x).getSourceCount()) / villCount));
+                                        } else {
+                                            if (sourceCountArrayRemaining.get(x).getHabitationname().equalsIgnoreCase(commonModelArrayList.get(position).getHabitationname())) {
+                                                holder.tvSourceCountRemaining.setText(sourceCountArrayRemaining.get(x).getSourceCount());
+                                            }
+                                        }
+                                    } else {
+                                        holder.tvSourceCountRemaining.setText("0");
                                     }
                                 }
                             }
@@ -131,9 +162,18 @@ public class AssignedHabitationList_Adapter extends RecyclerView.Adapter<Assigne
                     if (sourceCountArrayComplete.get(x).getBlockcode().equalsIgnoreCase(commonModelArrayList.get(position).getBlockcode())) {
                         if (sourceCountArrayComplete.get(x).getPancode().equalsIgnoreCase(commonModelArrayList.get(position).getPancode())) {
                             if (sourceCountArrayComplete.get(x).getVillagename().equalsIgnoreCase(commonModelArrayList.get(position).getVillagename())) {
-                                if (sourceCountArrayComplete.get(x).getHabitationname().equalsIgnoreCase(commonModelArrayList.get(position).getHabitationname())) {
-                                    if (!sourceCountArrayComplete.get(x).getSourceCount().equalsIgnoreCase("0")) {
-                                        holder.tvSourceCountComplete.setText(sourceCountArrayComplete.get(x).getSourceCount());
+                                if (!sourceCountArrayComplete.get(x).getSourceCount().equalsIgnoreCase("0")) {
+                                    //holder.tvSourceCountComplete.setText(sourceCountArrayComplete.get(x).getSourceCount());
+                                    if (Integer.parseInt(sourceCountArrayComplete.get(x).getSourceCount()) > 0) {
+                                        if (sPWSS_Status.equalsIgnoreCase("YES") || sPWSS_Status.equalsIgnoreCase("head_site")) {
+                                            holder.tvSourceCountComplete.setText(String.valueOf(Integer.parseInt(sourceCountArrayComplete.get(x).getSourceCount()) / villCount));
+                                        } else {
+                                            if (sourceCountArrayComplete.get(x).getHabitationname().equalsIgnoreCase(commonModelArrayList.get(position).getHabitationname())) {
+                                                holder.tvSourceCountComplete.setText(sourceCountArrayComplete.get(x).getSourceCount());
+                                            }
+                                        }
+                                    } else {
+                                        holder.tvSourceCountComplete.setText("0");
                                     }
                                 }
                             }
@@ -146,19 +186,27 @@ public class AssignedHabitationList_Adapter extends RecyclerView.Adapter<Assigne
         holder.rlExpanse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (commonModelArrayList.get(position).isFlag()) {
-                    commonModelArrayList.get(position).setFlag(false);
-                    holder.llExpanse.setVisibility(View.GONE);
+                if (sPWSS_Status.equalsIgnoreCase("YES")) {
+                    CGlobal.getInstance().getPersistentPreferenceEditor(context).putString("HEAD_PWSS_BLOCK", commonModelArrayList.get(position).getBlockcode()).commit();
+                    CGlobal.getInstance().getPersistentPreferenceEditor(context).putString("HEAD_PWSS_PAN", commonModelArrayList.get(position).getPancode()).commit();
+                    CGlobal.getInstance().getPersistentPreferenceEditor(context).putString("HEAD_PWSS_VILL", commonModelArrayList.get(position).getVillagecode()).commit();
+                    Intent intent = new Intent(context, Head_PWSS_Source_Activity.class);
+                    context.startActivity(intent);
                 } else {
-                    commonModelArrayList.get(position).setFlag(true);
-                    holder.llExpanse.setVisibility(View.VISIBLE);
-                    showSourceList(context, holder.rvSourceList, lat, lng, type, commonModelArrayList.get(position).getBlockcode(),
-                            commonModelArrayList.get(position).getPancode(), commonModelArrayList.get(position).getVillagecode(),
-                            commonModelArrayList.get(position).getHabecode(), holder.search);
-                }
+                    if (commonModelArrayList.get(position).isFlag()) {
+                        commonModelArrayList.get(position).setFlag(false);
+                        holder.llExpanse.setVisibility(View.GONE);
+                    } else {
+                        commonModelArrayList.get(position).setFlag(true);
+                        holder.llExpanse.setVisibility(View.VISIBLE);
+                        showSourceList(context, holder.rvSourceList, lat, lng, type, commonModelArrayList.get(position).getBlockcode(),
+                                commonModelArrayList.get(position).getPancode(), commonModelArrayList.get(position).getVillagecode(),
+                                commonModelArrayList.get(position).getHabecode(), holder.search, sPWSS_Status);
+                    }
 
-                if (holder.tvSourceCountRemaining.getText().toString().equalsIgnoreCase("0")) {
-                    ((DashBoard_Facilitator_Activity) context).setRefersh2();
+                    if (holder.tvSourceCountRemaining.getText().toString().equalsIgnoreCase("0")) {
+                        ((DashBoard_Facilitator_Activity) context).setRefersh2();
+                    }
                 }
             }
         });
@@ -177,7 +225,7 @@ public class AssignedHabitationList_Adapter extends RecyclerView.Adapter<Assigne
     public static class MyView_Holder extends RecyclerView.ViewHolder {
 
         private TextView tvPanName, tvVillName, tvHabitationName, tvAssignedDate, tvSourceCountTotal, tvSourceCountRemaining, tvSourceCountComplete, tvAssignedDateDifferent;
-        private LinearLayout llExpanse, llShow;
+        private LinearLayout llExpanse, llShow, llHab;
         RecyclerView rvSourceList;
         RelativeLayout rlExpanse;
         SearchView search;
@@ -191,6 +239,7 @@ public class AssignedHabitationList_Adapter extends RecyclerView.Adapter<Assigne
             tvSourceCountRemaining = itemView.findViewById(R.id.tvSourceCountRemaining);
             tvSourceCountComplete = itemView.findViewById(R.id.tvSourceCountComplete);
             llExpanse = itemView.findViewById(R.id.llExpanse);
+            llHab = itemView.findViewById(R.id.llHab);
             llShow = itemView.findViewById(R.id.llShow);
             rvSourceList = itemView.findViewById(R.id.rvSourceList);
             rlExpanse = itemView.findViewById(R.id.rlExpanse);
@@ -203,11 +252,12 @@ public class AssignedHabitationList_Adapter extends RecyclerView.Adapter<Assigne
     Facilitator_SourceData_Adapter sourceDataAdapter;
 
     public void showSourceList(Context context, RecyclerView rvSourceList, double dLat, double dLng, String type, String blockCode,
-                               String panCode, String villageCode, String habitationCode, SearchView search) {
+                               String panCode, String villageCode, String habitationCode,
+                               SearchView search, String sPWSS_Status) {
 
         if (dLat != 0.0 && dLng != 0.0) {
             DataLoadAsync dataLoadAsync = new DataLoadAsync(context, rvSourceList, dLat, dLng, type, blockCode,
-                    panCode, villageCode, habitationCode, search);
+                    panCode, villageCode, habitationCode, search, sPWSS_Status);
             dataLoadAsync.execute();
         }
 
@@ -217,11 +267,12 @@ public class AssignedHabitationList_Adapter extends RecyclerView.Adapter<Assigne
         Context context;
         RecyclerView rvSourceList;
         double dLat, dLng;
-        String type, blockCode, panCode, villageCode, habitationCode;
+        String type, blockCode, panCode, villageCode, habitationCode, sPWSS_Status;
         SearchView search;
 
         public DataLoadAsync(Context context1, RecyclerView rvSourceList1, double dLat1, double dLng1, String type1,
-                             String blockCode1, String panCode1, String villageCode1, String habitationCode1, SearchView search1) {
+                             String blockCode1, String panCode1, String villageCode1,
+                             String habitationCode1, SearchView search1, String pWSS_Status) {
             context = context1;
             rvSourceList = rvSourceList1;
             dLat = dLat1;
@@ -232,6 +283,7 @@ public class AssignedHabitationList_Adapter extends RecyclerView.Adapter<Assigne
             villageCode = villageCode1;
             habitationCode = habitationCode1;
             search = search1;
+            sPWSS_Status = pWSS_Status;
         }
 
         protected void onPreExecute() {
@@ -250,7 +302,7 @@ public class AssignedHabitationList_Adapter extends RecyclerView.Adapter<Assigne
             if (dLat != 0.0 && dLng != 0.0) {
                 modelArrayList = new ArrayList<>();
                 DatabaseHandler databaseHandler = new DatabaseHandler(context);
-                modelArrayList = databaseHandler.getSourceForFacilitator(dLat, dLng, type, blockCode, panCode, villageCode, habitationCode);
+                modelArrayList = databaseHandler.getSourceForFacilitator(dLat, dLng, type, blockCode, panCode, villageCode, habitationCode, sPWSS_Status);
                 Collections.sort(modelArrayList, new DistanceSorter());
             }
             return null;

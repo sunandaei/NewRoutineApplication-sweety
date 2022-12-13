@@ -99,12 +99,12 @@ public class DataUploadSchoolOMAS_Activity extends AppCompatActivity {
                                             if (!TextUtils.isEmpty(sampleModelsDataCollection.get(position).getSourceImageFile_q_17())) {
                                                 String spl[] = new String[0];
                                                 try {
-                                                    spl = sampleModelsDataCollection.get(position).getSourceImageFile_q_17().split("Sunanda_EI/");
+                                                    spl = sampleModelsDataCollection.get(position).getSourceImageFile_q_17().split("/");
                                                 } catch (Exception e) {
                                                     Log.e("Sample Error", "");
                                                 }
                                                 try {
-                                                    uploadFileSource(spl[1], sampleModelsDataCollection.get(position).getSourceImageFile_q_17(), sampleModelsDataCollection.get(position));
+                                                    uploadFileSource(spl[spl.length - 1], sampleModelsDataCollection.get(position).getSourceImageFile_q_17(), sampleModelsDataCollection.get(position));
                                                 } catch (Exception e) {
                                                     Log.e("Sample Error", "");
                                                 }
@@ -218,12 +218,12 @@ public class DataUploadSchoolOMAS_Activity extends AppCompatActivity {
                                             if (!TextUtils.isEmpty(sampleModelsDataCollection.get(position1).getSourceImageFile_q_17())) {
                                                 String spl[] = new String[0];
                                                 try {
-                                                    spl = sampleModelsDataCollection.get(position1).getSourceImageFile_q_17().split("Sunanda_EI/");
+                                                    spl = sampleModelsDataCollection.get(position1).getSourceImageFile_q_17().split("/");
                                                 } catch (Exception e) {
                                                     Log.e("Sample Error", "");
                                                 }
                                                 try {
-                                                    uploadFileSource(spl[1], sampleModelsDataCollection.get(position1).getSourceImageFile_q_17(), sampleModelsDataCollection.get(position1));
+                                                    uploadFileSource(spl[spl.length - 1], sampleModelsDataCollection.get(position1).getSourceImageFile_q_17(), sampleModelsDataCollection.get(position1));
                                                 } catch (Exception e) {
                                                     Log.e("Sample Error", "");
                                                 }
@@ -370,7 +370,7 @@ public class DataUploadSchoolOMAS_Activity extends AppCompatActivity {
                             prettyDialog.setTitle(getString(R.string.app_name))
                                     .setTitleColor(R.color.colorPrimaryDark)
                                     .setIcon(R.drawable.pdlg_icon_close)
-                                    .setMessage("Please try again")
+                                    .setMessage(response)
                                     .setIconTint(R.color.pdlg_color_red)
                                     .addButton(
                                             "OK",
@@ -448,12 +448,12 @@ public class DataUploadSchoolOMAS_Activity extends AppCompatActivity {
                             if (!TextUtils.isEmpty(sampleModel.getImg_sanitary())) {
                                 String spl[] = new String[0];
                                 try {
-                                    spl = sampleModel.getImg_sanitary().split("Sunanda_EI/");
+                                    spl = sampleModel.getImg_sanitary().split("/");
                                 } catch (Exception e) {
                                     Log.e("Sample Error", "");
                                 }
                                 try {
-                                    uploadFileSurvey(spl[1], sampleModel.getImg_sanitary(), sampleModel);
+                                    uploadFileSurvey(spl[spl.length - 1], sampleModel.getImg_sanitary(), sampleModel);
                                 } catch (Exception e) {
                                     Log.e("Sample Error", "");
                                 }
@@ -462,12 +462,12 @@ public class DataUploadSchoolOMAS_Activity extends AppCompatActivity {
                                     if (!TextUtils.isEmpty(sampleModel.getImageofToilet_q_w_2d())) {
                                         String spl[] = new String[0];
                                         try {
-                                            spl = sampleModel.getImageofToilet_q_w_2d().split("Sunanda_EI/");
+                                            spl = sampleModel.getImageofToilet_q_w_2d().split("/");
                                         } catch (Exception e) {
                                             Log.e("Sample Error", "");
                                         }
                                         try {
-                                            uploadFileToilet(spl[1], sampleModel.getImageofToilet_q_w_2d(), sampleModel);
+                                            uploadFileToilet(spl[spl.length - 1], sampleModel.getImageofToilet_q_w_2d(), sampleModel);
                                         } catch (Exception e) {
                                             Log.e("Sample Error", "");
                                         }
@@ -476,12 +476,12 @@ public class DataUploadSchoolOMAS_Activity extends AppCompatActivity {
                                             if (!TextUtils.isEmpty(sampleModel.getImageofWashBasin_q_w_3c())) {
                                                 String spl[] = new String[0];
                                                 try {
-                                                    spl = sampleModel.getImageofWashBasin_q_w_3c().split("Sunanda_EI/");
+                                                    spl = sampleModel.getImageofWashBasin_q_w_3c().split("/");
                                                 } catch (Exception e) {
                                                     Log.e("Sample Error", "");
                                                 }
                                                 try {
-                                                    uploadFileWashBasin(spl[1], sampleModel.getImageofWashBasin_q_w_3c(), sampleModel);
+                                                    uploadFileWashBasin(spl[spl.length - 1], sampleModel.getImageofWashBasin_q_w_3c(), sampleModel);
                                                 } catch (Exception e) {
                                                     Log.e("Sample Error", "");
                                                 }
@@ -562,12 +562,12 @@ public class DataUploadSchoolOMAS_Activity extends AppCompatActivity {
                             if (!TextUtils.isEmpty(sampleModel.getImageofToilet_q_w_2d())) {
                                 String spl[] = new String[0];
                                 try {
-                                    spl = sampleModel.getImageofToilet_q_w_2d().split("Sunanda_EI/");
+                                    spl = sampleModel.getImageofToilet_q_w_2d().split("/");
                                 } catch (Exception e) {
                                     Log.e("Sample Error", "");
                                 }
                                 try {
-                                    uploadFileToilet(spl[1], sampleModel.getImageofToilet_q_w_2d(), sampleModel);
+                                    uploadFileToilet(spl[spl.length - 1], sampleModel.getImageofToilet_q_w_2d(), sampleModel);
                                 } catch (Exception e) {
                                     Log.e("Sample Error", "");
                                 }
@@ -576,12 +576,12 @@ public class DataUploadSchoolOMAS_Activity extends AppCompatActivity {
                                     if (!TextUtils.isEmpty(sampleModel.getImageofWashBasin_q_w_3c())) {
                                         String spl[] = new String[0];
                                         try {
-                                            spl = sampleModel.getImageofWashBasin_q_w_3c().split("Sunanda_EI/");
+                                            spl = sampleModel.getImageofWashBasin_q_w_3c().split("/");
                                         } catch (Exception e) {
                                             Log.e("Sample Error", "");
                                         }
                                         try {
-                                            uploadFileWashBasin(spl[1], sampleModel.getImageofWashBasin_q_w_3c(), sampleModel);
+                                            uploadFileWashBasin(spl[spl.length - 1], sampleModel.getImageofWashBasin_q_w_3c(), sampleModel);
                                         } catch (Exception e) {
                                             Log.e("Sample Error", "");
                                         }
@@ -658,12 +658,12 @@ public class DataUploadSchoolOMAS_Activity extends AppCompatActivity {
                             if (!TextUtils.isEmpty(sampleModel.getImageofWashBasin_q_w_3c())) {
                                 String spl[] = new String[0];
                                 try {
-                                    spl = sampleModel.getImageofWashBasin_q_w_3c().split("Sunanda_EI/");
+                                    spl = sampleModel.getImageofWashBasin_q_w_3c().split("/");
                                 } catch (Exception e) {
                                     Log.e("Sample Error", "");
                                 }
                                 try {
-                                    uploadFileWashBasin(spl[1], sampleModel.getImageofWashBasin_q_w_3c(), sampleModel);
+                                    uploadFileWashBasin(spl[spl.length - 1], sampleModel.getImageofWashBasin_q_w_3c(), sampleModel);
                                 } catch (Exception e) {
                                     Log.e("Sample Error", "");
                                 }
@@ -703,12 +703,12 @@ public class DataUploadSchoolOMAS_Activity extends AppCompatActivity {
                     if (!TextUtils.isEmpty(sampleModel.getImageofToilet_q_w_2d())) {
                         String spl[] = new String[0];
                         try {
-                            spl = sampleModel.getImageofToilet_q_w_2d().split("Sunanda_EI/");
+                            spl = sampleModel.getImageofToilet_q_w_2d().split("/");
                         } catch (Exception e) {
                             Log.e("Sample Error", "");
                         }
                         try {
-                            uploadFileToilet(spl[1], sampleModel.getImageofToilet_q_w_2d(), sampleModel);
+                            uploadFileToilet(spl[spl.length - 1], sampleModel.getImageofToilet_q_w_2d(), sampleModel);
                         } catch (Exception e) {
                             Log.e("Sample Error", "");
                         }
@@ -773,12 +773,12 @@ public class DataUploadSchoolOMAS_Activity extends AppCompatActivity {
                     if (!TextUtils.isEmpty(sampleModel.getImageofWashBasin_q_w_3c())) {
                         String spl[] = new String[0];
                         try {
-                            spl = sampleModel.getImageofWashBasin_q_w_3c().split("Sunanda_EI/");
+                            spl = sampleModel.getImageofWashBasin_q_w_3c().split("/");
                         } catch (Exception e) {
                             Log.e("Sample Error", "");
                         }
                         try {
-                            uploadFileWashBasin(spl[1], sampleModel.getImageofWashBasin_q_w_3c(), sampleModel);
+                            uploadFileWashBasin(spl[spl.length - 1], sampleModel.getImageofWashBasin_q_w_3c(), sampleModel);
                         } catch (Exception e) {
                             Log.e("Sample Error", "");
                         }

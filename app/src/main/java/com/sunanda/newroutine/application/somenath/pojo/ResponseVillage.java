@@ -14,6 +14,8 @@ public class ResponseVillage implements Serializable {
 	private String touchedCurrentYear;
 	private String touchedCurrentYearDate;
 	private String touchedPreYear;
+	private String pws_status;
+	private String total_test;
 	private boolean isSelected = false;
 
 	public String getStateCode() {
@@ -102,5 +104,21 @@ public class ResponseVillage implements Serializable {
 
 	public void setSelected(boolean selected) {
 		isSelected = selected;
+	}
+
+	public String getPws_status() {
+		return pws_status;
+	}
+
+	public void setPws_status(String pws_status) {
+		this.pws_status = pws_status;
+	}
+
+	public String getTotal_test() {
+		return total_test;
+	}
+
+	public void setTotal_test(String total_test) {
+		this.total_test = total_test;
 	}
 }

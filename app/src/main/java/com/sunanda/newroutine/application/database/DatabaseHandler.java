@@ -22,7 +22,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     private Context mContext;
     private static final String TAG = "DatabaseHandler: ";
-    private static final int DATABASE_VERSION = 15;
+    private static final int DATABASE_VERSION = 17;
     public static final String DATABASE_NAME = "sunanda_roution_app_new";
 
     //AssignHabitationListFCWise
@@ -47,6 +47,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String ASSIGN_HABITATION_TASK_ID = "Task_Id";
     private static final String ASSIGN_HABITATION_CREATE_DATE = "CreatedDate";
     private static final String ASSIGN_HABITATION_FINISHED_DATE = "FinishedDate";
+    private static final String ASSIGN_HABITATION_PWS_STATUS = "pws_status";
     private static final String ASSIGN_HABITATION_COMPLETE = "Complete";
 
     //SourceForFacilitator
@@ -158,6 +159,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String SOURCE_FOR_FACILITATOR_TESTTIME = "testtime";
     private static final String SOURCE_FOR_FACILITATOR_OTHER_SCHOOL_NAME = "OtherSchoolName";
     private static final String SOURCE_FOR_FACILITATOR_OTHER_ANGANWADI_NAME = "OtherAnganwadiName";
+    private static final String SOURCE_FOR_FACILITATOR_PWSS_STATUS = "PWSS_STATUS";
 
     private static final String SOURCE_FOR_FACILITATOR_COMPLETE = "Complete";
 
@@ -624,6 +626,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     + ASSIGN_HABITATION_TASK_ID + " TEXT, "
                     + ASSIGN_HABITATION_CREATE_DATE + " TEXT, "
                     + ASSIGN_HABITATION_FINISHED_DATE + " TEXT, "
+                    + ASSIGN_HABITATION_PWS_STATUS + " TEXT, "
                     + ASSIGN_HABITATION_COMPLETE + " TEXT" + ")";
             db.execSQL(CREATE_TABLE_ASSIGN_HABITATION_LIST);
 
@@ -944,6 +947,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     + SOURCE_FOR_FACILITATOR_TESTTIME + " TEXT, "
                     + SOURCE_FOR_FACILITATOR_OTHER_SCHOOL_NAME + " TEXT, "
                     + SOURCE_FOR_FACILITATOR_OTHER_ANGANWADI_NAME + " TEXT, "
+                    + SOURCE_FOR_FACILITATOR_PWSS_STATUS + " TEXT, "
                     + SOURCE_FOR_FACILITATOR_COMPLETE + " TEXT" + ")";
             db.execSQL(CREATE_TABLE_SOURCE_FOR_FACILITATOR);
 
@@ -1315,6 +1319,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
+                try {
+                    db.execSQL("ALTER TABLE " + TABLE_SOURCE_FOR_FACILITATOR + " ADD COLUMN "
+                            + SOURCE_FOR_FACILITATOR_PWSS_STATUS + " TEXT");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    db.execSQL("ALTER TABLE " + TABLE_ASSIGN_HABITATION_LIST + " ADD COLUMN "
+                            + ASSIGN_HABITATION_PWS_STATUS + " TEXT");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         } catch (Exception e) {
             Log.e(TAG, " onUpgrade:- ", e);
@@ -1324,16 +1342,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void addAssignHabitationList(String sDist_code, String sDistrictName, String sBlock_code, String sBlockName, String sPan_code,
                                         String sPanName, String sVillageName, String sVillage_code, String sHabName, String sHab_code,
                                         String sLabCode, String sLabID, String sFCID, String sLogID, String sIsDone,
-                                        String Task_Id, String CreatedDate, String FinishedDate, String complete) {
+                                        String Task_Id, String CreatedDate, String FinishedDate,
+                                        String pws_status, String complete) {
         try {
             SQLiteDatabase db = this.getWritableDatabase();
             String strSQL = "insert into AssignHabitationList " +
                     "(Dist_code, DistrictName, Block_code, BlockName, Pan_code, PanName, VillageName, Village_code," +
-                    "HabName,Hab_code,LabCode,LabID, FCID, LogID, IsDone, Task_Id, CreatedDate, FinishedDate, Complete)" +
+                    "HabName,Hab_code,LabCode,LabID, FCID, LogID, IsDone, Task_Id, CreatedDate, FinishedDate, pws_status, Complete)" +
                     "values('" + sDist_code + "','" + sDistrictName + "','" + sBlock_code + "','" + sBlockName + "','"
                     + sPan_code + "','" + sPanName + "','" + sVillageName + "','" + sVillage_code + "','"
                     + sHabName + "','" + sHab_code + "','" + sLabCode + "','" + sLabID + "','" + sFCID + "','"
-                    + sLogID + "','" + sIsDone + "','" + Task_Id + "','" + CreatedDate + "','" + FinishedDate + "','" + complete + "') ;";
+                    + sLogID + "','" + sIsDone + "','" + Task_Id + "','" + CreatedDate + "','"
+                    + FinishedDate + "','" + pws_status + "','" + complete + "') ;";
             db.execSQL(strSQL);
             db.close();
             Log.e(TAG, "SQL_INSERTED");
@@ -1404,7 +1424,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                                         String imageoftoilet_q_w_2d, String ishandwashingfacility_q_w_3, String isrunningwateravailable_q_w_3a,
                                         String isthewashbasinwithin_q_w_3b, String imageofwashbasin_q_w_3c, String iswaterinkitchen_q_w_4,
                                         String remarks, String samplecollectorid, String task_id, String testcompleteddate, String testtime,
-                                        String OtherSchoolName, String OtherAnganwadiName, String complete) {
+                                        String OtherSchoolName, String OtherAnganwadiName, String sPWSS_STATUS, String complete) {
         try {
             SQLiteDatabase db = this.getWritableDatabase();
             String strSQL = "insert into SourceForFacilitator " +
@@ -1424,7 +1444,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     "numberofgeneraltoilet_q_w_2b_c, isseparatetoiletforteachers_q_w_2c, numberoftoiletforteachers_q_w_2c_a, " +
                     "imageoftoilet_q_w_2d, ishandwashingfacility_q_w_3, isrunningwateravailable_q_w_3a, isthewashbasinwithin_q_w_3b, " +
                     "imageofwashbasin_q_w_3c, iswaterinkitchen_q_w_4, remarks, samplecollectorid,task_id, testcompleteddate, testtime," +
-                    " OtherSchoolName, OtherAnganwadiName, Complete)" +
+                    " OtherSchoolName, OtherAnganwadiName, PWSS_STATUS, Complete)" +
 
                     "values('" + sApp_Name + "','" + Accuracy + "','" + BidDiaTubWellCode + "','" + Block + "','" + ConditionOfSource + "','"
                     + DateofDataCollection + "','" + Descriptionofthelocation + "','" + District + "','" + Habitation + "','"
@@ -1451,7 +1471,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     + "','" + ishandwashingfacility_q_w_3 + "','" + isrunningwateravailable_q_w_3a + "','" + isthewashbasinwithin_q_w_3b
                     + "','" + imageofwashbasin_q_w_3c + "','" + iswaterinkitchen_q_w_4 + "','" + remarks + "','" + samplecollectorid
                     + "','" + task_id + "','" + testcompleteddate + "','" + testtime
-                    + "','" + OtherSchoolName + "','" + OtherAnganwadiName + "','" + complete + "') ;";
+                    + "','" + OtherSchoolName + "','" + OtherAnganwadiName + "','" + sPWSS_STATUS + "','" + complete + "') ;";
             db.execSQL(strSQL);
             db.close();
         } catch (Exception e) {
@@ -1621,7 +1641,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     + "','" + health_facility_name + "') ;";
             db.execSQL(strSQL);
             db.close();
-            Log.d(TAG,"SQL_INSERTED");
+            Log.d(TAG, "SQL_INSERTED");
         } catch (Exception e) {
             Log.e(TAG, "SQL_ERR", e);
         }
@@ -2263,7 +2283,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     + special_drive_name_q_3 + "','" + collection_date_q_4a + "','" + time_q_4b + "','" + type_of_locality_q_5
                     + "','" + source_type_q_6 + "','" + district_q_7 + "','" + block_q_8 + "','" + panchayat_q_9 + "','" + village_name_q_10
                     + "','" + habitation_q_11 + "','" + town_q_7a + "','" + ward_q_7b + "','" + health_facility_q_1a
-                    + "','" + scheme_q_11a + "','" + scheme_code  + "','" + zone_category_q_11b + "','" + zone_number_q_11c + "','" + source_name_q_11d
+                    + "','" + scheme_q_11a + "','" + scheme_code + "','" + zone_category_q_11b + "','" + zone_number_q_11c + "','" + source_name_q_11d
                     + "','" + this_new_location_q_12 + "','" + existing_location_q_13 + "','" + new_location_q_14 + "','" + hand_pump_category_q_15
                     + "','" + sample_bottle_number_q_16 + "','" + source_image_q_17 + "','" + latitude_q_18a
                     + "','" + longitude_q_18b + "','" + accuracy_q_18c + "','" + who_collecting_sample_q_19 + "','" + big_dia_tub_well_q_20
@@ -4165,16 +4185,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     public ArrayList<CommonModel> getSourceForFacilitator(double dLat, double dLong, String type, String blockCode,
-                                                          String panCode, String villageCode, String habitationCode) {
+                                                          String panCode, String villageCode,
+                                                          String habitationCode, String sPWSS_Status) {
         double Lat, Long;
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<CommonModel> commonModelArrayList = new ArrayList<>();
         try {
-            String rsql = "SELECT * FROM SourceForFacilitator WHERE Block = '" + blockCode
-                    + "' and Village_Code = '" + villageCode
-                    + "' and Hab_Code = '" + habitationCode
-                    + "' and Panchayat = '" + panCode
-                    + "' and Complete = '" + type + "'";
+            String rsql = "";
+            if (sPWSS_Status.equalsIgnoreCase("YES")) {
+                rsql = "SELECT * FROM SourceForFacilitator WHERE Block = '" + blockCode
+                        + "' and Village_Code = '" + villageCode
+                        + "' and Panchayat = '" + panCode
+                        + "' and Complete = '" + type
+                        + "' and PWSS_STATUS = '" + sPWSS_Status + "' LIMIT 30";
+            } else {
+                rsql = "SELECT * FROM SourceForFacilitator WHERE Block = '" + blockCode
+                        + "' and Village_Code = '" + villageCode
+                        + "' and Hab_Code = '" + habitationCode
+                        + "' and Panchayat = '" + panCode
+                        + "' and Complete = '" + type
+                        + "' and PWSS_STATUS = '" + sPWSS_Status + "'";
+            }
+
             Cursor cursor = db.rawQuery(rsql, null);
             if (cursor.moveToFirst()) {
                 do {
@@ -4293,6 +4325,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     String testtime = cursor.getString(cursor.getColumnIndex("testtime"));
                     String sOtherSchoolName = cursor.getString(cursor.getColumnIndex("OtherSchoolName"));
                     String sOtherAnganwadiName = cursor.getString(cursor.getColumnIndex("OtherAnganwadiName"));
+                    String sPWSS_STATUS = cursor.getString(cursor.getColumnIndex("PWSS_STATUS"));
 
                     String Complete = cursor.getString(cursor.getColumnIndex("Complete"));
 
@@ -4401,6 +4434,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     commonModel.setTesttime(testtime);
                     commonModel.setOtherSchoolName(sOtherSchoolName);
                     commonModel.setOtherAnganwadiName(sOtherAnganwadiName);
+                    commonModel.setPWSS_STATUS(sPWSS_STATUS);
 
                     commonModel.setComplete(Complete);
 
@@ -4571,11 +4605,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return sTask_Id;
     }
 
-    public ArrayList<CommonModel> getAssignHabitationList() {
+    public ArrayList<CommonModel> getAssignHabitationList(String pwssStatus) {
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<CommonModel> commonModelArrayList = new ArrayList<>();
         try {
-            String rsql = "SELECT * FROM AssignHabitationList WHERE HabName != ''";
+            String rsql = "";
+            if (pwssStatus.equalsIgnoreCase("YES")) {
+                rsql = "SELECT * FROM AssignHabitationList WHERE Village_code != '' and pws_status = 'YES' GROUP BY Village_code";
+            } else {
+                rsql = "SELECT * FROM AssignHabitationList WHERE HabName != '' and pws_status != 'YES'";
+            }
+
             Cursor cursor = db.rawQuery(rsql, null);
             if (cursor.moveToFirst()) {
                 do {
@@ -4628,12 +4668,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return commonModelArrayList;
     }
 
-    public ArrayList<CommonModel> getHabitationSourceCountTotal() {
+    public ArrayList<CommonModel> getHabitationSourceCountTotal(String sPWSS_Status) {
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<CommonModel> commonModelArrayList = new ArrayList<>();
         try {
-            String rsql = "select  b.Dist_code, b.Block_code, b.Pan_code, b.VillageName, b.HabName, count(a.Habitation) as SourceCount from AssignHabitationList as b " +
-                    "LEFT JOIN SourceForFacilitator as a ON a.Habitation = b.HabName and a.VillageName = b.VillageName group by  a.Habitation";
+            String rsql = "";
+            if (sPWSS_Status.equalsIgnoreCase("YES")) {
+                rsql = "select  b.Dist_code, b.Block_code, b.Pan_code, b.VillageName, b.HabName, count(a.VillageName) as SourceCount from AssignHabitationList as b " +
+                        "LEFT JOIN SourceForFacilitator as a ON a.Village_Code = b.Village_code WHERE a.PWSS_STATUS = '" + sPWSS_Status + "' or a.PWSS_STATUS = 'head_site'  group by  a.Village_Code";
+            } else {
+                rsql = "select  b.Dist_code, b.Block_code, b.Pan_code, b.VillageName, b.HabName, count(a.Habitation) as SourceCount from AssignHabitationList as b " +
+                        "LEFT JOIN SourceForFacilitator as a ON a.Habitation = b.HabName and a.VillageName = b.VillageName WHERE a.PWSS_STATUS = '" + sPWSS_Status + "' group by  a.Habitation";
+            }
+
             Cursor cursor = db.rawQuery(rsql, null);
             if (cursor.moveToFirst()) {
                 do {
@@ -4665,12 +4712,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return commonModelArrayList;
     }
 
-    public ArrayList<CommonModel> getHabitationSourceCountRemaining() {
+    public ArrayList<CommonModel> getHabitationSourceCountRemaining(String sPWSS_Status) {
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<CommonModel> commonModelArrayList = new ArrayList<>();
         try {
-            String rsql = "select  b.Dist_code, b.Block_code, b.Pan_code, b.VillageName, b.HabName, count(a.Habitation) as SourceCount from AssignHabitationList as b " +
-                    "LEFT JOIN SourceForFacilitator as a ON a.Habitation = b.HabName and a.VillageName = b.VillageName where a.Complete = '0' group by  b.HabName";
+            String rsql = "";
+            if (sPWSS_Status.equalsIgnoreCase("YES")) {
+                rsql = "select  b.Dist_code, b.Block_code, b.Pan_code, b.VillageName, b.HabName, count(a.VillageName) as SourceCount from AssignHabitationList as b " +
+                        "LEFT JOIN SourceForFacilitator as a ON a.Village_Code = b.Village_code where a.Complete = '0' and (a.PWSS_STATUS = '" + sPWSS_Status + "' or a.PWSS_STATUS = 'head_site') group by  b.Village_Code";
+            } else {
+                rsql = "select  b.Dist_code, b.Block_code, b.Pan_code, b.VillageName, b.HabName, count(a.Habitation) as SourceCount from AssignHabitationList as b " +
+                        "LEFT JOIN SourceForFacilitator as a ON a.Habitation = b.HabName and a.VillageName = b.VillageName where a.Complete = '0' and a.PWSS_STATUS = '" + sPWSS_Status + "' group by  b.HabName";
+            }
+
             Cursor cursor = db.rawQuery(rsql, null);
             if (cursor.moveToFirst()) {
                 do {
@@ -4702,12 +4756,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return commonModelArrayList;
     }
 
-    public ArrayList<CommonModel> getHabitationSourceCountComplete() {
+    public ArrayList<CommonModel> getHabitationSourceCountComplete(String sPWSS_Status) {
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<CommonModel> commonModelArrayList = new ArrayList<>();
         try {
-            String rsql = "select  b.Dist_code, b.Block_code, b.Pan_code, b.VillageName, b.HabName, count(a.Habitation) as SourceCount from AssignHabitationList as b " +
-                    "LEFT JOIN SourceForFacilitator as a ON a.Habitation = b.HabName and a.VillageName = b.VillageName where a.Complete = '1' group by  b.HabName";
+            String rsql = "";
+            if (sPWSS_Status.equalsIgnoreCase("YES")) {
+                rsql = "select  b.Dist_code, b.Block_code, b.Pan_code, b.VillageName, b.HabName, count(a.VillageName) as SourceCount from AssignHabitationList as b " +
+                        "LEFT JOIN SourceForFacilitator as a ON a.Village_Code = b.Village_code where a.Complete = '1' and (a.PWSS_STATUS = '" + sPWSS_Status + "' or a.PWSS_STATUS = 'head_site') group by  b.Village_Code";
+            } else {
+                rsql = "select  b.Dist_code, b.Block_code, b.Pan_code, b.VillageName, b.HabName, count(a.Habitation) as SourceCount from AssignHabitationList as b " +
+                        "LEFT JOIN SourceForFacilitator as a ON a.Habitation = b.HabName and a.VillageName = b.VillageName where a.Complete = '1' and a.PWSS_STATUS = '" + sPWSS_Status + "' group by  b.HabName";
+            }
+
             Cursor cursor = db.rawQuery(rsql, null);
             if (cursor.moveToFirst()) {
                 do {
@@ -5322,6 +5383,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     String testtime = cursor.getString(cursor.getColumnIndex("testtime"));
                     String sOtherSchoolName = cursor.getString(cursor.getColumnIndex("OtherSchoolName"));
                     String sOtherAnganwadiName = cursor.getString(cursor.getColumnIndex("OtherAnganwadiName"));
+                    String sPWSS_STATUS = cursor.getString(cursor.getColumnIndex("PWSS_STATUS"));
 
                     String Complete = cursor.getString(cursor.getColumnIndex("Complete"));
 
@@ -5429,6 +5491,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     commonModel.setTesttime(testtime);
                     commonModel.setOtherSchoolName(sOtherSchoolName);
                     commonModel.setOtherAnganwadiName(sOtherAnganwadiName);
+                    commonModel.setPWSS_STATUS(sPWSS_STATUS);
                     commonModel.setComplete(Complete);
 
                 } while (cursor.moveToNext());
@@ -7925,7 +7988,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     sampleModel_Routine.setResidual_chlorine(residual_chlorine);
                     sampleModel_Routine.setResidual_chlorine_value(residual_chlorine_value);
                     sampleModel_Routine.setTask_Id(sTask_Id);
-                    sampleModel_Routine.setExisting_mid(existing_mid);
+
+                    if (source_site_q_1.equalsIgnoreCase("FHTC")) {
+                        sampleModel_Routine.setExisting_mid("0");
+                    } else {
+                        sampleModel_Routine.setExisting_mid(existing_mid);
+                    }
                     sampleModel_Routine.setAssigned_logid(assigned_logid);
                     sampleModel_Routine.setFacilitator_id(facilitator_id);
                     sampleModel_Routine.setArs_id(ats_id);
@@ -7934,6 +8002,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     sampleModel_Routine.setExisting_mid_table(existing_mid_table);
                     sampleModel_Routine.setPin_code(pin_code);
                     sampleModel_Routine.setRecycle(recycle);
+                    sampleModel_Routine.setFHTC_id(existing_mid);
+                    if (source_site_q_1.equalsIgnoreCase("FHTC")) {
+                        sampleModel_Routine.setPWSS_status("YES");
+                    } else {
+                        sampleModel_Routine.setPWSS_status("NO");
+                    }
 
                     commonModelArrayList.add(sampleModel_Routine);
                 } while (cursor.moveToNext());
@@ -9002,6 +9076,581 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             Log.e(TAG, " getArsenic:- ", e);
         }
         return sATS;
+    }
+
+    public ArrayList<CommonModel> getVillageCodeList() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<CommonModel> commonModelArrayList = new ArrayList<>();
+        try {
+            String rsql = "SELECT Dist_code, Block_code, Pan_code, Village_code, Hab_code, Task_Id " +
+                    "FROM AssignHabitationList WHERE Village_code != '' and pws_status = 'YES' " +
+                    "GROUP BY Village_code";
+            Cursor cursor = db.rawQuery(rsql, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    CommonModel commonModel = new CommonModel();
+
+                    String Dist_code = cursor.getString(cursor.getColumnIndex("Dist_code"));
+                    String Block_code = cursor.getString(cursor.getColumnIndex("Block_code"));
+                    String Pan_code = cursor.getString(cursor.getColumnIndex("Pan_code"));
+                    String Village_code = cursor.getString(cursor.getColumnIndex("Village_code"));
+                    String Hab_code = cursor.getString(cursor.getColumnIndex("Hab_code"));
+                    String Task_Id = cursor.getString(cursor.getColumnIndex("Task_Id"));
+
+                    commonModel.setDistrictcode(Dist_code);
+                    commonModel.setBlockcode(Block_code);
+                    commonModel.setPancode(Pan_code);
+                    commonModel.setVillagecode(Village_code);
+                    commonModel.setHabecode(Hab_code);
+                    commonModel.setTask_Id(Task_Id);
+                    commonModelArrayList.add(commonModel);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.close();
+        } catch (Exception e) {
+            db.close();
+            Log.e(TAG, " getVillageName:- ", e);
+        }
+        return commonModelArrayList;
+    }
+
+    public int getVillageCount(String distCode, String blockCode, String panCode, String villCode) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        int villCount = 0;
+        try {
+            String rsql = "SELECT Village_code, COUNT(*) as villCount FROM AssignHabitationList " +
+                    "WHERE Dist_code = '" + distCode + "' and Block_code = '"
+                    + blockCode + "' and Pan_code = '" + panCode + "' and Village_code = '"
+                    + villCode + "'";
+            Cursor cursor = db.rawQuery(rsql, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    String Village_code = cursor.getString(cursor.getColumnIndex("Village_code"));
+                    villCount = Integer.parseInt(cursor.getString(cursor.getColumnIndex("villCount")));
+
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.close();
+        } catch (Exception e) {
+            db.close();
+            Log.e(TAG, " getVillageName:- ", e);
+        }
+        return villCount;
+    }
+
+    public ArrayList<CommonModel> getAssignPWSSList(String blockCode, String panCode,
+                                                    String villageCode, String status) {
+
+        double Lat, Long;
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<CommonModel> commonModelArrayList = new ArrayList<>();
+        try {
+            String rsql = "SELECT * FROM SourceForFacilitator WHERE Block = '" + blockCode
+                    + "' and Village_Code = '" + villageCode
+                    + "' and Panchayat = '" + panCode
+                    + "' and Complete = '0' and PWSS_STATUS = '" + status + "' GROUP BY Scheme_Code";
+
+            Cursor cursor = db.rawQuery(rsql, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    int SourceForFacilitator_id = Integer.parseInt(cursor.getString(cursor.getColumnIndex("SourceForFacilitator_id")));
+                    String sApp_Name = cursor.getString(cursor.getColumnIndex("App_Name"));
+                    String Accuracy = cursor.getString(cursor.getColumnIndex("Accuracy"));
+                    String BidDiaTubWellCode = cursor.getString(cursor.getColumnIndex("BidDiaTubWellCode"));
+                    String Block = cursor.getString(cursor.getColumnIndex("Block"));
+                    String ConditionOfSource = cursor.getString(cursor.getColumnIndex("ConditionOfSource"));
+                    String DateofDataCollection = cursor.getString(cursor.getColumnIndex("DateofDataCollection"));
+                    String Descriptionofthelocation = cursor.getString(cursor.getColumnIndex("Descriptionofthelocation"));
+                    String District = cursor.getString(cursor.getColumnIndex("District"));
+                    String Habitation = cursor.getString(cursor.getColumnIndex("Habitation"));
+                    String HandPumpCategory = cursor.getString(cursor.getColumnIndex("HandPumpCategory"));
+                    String HealthFacility = cursor.getString(cursor.getColumnIndex("HealthFacility"));
+                    String Howmanypipes = cursor.getString(cursor.getColumnIndex("Howmanypipes"));
+                    String img_source = cursor.getString(cursor.getColumnIndex("img_source"));
+                    String interview_id = cursor.getString(cursor.getColumnIndex("interview_id"));
+                    String isnewlocation_School_UdiseCode = cursor.getString(cursor.getColumnIndex("isnewlocation_School_UdiseCode"));
+                    String LocationDescription = cursor.getString(cursor.getColumnIndex("LocationDescription"));
+                    String MiD = cursor.getString(cursor.getColumnIndex("MiD"));
+                    String NameofTown = cursor.getString(cursor.getColumnIndex("NameofTown"));
+                    try {
+                        Lat = Double.parseDouble(cursor.getString(cursor.getColumnIndex("Lat")));
+                    } catch (Exception e) {
+                        Lat = 0.0;
+                        e.printStackTrace();
+                    }
+                    try {
+                        Long = Double.parseDouble(cursor.getString(cursor.getColumnIndex("Long")));
+                    } catch (Exception e) {
+                        Long = 0.0;
+                        e.printStackTrace();
+                    }
+                    String Panchayat = cursor.getString(cursor.getColumnIndex("Panchayat"));
+                    String Pictureofthesource = cursor.getString(cursor.getColumnIndex("Pictureofthesource"));
+                    String q_18C = cursor.getString(cursor.getColumnIndex("q_18C"));
+                    String SampleBottleNumber = cursor.getString(cursor.getColumnIndex("SampleBottleNumber"));
+                    String Scheme = cursor.getString(cursor.getColumnIndex("Scheme"));
+                    String Scheme_Code = cursor.getString(cursor.getColumnIndex("Scheme_Code"));
+                    String Sourceselect = cursor.getString(cursor.getColumnIndex("Sourceselect"));
+                    String SourceSite = cursor.getString(cursor.getColumnIndex("SourceSite"));
+                    String specialdrive = cursor.getString(cursor.getColumnIndex("specialdrive"));
+                    String SpecialdriveName = cursor.getString(cursor.getColumnIndex("SpecialdriveName"));
+                    String sub_scheme_name = cursor.getString(cursor.getColumnIndex("sub_scheme_name"));
+                    String sub_source_type = cursor.getString(cursor.getColumnIndex("sub_source_type"));
+                    String TimeofDataCollection = cursor.getString(cursor.getColumnIndex("TimeofDataCollection"));
+                    String TotalDepth = cursor.getString(cursor.getColumnIndex("TotalDepth"));
+                    String TypeofLocality = cursor.getString(cursor.getColumnIndex("TypeofLocality"));
+                    String VillageName = cursor.getString(cursor.getColumnIndex("VillageName"));
+                    String WardNumber = cursor.getString(cursor.getColumnIndex("WardNumber"));
+                    String WaterSourceType = cursor.getString(cursor.getColumnIndex("WaterSourceType"));
+                    String WhoCollectingSample = cursor.getString(cursor.getColumnIndex("WhoCollectingSample"));
+                    String ZoneCategory = cursor.getString(cursor.getColumnIndex("ZoneCategory"));
+                    String ZoneNumber = cursor.getString(cursor.getColumnIndex("ZoneNumber"));
+                    String Village_Code = cursor.getString(cursor.getColumnIndex("Village_Code"));
+                    String Hab_Code = cursor.getString(cursor.getColumnIndex("Hab_Code"));
+                    String answer_1 = cursor.getString(cursor.getColumnIndex("answer_1"));
+                    String answer_2 = cursor.getString(cursor.getColumnIndex("answer_2"));
+                    String answer_3 = cursor.getString(cursor.getColumnIndex("answer_3"));
+                    String answer_4 = cursor.getString(cursor.getColumnIndex("answer_4"));
+                    String answer_5 = cursor.getString(cursor.getColumnIndex("answer_5"));
+                    String answer_6 = cursor.getString(cursor.getColumnIndex("answer_6"));
+                    String answer_7 = cursor.getString(cursor.getColumnIndex("answer_7"));
+                    String answer_8 = cursor.getString(cursor.getColumnIndex("answer_8"));
+                    String answer_9 = cursor.getString(cursor.getColumnIndex("answer_9"));
+                    String answer_10 = cursor.getString(cursor.getColumnIndex("answer_10"));
+                    String answer_11 = cursor.getString(cursor.getColumnIndex("answer_11"));
+                    String w_s_q_img = cursor.getString(cursor.getColumnIndex("w_s_q_img"));
+                    String img_sanitary = cursor.getString(cursor.getColumnIndex("img_sanitary"));
+
+                    String createddate = cursor.getString(cursor.getColumnIndex("createddate"));
+                    String existing_mid = cursor.getString(cursor.getColumnIndex("existing_mid"));
+                    String fcid = cursor.getString(cursor.getColumnIndex("fcid"));
+                    String fecilatorcompleteddate = cursor.getString(cursor.getColumnIndex("fecilatorcompleteddate"));
+                    String formsubmissiondate = cursor.getString(cursor.getColumnIndex("formsubmissiondate"));
+                    String headerlogid = cursor.getString(cursor.getColumnIndex("headerlogid"));
+                    String isdone = cursor.getString(cursor.getColumnIndex("isdone"));
+                    String labid = cursor.getString(cursor.getColumnIndex("labid"));
+                    String logid = cursor.getString(cursor.getColumnIndex("logid"));
+                    String anganwadi_name_q_12b = cursor.getString(cursor.getColumnIndex("anganwadi_name_q_12b"));
+                    String anganwadi_code_q_12c = cursor.getString(cursor.getColumnIndex("anganwadi_code_q_12c"));
+                    String anganwadi_sectorcode_q_12d = cursor.getString(cursor.getColumnIndex("anganwadi_sectorcode_q_12d"));
+                    String standpostsituated_q_13e = cursor.getString(cursor.getColumnIndex("standpostsituated_q_13e"));
+                    String schoolmanagement_q_si_1 = cursor.getString(cursor.getColumnIndex("schoolmanagement_q_si_1"));
+                    String schoolcategory_q_si_2 = cursor.getString(cursor.getColumnIndex("schoolcategory_q_si_2"));
+                    String schooltype_q_si_3 = cursor.getString(cursor.getColumnIndex("schooltype_q_si_3"));
+                    String noofstudentsintheschool_q_si_4 = cursor.getString(cursor.getColumnIndex("noofstudentsintheschool_q_si_4"));
+                    String noofboysintheschool_q_si_5 = cursor.getString(cursor.getColumnIndex("noofboysintheschool_q_si_5"));
+                    String noofgirlsintheschool_q_si_6 = cursor.getString(cursor.getColumnIndex("noofgirlsintheschool_q_si_6"));
+                    String availabilityofelectricityinschool_q_si_7 = cursor.getString(cursor.getColumnIndex("availabilityofelectricityinschool_q_si_7"));
+                    String isdistributionofwaterbeing_q_si_8 = cursor.getString(cursor.getColumnIndex("isdistributionofwaterbeing_q_si_8"));
+                    String anganwadiaccomodation_q_si_9 = cursor.getString(cursor.getColumnIndex("anganwadiaccomodation_q_si_9"));
+                    String watersourcebeentestedbefore_q_w_1 = cursor.getString(cursor.getColumnIndex("watersourcebeentestedbefore_q_w_1"));
+                    String whenwaterlasttested_q_w_1a = cursor.getString(cursor.getColumnIndex("whenwaterlasttested_q_w_1a"));
+                    String istestreportsharedschoolauthority_q_w_1b = cursor.getString(cursor.getColumnIndex("istestreportsharedschoolauthority_q_w_1b"));
+                    String foundtobebacteriologically_q_w_1c = cursor.getString(cursor.getColumnIndex("foundtobebacteriologically_q_w_1c"));
+                    String istoiletfacilityavailable_q_w_2 = cursor.getString(cursor.getColumnIndex("istoiletfacilityavailable_q_w_2"));
+                    String isrunningwateravailable_q_w_2a = cursor.getString(cursor.getColumnIndex("isrunningwateravailable_q_w_2a"));
+                    String separatetoiletsforboysandgirls_q_w_2b = cursor.getString(cursor.getColumnIndex("separatetoiletsforboysandgirls_q_w_2b"));
+                    String numberoftoiletforboys_q_w_2b_a = cursor.getString(cursor.getColumnIndex("numberoftoiletforboys_q_w_2b_a"));
+                    String numberoftoiletforgirl_q_w_2b_b = cursor.getString(cursor.getColumnIndex("numberoftoiletforgirl_q_w_2b_b"));
+                    String numberofgeneraltoilet_q_w_2b_c = cursor.getString(cursor.getColumnIndex("numberofgeneraltoilet_q_w_2b_c"));
+                    String isseparatetoiletforteachers_q_w_2c = cursor.getString(cursor.getColumnIndex("isseparatetoiletforteachers_q_w_2c"));
+                    String numberoftoiletforteachers_q_w_2c_a = cursor.getString(cursor.getColumnIndex("numberoftoiletforteachers_q_w_2c_a"));
+                    String imageoftoilet_q_w_2d = cursor.getString(cursor.getColumnIndex("imageoftoilet_q_w_2d"));
+                    String ishandwashingfacility_q_w_3 = cursor.getString(cursor.getColumnIndex("ishandwashingfacility_q_w_3"));
+                    String isrunningwateravailable_q_w_3a = cursor.getString(cursor.getColumnIndex("isrunningwateravailable_q_w_3a"));
+                    String isthewashbasinwithin_q_w_3b = cursor.getString(cursor.getColumnIndex("isthewashbasinwithin_q_w_3b"));
+                    String imageofwashbasin_q_w_3c = cursor.getString(cursor.getColumnIndex("imageofwashbasin_q_w_3c"));
+                    String iswaterinkitchen_q_w_4 = cursor.getString(cursor.getColumnIndex("iswaterinkitchen_q_w_4"));
+                    String remarks = cursor.getString(cursor.getColumnIndex("remarks"));
+                    String samplecollectorid = cursor.getString(cursor.getColumnIndex("samplecollectorid"));
+                    String task_id = cursor.getString(cursor.getColumnIndex("task_id"));
+                    String testcompleteddate = cursor.getString(cursor.getColumnIndex("testcompleteddate"));
+                    String testtime = cursor.getString(cursor.getColumnIndex("testtime"));
+                    String sOtherSchoolName = cursor.getString(cursor.getColumnIndex("OtherSchoolName"));
+                    String sOtherAnganwadiName = cursor.getString(cursor.getColumnIndex("OtherAnganwadiName"));
+                    String sPWSS_STATUS = cursor.getString(cursor.getColumnIndex("PWSS_STATUS"));
+
+                    String Complete = cursor.getString(cursor.getColumnIndex("Complete"));
+
+                    CommonModel commonModel = new CommonModel();
+                    commonModel.setSourceForFacilitator_id(SourceForFacilitator_id);
+                    commonModel.setApp_name(sApp_Name);
+                    commonModel.setBig_dia_tube_well_no(BidDiaTubWellCode);
+                    commonModel.setBlockcode(Block);
+                    commonModel.setAccuracy(Accuracy);
+                    commonModel.setConditionOfSource(ConditionOfSource);
+                    commonModel.setCollection_date(DateofDataCollection);
+                    commonModel.setDescriptionofthelocation(Descriptionofthelocation);
+                    commonModel.setDistrictcode(District);
+                    commonModel.setHabitationname(Habitation);
+                    commonModel.setHandPumpCategory(HandPumpCategory);
+                    commonModel.setHealth_facility_name(HealthFacility);
+                    commonModel.setHowmanypipes(Howmanypipes);
+                    commonModel.setIsnewlocation_School_UdiseCode(isnewlocation_School_UdiseCode);
+                    commonModel.setImg_source(img_source);
+                    commonModel.setInterview_id(interview_id);
+                    commonModel.setLocationDescription(LocationDescription);
+                    commonModel.setMiD(MiD);
+                    commonModel.setLat(Lat);
+                    commonModel.setLng(Long);
+                    commonModel.setTown_name(NameofTown);
+                    commonModel.setPancode(Panchayat);
+                    commonModel.setPictureofthesource(Pictureofthesource);
+                    commonModel.setSample_bott_num(SampleBottleNumber);
+                    commonModel.setScheme(Scheme);
+                    commonModel.setScheme_code(Scheme_Code);
+                    commonModel.setSourceselect(Sourceselect);
+                    commonModel.setSource_site(SourceSite);
+                    commonModel.setSpecial_drive(specialdrive);
+                    commonModel.setName_of_special_drive(SpecialdriveName);
+                    commonModel.setTimeofDataCollection(TimeofDataCollection);
+                    commonModel.setTotalDepth(TotalDepth);
+                    commonModel.setSub_source_type(sub_source_type);
+                    commonModel.setSub_scheme_name(sub_scheme_name);
+                    commonModel.setType_of_locality(TypeofLocality);
+                    commonModel.setVillagename(VillageName);
+                    commonModel.setWard_no(WardNumber);
+                    commonModel.setWater_source_type(WaterSourceType);
+                    commonModel.setWhoCollectingSample(WhoCollectingSample);
+                    commonModel.setZoneCategory(ZoneCategory);
+                    commonModel.setZone(ZoneNumber);
+                    commonModel.setVillagecode(Village_Code);
+                    commonModel.setHabitation_Code(Hab_Code);
+                    commonModel.setAnswer_1(answer_1);
+                    commonModel.setAnswer_2(answer_2);
+                    commonModel.setAnswer_3(answer_3);
+                    commonModel.setAnswer_4(answer_4);
+                    commonModel.setAnswer_5(answer_5);
+                    commonModel.setAnswer_6(answer_6);
+                    commonModel.setAnswer_7(answer_7);
+                    commonModel.setAnswer_8(answer_8);
+                    commonModel.setAnswer_9(answer_9);
+                    commonModel.setAnswer_10(answer_10);
+                    commonModel.setAnswer_11(answer_11);
+                    commonModel.setW_s_q_img(w_s_q_img);
+                    commonModel.setImg_sanitary(img_sanitary);
+
+                    commonModel.setCreatedDate(createddate);
+                    commonModel.setExisting_mid(existing_mid);
+                    commonModel.setFCID(fcid);
+                    commonModel.setFecilatorcompleteddate(fecilatorcompleteddate);
+                    commonModel.setFormsubmissiondate(formsubmissiondate);
+                    commonModel.setHeaderlogid(headerlogid);
+                    commonModel.setIsDone(isdone);
+                    commonModel.setLabID(labid);
+                    commonModel.setLogID(logid);
+                    commonModel.setAnganwadi_name_q_12b(anganwadi_name_q_12b);
+                    commonModel.setAnganwadi_code_q_12c(anganwadi_code_q_12c);
+                    commonModel.setAnganwadi_sectorcode_q_12d(anganwadi_sectorcode_q_12d);
+                    commonModel.setStandpostsituated_q_13e(standpostsituated_q_13e);
+                    commonModel.setSchoolmanagement_q_si_1(schoolmanagement_q_si_1);
+                    commonModel.setSchoolcategory_q_si_2(schoolcategory_q_si_2);
+                    commonModel.setSchooltype_q_si_3(schooltype_q_si_3);
+                    commonModel.setNoofstudentsintheschool_q_si_4(noofstudentsintheschool_q_si_4);
+                    commonModel.setNoofboysintheschool_q_si_5(noofboysintheschool_q_si_5);
+                    commonModel.setNoofgirlsintheschool_q_si_6(noofgirlsintheschool_q_si_6);
+                    commonModel.setAvailabilityofelectricityinschool_q_si_7(availabilityofelectricityinschool_q_si_7);
+                    commonModel.setIsdistributionofwaterbeing_q_si_8(isdistributionofwaterbeing_q_si_8);
+                    commonModel.setAnganwadiaccomodation_q_si_9(anganwadiaccomodation_q_si_9);
+                    commonModel.setWatersourcebeentestedbefore_q_w_1(watersourcebeentestedbefore_q_w_1);
+                    commonModel.setWhenwaterlasttested_q_w_1a(whenwaterlasttested_q_w_1a);
+                    commonModel.setIstestreportsharedschoolauthority_q_w_1b(istestreportsharedschoolauthority_q_w_1b);
+                    commonModel.setFoundtobebacteriologically_q_w_1c(foundtobebacteriologically_q_w_1c);
+                    commonModel.setIstoiletfacilityavailable_q_w_2(istoiletfacilityavailable_q_w_2);
+                    commonModel.setIsrunningwateravailable_q_w_2a(isrunningwateravailable_q_w_2a);
+                    commonModel.setSeparatetoiletsforboysandgirls_q_w_2b(separatetoiletsforboysandgirls_q_w_2b);
+                    commonModel.setNumberoftoiletforboys_q_w_2b_a(numberoftoiletforboys_q_w_2b_a);
+                    commonModel.setNumberoftoiletforgirl_q_w_2b_b(numberoftoiletforgirl_q_w_2b_b);
+                    commonModel.setNumberofgeneraltoilet_q_w_2b_c(numberofgeneraltoilet_q_w_2b_c);
+                    commonModel.setIsseparatetoiletforteachers_q_w_2c(isseparatetoiletforteachers_q_w_2c);
+                    commonModel.setNumberoftoiletforteachers_q_w_2c_a(numberoftoiletforteachers_q_w_2c_a);
+                    commonModel.setImageoftoilet_q_w_2d(imageoftoilet_q_w_2d);
+                    commonModel.setIshandwashingfacility_q_w_3(ishandwashingfacility_q_w_3);
+                    commonModel.setIsrunningwateravailable_q_w_3a(isrunningwateravailable_q_w_3a);
+                    commonModel.setIsthewashbasinwithin_q_w_3b(isthewashbasinwithin_q_w_3b);
+                    commonModel.setImageofwashbasin_q_w_3c(imageofwashbasin_q_w_3c);
+                    commonModel.setIswaterinkitchen_q_w_4(iswaterinkitchen_q_w_4);
+                    commonModel.setRemarks(remarks);
+                    commonModel.setSampleCollectorId(samplecollectorid);
+                    commonModel.setTask_Id(task_id);
+                    commonModel.setTestcompleteddate(testcompleteddate);
+                    commonModel.setTesttime(testtime);
+                    commonModel.setOtherSchoolName(sOtherSchoolName);
+                    commonModel.setOtherAnganwadiName(sOtherAnganwadiName);
+                    commonModel.setPWSS_STATUS(sPWSS_STATUS);
+
+                    commonModel.setComplete(Complete);
+
+                    commonModelArrayList.add(commonModel);
+
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.close();
+        } catch (Exception e) {
+            db.close();
+            Log.e(TAG, " getArsenic:- ", e);
+        }
+        return commonModelArrayList;
+    }
+
+    public ArrayList<CommonModel> getSourceForHeadPWSS(String type, String blockCode,
+                                                       String panCode, String villageCode,
+                                                       String sPWSS_Status, String sSchemeCode) {
+        double sLat, sLong;
+        SQLiteDatabase db = this.getReadableDatabase();
+        ArrayList<CommonModel> commonModelArrayList = new ArrayList<>();
+        try {
+            String rsql = "SELECT * FROM SourceForFacilitator WHERE Block = '" + blockCode
+                    + "' and Village_Code = '" + villageCode
+                    + "' and Panchayat = '" + panCode
+                    + "' and Complete = '" + type
+                    + "' and PWSS_STATUS = '" + sPWSS_Status
+                    + "' and Scheme_Code = '" + sSchemeCode + "'";
+
+
+            Cursor cursor = db.rawQuery(rsql, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    int SourceForFacilitator_id = Integer.parseInt(cursor.getString(cursor.getColumnIndex("SourceForFacilitator_id")));
+                    String sApp_Name = cursor.getString(cursor.getColumnIndex("App_Name"));
+                    String Accuracy = cursor.getString(cursor.getColumnIndex("Accuracy"));
+                    String BidDiaTubWellCode = cursor.getString(cursor.getColumnIndex("BidDiaTubWellCode"));
+                    String Block = cursor.getString(cursor.getColumnIndex("Block"));
+                    String ConditionOfSource = cursor.getString(cursor.getColumnIndex("ConditionOfSource"));
+                    String DateofDataCollection = cursor.getString(cursor.getColumnIndex("DateofDataCollection"));
+                    String Descriptionofthelocation = cursor.getString(cursor.getColumnIndex("Descriptionofthelocation"));
+                    String District = cursor.getString(cursor.getColumnIndex("District"));
+                    String Habitation = cursor.getString(cursor.getColumnIndex("Habitation"));
+                    String HandPumpCategory = cursor.getString(cursor.getColumnIndex("HandPumpCategory"));
+                    String HealthFacility = cursor.getString(cursor.getColumnIndex("HealthFacility"));
+                    String Howmanypipes = cursor.getString(cursor.getColumnIndex("Howmanypipes"));
+                    String img_source = cursor.getString(cursor.getColumnIndex("img_source"));
+                    String interview_id = cursor.getString(cursor.getColumnIndex("interview_id"));
+                    String isnewlocation_School_UdiseCode = cursor.getString(cursor.getColumnIndex("isnewlocation_School_UdiseCode"));
+                    String LocationDescription = cursor.getString(cursor.getColumnIndex("LocationDescription"));
+                    String MiD = cursor.getString(cursor.getColumnIndex("MiD"));
+                    String NameofTown = cursor.getString(cursor.getColumnIndex("NameofTown"));
+                    try {
+                        sLat = Double.parseDouble(cursor.getString(cursor.getColumnIndex("Lat")));
+                    } catch (Exception e) {
+                        sLat = 0.0;
+                        e.printStackTrace();
+                    }
+                    try {
+                        sLong = Double.parseDouble(cursor.getString(cursor.getColumnIndex("Long")));
+                    } catch (Exception e) {
+                        sLong = 0.0;
+                        e.printStackTrace();
+                    }
+                    String Panchayat = cursor.getString(cursor.getColumnIndex("Panchayat"));
+                    String Pictureofthesource = cursor.getString(cursor.getColumnIndex("Pictureofthesource"));
+                    String q_18C = cursor.getString(cursor.getColumnIndex("q_18C"));
+                    String SampleBottleNumber = cursor.getString(cursor.getColumnIndex("SampleBottleNumber"));
+                    String Scheme = cursor.getString(cursor.getColumnIndex("Scheme"));
+                    String Scheme_Code = cursor.getString(cursor.getColumnIndex("Scheme_Code"));
+                    String Sourceselect = cursor.getString(cursor.getColumnIndex("Sourceselect"));
+                    String SourceSite = cursor.getString(cursor.getColumnIndex("SourceSite"));
+                    String specialdrive = cursor.getString(cursor.getColumnIndex("specialdrive"));
+                    String SpecialdriveName = cursor.getString(cursor.getColumnIndex("SpecialdriveName"));
+                    String sub_scheme_name = cursor.getString(cursor.getColumnIndex("sub_scheme_name"));
+                    String sub_source_type = cursor.getString(cursor.getColumnIndex("sub_source_type"));
+                    String TimeofDataCollection = cursor.getString(cursor.getColumnIndex("TimeofDataCollection"));
+                    String TotalDepth = cursor.getString(cursor.getColumnIndex("TotalDepth"));
+                    String TypeofLocality = cursor.getString(cursor.getColumnIndex("TypeofLocality"));
+                    String VillageName = cursor.getString(cursor.getColumnIndex("VillageName"));
+                    String WardNumber = cursor.getString(cursor.getColumnIndex("WardNumber"));
+                    String WaterSourceType = cursor.getString(cursor.getColumnIndex("WaterSourceType"));
+                    String WhoCollectingSample = cursor.getString(cursor.getColumnIndex("WhoCollectingSample"));
+                    String ZoneCategory = cursor.getString(cursor.getColumnIndex("ZoneCategory"));
+                    String ZoneNumber = cursor.getString(cursor.getColumnIndex("ZoneNumber"));
+                    String Village_Code = cursor.getString(cursor.getColumnIndex("Village_Code"));
+                    String Hab_Code = cursor.getString(cursor.getColumnIndex("Hab_Code"));
+                    String answer_1 = cursor.getString(cursor.getColumnIndex("answer_1"));
+                    String answer_2 = cursor.getString(cursor.getColumnIndex("answer_2"));
+                    String answer_3 = cursor.getString(cursor.getColumnIndex("answer_3"));
+                    String answer_4 = cursor.getString(cursor.getColumnIndex("answer_4"));
+                    String answer_5 = cursor.getString(cursor.getColumnIndex("answer_5"));
+                    String answer_6 = cursor.getString(cursor.getColumnIndex("answer_6"));
+                    String answer_7 = cursor.getString(cursor.getColumnIndex("answer_7"));
+                    String answer_8 = cursor.getString(cursor.getColumnIndex("answer_8"));
+                    String answer_9 = cursor.getString(cursor.getColumnIndex("answer_9"));
+                    String answer_10 = cursor.getString(cursor.getColumnIndex("answer_10"));
+                    String answer_11 = cursor.getString(cursor.getColumnIndex("answer_11"));
+                    String w_s_q_img = cursor.getString(cursor.getColumnIndex("w_s_q_img"));
+                    String img_sanitary = cursor.getString(cursor.getColumnIndex("img_sanitary"));
+
+                    String createddate = cursor.getString(cursor.getColumnIndex("createddate"));
+                    String existing_mid = cursor.getString(cursor.getColumnIndex("existing_mid"));
+                    String fcid = cursor.getString(cursor.getColumnIndex("fcid"));
+                    String fecilatorcompleteddate = cursor.getString(cursor.getColumnIndex("fecilatorcompleteddate"));
+                    String formsubmissiondate = cursor.getString(cursor.getColumnIndex("formsubmissiondate"));
+                    String headerlogid = cursor.getString(cursor.getColumnIndex("headerlogid"));
+                    String isdone = cursor.getString(cursor.getColumnIndex("isdone"));
+                    String labid = cursor.getString(cursor.getColumnIndex("labid"));
+                    String logid = cursor.getString(cursor.getColumnIndex("logid"));
+                    String anganwadi_name_q_12b = cursor.getString(cursor.getColumnIndex("anganwadi_name_q_12b"));
+                    String anganwadi_code_q_12c = cursor.getString(cursor.getColumnIndex("anganwadi_code_q_12c"));
+                    String anganwadi_sectorcode_q_12d = cursor.getString(cursor.getColumnIndex("anganwadi_sectorcode_q_12d"));
+                    String standpostsituated_q_13e = cursor.getString(cursor.getColumnIndex("standpostsituated_q_13e"));
+                    String schoolmanagement_q_si_1 = cursor.getString(cursor.getColumnIndex("schoolmanagement_q_si_1"));
+                    String schoolcategory_q_si_2 = cursor.getString(cursor.getColumnIndex("schoolcategory_q_si_2"));
+                    String schooltype_q_si_3 = cursor.getString(cursor.getColumnIndex("schooltype_q_si_3"));
+                    String noofstudentsintheschool_q_si_4 = cursor.getString(cursor.getColumnIndex("noofstudentsintheschool_q_si_4"));
+                    String noofboysintheschool_q_si_5 = cursor.getString(cursor.getColumnIndex("noofboysintheschool_q_si_5"));
+                    String noofgirlsintheschool_q_si_6 = cursor.getString(cursor.getColumnIndex("noofgirlsintheschool_q_si_6"));
+                    String availabilityofelectricityinschool_q_si_7 = cursor.getString(cursor.getColumnIndex("availabilityofelectricityinschool_q_si_7"));
+                    String isdistributionofwaterbeing_q_si_8 = cursor.getString(cursor.getColumnIndex("isdistributionofwaterbeing_q_si_8"));
+                    String anganwadiaccomodation_q_si_9 = cursor.getString(cursor.getColumnIndex("anganwadiaccomodation_q_si_9"));
+                    String watersourcebeentestedbefore_q_w_1 = cursor.getString(cursor.getColumnIndex("watersourcebeentestedbefore_q_w_1"));
+                    String whenwaterlasttested_q_w_1a = cursor.getString(cursor.getColumnIndex("whenwaterlasttested_q_w_1a"));
+                    String istestreportsharedschoolauthority_q_w_1b = cursor.getString(cursor.getColumnIndex("istestreportsharedschoolauthority_q_w_1b"));
+                    String foundtobebacteriologically_q_w_1c = cursor.getString(cursor.getColumnIndex("foundtobebacteriologically_q_w_1c"));
+                    String istoiletfacilityavailable_q_w_2 = cursor.getString(cursor.getColumnIndex("istoiletfacilityavailable_q_w_2"));
+                    String isrunningwateravailable_q_w_2a = cursor.getString(cursor.getColumnIndex("isrunningwateravailable_q_w_2a"));
+                    String separatetoiletsforboysandgirls_q_w_2b = cursor.getString(cursor.getColumnIndex("separatetoiletsforboysandgirls_q_w_2b"));
+                    String numberoftoiletforboys_q_w_2b_a = cursor.getString(cursor.getColumnIndex("numberoftoiletforboys_q_w_2b_a"));
+                    String numberoftoiletforgirl_q_w_2b_b = cursor.getString(cursor.getColumnIndex("numberoftoiletforgirl_q_w_2b_b"));
+                    String numberofgeneraltoilet_q_w_2b_c = cursor.getString(cursor.getColumnIndex("numberofgeneraltoilet_q_w_2b_c"));
+                    String isseparatetoiletforteachers_q_w_2c = cursor.getString(cursor.getColumnIndex("isseparatetoiletforteachers_q_w_2c"));
+                    String numberoftoiletforteachers_q_w_2c_a = cursor.getString(cursor.getColumnIndex("numberoftoiletforteachers_q_w_2c_a"));
+                    String imageoftoilet_q_w_2d = cursor.getString(cursor.getColumnIndex("imageoftoilet_q_w_2d"));
+                    String ishandwashingfacility_q_w_3 = cursor.getString(cursor.getColumnIndex("ishandwashingfacility_q_w_3"));
+                    String isrunningwateravailable_q_w_3a = cursor.getString(cursor.getColumnIndex("isrunningwateravailable_q_w_3a"));
+                    String isthewashbasinwithin_q_w_3b = cursor.getString(cursor.getColumnIndex("isthewashbasinwithin_q_w_3b"));
+                    String imageofwashbasin_q_w_3c = cursor.getString(cursor.getColumnIndex("imageofwashbasin_q_w_3c"));
+                    String iswaterinkitchen_q_w_4 = cursor.getString(cursor.getColumnIndex("iswaterinkitchen_q_w_4"));
+                    String remarks = cursor.getString(cursor.getColumnIndex("remarks"));
+                    String samplecollectorid = cursor.getString(cursor.getColumnIndex("samplecollectorid"));
+                    String task_id = cursor.getString(cursor.getColumnIndex("task_id"));
+                    String testcompleteddate = cursor.getString(cursor.getColumnIndex("testcompleteddate"));
+                    String testtime = cursor.getString(cursor.getColumnIndex("testtime"));
+                    String sOtherSchoolName = cursor.getString(cursor.getColumnIndex("OtherSchoolName"));
+                    String sOtherAnganwadiName = cursor.getString(cursor.getColumnIndex("OtherAnganwadiName"));
+                    String sPWSS_STATUS = cursor.getString(cursor.getColumnIndex("PWSS_STATUS"));
+
+                    String Complete = cursor.getString(cursor.getColumnIndex("Complete"));
+
+                    CommonModel commonModel = new CommonModel();
+                    commonModel.setSourceForFacilitator_id(SourceForFacilitator_id);
+                    commonModel.setApp_name(sApp_Name);
+                    commonModel.setBig_dia_tube_well_no(BidDiaTubWellCode);
+                    commonModel.setBlockcode(Block);
+                    commonModel.setAccuracy(Accuracy);
+                    commonModel.setConditionOfSource(ConditionOfSource);
+                    commonModel.setCollection_date(DateofDataCollection);
+                    commonModel.setDescriptionofthelocation(Descriptionofthelocation);
+                    commonModel.setDistrictcode(District);
+                    commonModel.setHabitationname(Habitation);
+                    commonModel.setHandPumpCategory(HandPumpCategory);
+                    commonModel.setHealth_facility_name(HealthFacility);
+                    commonModel.setHowmanypipes(Howmanypipes);
+                    commonModel.setIsnewlocation_School_UdiseCode(isnewlocation_School_UdiseCode);
+                    commonModel.setImg_source(img_source);
+                    commonModel.setInterview_id(interview_id);
+                    commonModel.setLocationDescription(LocationDescription);
+                    commonModel.setMiD(MiD);
+                    commonModel.setLat(sLat);
+                    commonModel.setLng(sLong);
+                    commonModel.setTown_name(NameofTown);
+                    commonModel.setPancode(Panchayat);
+                    commonModel.setPictureofthesource(Pictureofthesource);
+                    commonModel.setSample_bott_num(SampleBottleNumber);
+                    commonModel.setScheme(Scheme);
+                    commonModel.setScheme_code(Scheme_Code);
+                    commonModel.setSourceselect(Sourceselect);
+                    commonModel.setSource_site(SourceSite);
+                    commonModel.setSpecial_drive(specialdrive);
+                    commonModel.setName_of_special_drive(SpecialdriveName);
+                    commonModel.setTimeofDataCollection(TimeofDataCollection);
+                    commonModel.setTotalDepth(TotalDepth);
+                    commonModel.setSub_source_type(sub_source_type);
+                    commonModel.setSub_scheme_name(sub_scheme_name);
+                    commonModel.setType_of_locality(TypeofLocality);
+                    commonModel.setVillagename(VillageName);
+                    commonModel.setWard_no(WardNumber);
+                    commonModel.setWater_source_type(WaterSourceType);
+                    commonModel.setWhoCollectingSample(WhoCollectingSample);
+                    commonModel.setZoneCategory(ZoneCategory);
+                    commonModel.setZone(ZoneNumber);
+                    commonModel.setVillagecode(Village_Code);
+                    commonModel.setHabitation_Code(Hab_Code);
+                    commonModel.setAnswer_1(answer_1);
+                    commonModel.setAnswer_2(answer_2);
+                    commonModel.setAnswer_3(answer_3);
+                    commonModel.setAnswer_4(answer_4);
+                    commonModel.setAnswer_5(answer_5);
+                    commonModel.setAnswer_6(answer_6);
+                    commonModel.setAnswer_7(answer_7);
+                    commonModel.setAnswer_8(answer_8);
+                    commonModel.setAnswer_9(answer_9);
+                    commonModel.setAnswer_10(answer_10);
+                    commonModel.setAnswer_11(answer_11);
+                    commonModel.setW_s_q_img(w_s_q_img);
+                    commonModel.setImg_sanitary(img_sanitary);
+
+                    commonModel.setCreatedDate(createddate);
+                    commonModel.setExisting_mid(existing_mid);
+                    commonModel.setFCID(fcid);
+                    commonModel.setFecilatorcompleteddate(fecilatorcompleteddate);
+                    commonModel.setFormsubmissiondate(formsubmissiondate);
+                    commonModel.setHeaderlogid(headerlogid);
+                    commonModel.setIsDone(isdone);
+                    commonModel.setLabID(labid);
+                    commonModel.setLogID(logid);
+                    commonModel.setAnganwadi_name_q_12b(anganwadi_name_q_12b);
+                    commonModel.setAnganwadi_code_q_12c(anganwadi_code_q_12c);
+                    commonModel.setAnganwadi_sectorcode_q_12d(anganwadi_sectorcode_q_12d);
+                    commonModel.setStandpostsituated_q_13e(standpostsituated_q_13e);
+                    commonModel.setSchoolmanagement_q_si_1(schoolmanagement_q_si_1);
+                    commonModel.setSchoolcategory_q_si_2(schoolcategory_q_si_2);
+                    commonModel.setSchooltype_q_si_3(schooltype_q_si_3);
+                    commonModel.setNoofstudentsintheschool_q_si_4(noofstudentsintheschool_q_si_4);
+                    commonModel.setNoofboysintheschool_q_si_5(noofboysintheschool_q_si_5);
+                    commonModel.setNoofgirlsintheschool_q_si_6(noofgirlsintheschool_q_si_6);
+                    commonModel.setAvailabilityofelectricityinschool_q_si_7(availabilityofelectricityinschool_q_si_7);
+                    commonModel.setIsdistributionofwaterbeing_q_si_8(isdistributionofwaterbeing_q_si_8);
+                    commonModel.setAnganwadiaccomodation_q_si_9(anganwadiaccomodation_q_si_9);
+                    commonModel.setWatersourcebeentestedbefore_q_w_1(watersourcebeentestedbefore_q_w_1);
+                    commonModel.setWhenwaterlasttested_q_w_1a(whenwaterlasttested_q_w_1a);
+                    commonModel.setIstestreportsharedschoolauthority_q_w_1b(istestreportsharedschoolauthority_q_w_1b);
+                    commonModel.setFoundtobebacteriologically_q_w_1c(foundtobebacteriologically_q_w_1c);
+                    commonModel.setIstoiletfacilityavailable_q_w_2(istoiletfacilityavailable_q_w_2);
+                    commonModel.setIsrunningwateravailable_q_w_2a(isrunningwateravailable_q_w_2a);
+                    commonModel.setSeparatetoiletsforboysandgirls_q_w_2b(separatetoiletsforboysandgirls_q_w_2b);
+                    commonModel.setNumberoftoiletforboys_q_w_2b_a(numberoftoiletforboys_q_w_2b_a);
+                    commonModel.setNumberoftoiletforgirl_q_w_2b_b(numberoftoiletforgirl_q_w_2b_b);
+                    commonModel.setNumberofgeneraltoilet_q_w_2b_c(numberofgeneraltoilet_q_w_2b_c);
+                    commonModel.setIsseparatetoiletforteachers_q_w_2c(isseparatetoiletforteachers_q_w_2c);
+                    commonModel.setNumberoftoiletforteachers_q_w_2c_a(numberoftoiletforteachers_q_w_2c_a);
+                    commonModel.setImageoftoilet_q_w_2d(imageoftoilet_q_w_2d);
+                    commonModel.setIshandwashingfacility_q_w_3(ishandwashingfacility_q_w_3);
+                    commonModel.setIsrunningwateravailable_q_w_3a(isrunningwateravailable_q_w_3a);
+                    commonModel.setIsthewashbasinwithin_q_w_3b(isthewashbasinwithin_q_w_3b);
+                    commonModel.setImageofwashbasin_q_w_3c(imageofwashbasin_q_w_3c);
+                    commonModel.setIswaterinkitchen_q_w_4(iswaterinkitchen_q_w_4);
+                    commonModel.setRemarks(remarks);
+                    commonModel.setSampleCollectorId(samplecollectorid);
+                    commonModel.setTask_Id(task_id);
+                    commonModel.setTestcompleteddate(testcompleteddate);
+                    commonModel.setTesttime(testtime);
+                    commonModel.setOtherSchoolName(sOtherSchoolName);
+                    commonModel.setOtherAnganwadiName(sOtherAnganwadiName);
+                    commonModel.setPWSS_STATUS(sPWSS_STATUS);
+                    commonModel.setComplete(Complete);
+                    commonModelArrayList.add(commonModel);
+
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.close();
+        } catch (Exception e) {
+            db.close();
+            Log.e(TAG, " getArsenic:- ", e);
+        }
+        return commonModelArrayList;
     }
 
 }

@@ -44,6 +44,7 @@ import com.sunanda.newroutine.application.util.Constants;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -813,54 +814,23 @@ public class EditWash_Activity extends AppCompatActivity {
         btnTakeImageSanitationFacility.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                File f = null;
-                try {
-                    f = setUpPhotoFile();
-                    mCurrentPhotoPath = f.getAbsolutePath();
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-                } catch (Exception e) {
-                    f = null;
-                    mCurrentPhotoPath = null;
-                    e.printStackTrace();
-                }
-                startActivityForResult(takePictureIntent, CAMERA_REQUEST);*/
-
-                if (ContextCompat.checkSelfPermission(
-                        EditWash_Activity.this,
-                        Manifest.permission.CAMERA
-                ) != PackageManager.PERMISSION_GRANTED
-                ) {
-                    String[] PERMISSIONS = {
-                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                            android.Manifest.permission.CAMERA
-                    };
-                    ActivityCompat.requestPermissions(
-                            EditWash_Activity.this, PERMISSIONS, 0
-                    );
-                } else {
-                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                        // Create the File where the photo should go
-                        try {
-                            File photoFile = setUpPhotoFile();
-                            // Continue only if the File was successfully created
-                            if (photoFile != null) {
-                                Uri photoURI = FileProvider.getUriForFile(
-                                        EditWash_Activity.this,
-                                        "com.sunanda.newroutine.application.fileprovider",
-                                        photoFile
-                                );
-                                //mCurrentPhotoPath = photoFile.getAbsolutePath();
-                                takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                                startActivityForResult(takePictureIntent, CAMERA_REQUEST);
-                            }
-                        } catch (Exception ex) {
-                            mCurrentPhotoPath = null;
-                            // Error occurred while creating the File
-                            Toast.makeText(EditWash_Activity.this, ex.getMessage(), Toast.LENGTH_LONG).show();
-                        }
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                // Ensure that there's a camera activity to handle the intent
+                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                    // Create the File where the photo should go
+                    File photoFile = null;
+                    try {
+                        photoFile = createImageFile();
+                    } catch (Exception ex) {
+                        // Error occurred while creating the File
+                    }
+                    // Continue only if the File was successfully created
+                    if (photoFile != null) {
+                        Uri photoURI = FileProvider.getUriForFile(EditWash_Activity.this,
+                                "com.sunanda.newroutine.application.fileprovider",
+                                photoFile);
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                        startActivityForResult(takePictureIntent, CAMERA_REQUEST);
                     }
                 }
             }
@@ -869,54 +839,23 @@ public class EditWash_Activity extends AppCompatActivity {
         btnTakeImageWashBasin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                File f = null;
-                try {
-                    f = setUpPhotoFile_1();
-                    mCurrentPhotoPath_1 = f.getAbsolutePath();
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-                } catch (Exception e) {
-                    f = null;
-                    mCurrentPhotoPath_1 = null;
-                    e.printStackTrace();
-                }
-                startActivityForResult(takePictureIntent, CAMERA_REQUEST_1);*/
-
-                if (ContextCompat.checkSelfPermission(
-                        EditWash_Activity.this,
-                        Manifest.permission.CAMERA
-                ) != PackageManager.PERMISSION_GRANTED
-                ) {
-                    String[] PERMISSIONS = {
-                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                            android.Manifest.permission.CAMERA
-                    };
-                    ActivityCompat.requestPermissions(
-                            EditWash_Activity.this, PERMISSIONS, 0
-                    );
-                } else {
-                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                        // Create the File where the photo should go
-                        try {
-                            File photoFile = setUpPhotoFile_1();
-                            // Continue only if the File was successfully created
-                            if (photoFile != null) {
-                                Uri photoURI = FileProvider.getUriForFile(
-                                        EditWash_Activity.this,
-                                        "com.sunanda.newroutine.application.fileprovider",
-                                        photoFile
-                                );
-                                //mCurrentPhotoPath = photoFile.getAbsolutePath();
-                                takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                                startActivityForResult(takePictureIntent, CAMERA_REQUEST_1);
-                            }
-                        } catch (Exception ex) {
-                            mCurrentPhotoPath = null;
-                            // Error occurred while creating the File
-                            Toast.makeText(EditWash_Activity.this, ex.getMessage(), Toast.LENGTH_LONG).show();
-                        }
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                // Ensure that there's a camera activity to handle the intent
+                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                    // Create the File where the photo should go
+                    File photoFile = null;
+                    try {
+                        photoFile = createImageFile_1();
+                    } catch (Exception ex) {
+                        // Error occurred while creating the File
+                    }
+                    // Continue only if the File was successfully created
+                    if (photoFile != null) {
+                        Uri photoURI = FileProvider.getUriForFile(EditWash_Activity.this,
+                                "com.sunanda.newroutine.application.fileprovider",
+                                photoFile);
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                        startActivityForResult(takePictureIntent, CAMERA_REQUEST_1);
                     }
                 }
             }
@@ -1014,18 +953,20 @@ public class EditWash_Activity extends AppCompatActivity {
         return f;
     }
 
-    private File createImageFile() {
+    private File createImageFile() throws IOException {
         // Create an image file name
-        File imageF = null;
-        try {
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            String imageFileName = JPEG_FILE_PREFIX + timeStamp + "_";
-            File albumF = getAlbumDir();
-            imageF = File.createTempFile(imageFileName, JPEG_FILE_SUFFIX, albumF);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return imageF;
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = JPEG_FILE_PREFIX + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".png",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
     }
 
     private File getAlbumDir() {
@@ -1221,7 +1162,7 @@ public class EditWash_Activity extends AppCompatActivity {
         return inSampleSize;
     }
 
-    private File setUpPhotoFile_1() {
+    /*private File setUpPhotoFile_1() {
         File f = null;
         try {
             f = createImageFile_1();
@@ -1230,20 +1171,22 @@ public class EditWash_Activity extends AppCompatActivity {
             e.printStackTrace();
         }
         return f;
-    }
+    }*/
 
-    private File createImageFile_1() {
+    private File createImageFile_1() throws IOException {
         // Create an image file name
-        File imageF = null;
-        try {
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            String imageFileName = JPEG_FILE_PREFIX_1 + timeStamp + "_";
-            File albumF = getAlbumDir_1();
-            imageF = File.createTempFile(imageFileName, JPEG_FILE_SUFFIX, albumF);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return imageF;
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = JPEG_FILE_PREFIX_1 + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".png",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath_1 = image.getAbsolutePath();
+        return image;
     }
 
     private File getAlbumDir_1() {

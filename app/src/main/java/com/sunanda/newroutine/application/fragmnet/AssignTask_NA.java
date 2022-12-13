@@ -228,8 +228,6 @@ public class AssignTask_NA extends Fragment implements VillageAdapter.RecyclerVi
         tvLabName.setText(CGlobal.getInstance().getPersistentPreference(getActivity())
                 .getString(Constants.PREFS_USER_LAB_NAME, ""));
 
-        btnNext.setVisibility(View.GONE);
-
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -257,9 +255,8 @@ public class AssignTask_NA extends Fragment implements VillageAdapter.RecyclerVi
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (cbNonPwssVillage.isChecked()) {
-                    btnNext.setVisibility(View.VISIBLE);
-                    btnNext.setText("SUBMIT TO ALLOCATION");
                     sVillage = "NonPwss";
+                    cbPwssVillage.setChecked(false);
                 }
             }
         });
@@ -268,9 +265,8 @@ public class AssignTask_NA extends Fragment implements VillageAdapter.RecyclerVi
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (cbPwssVillage.isChecked()) {
-                    btnNext.setVisibility(View.VISIBLE);
-                    btnNext.setText("PWSS SOURCE ALLOCATION");
                     sVillage = "Pwss";
+                    cbNonPwssVillage.setChecked(false);
                 }
             }
         });

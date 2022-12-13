@@ -49,8 +49,8 @@ public class VillageAdapter extends RecyclerView.Adapter<VillageAdapter.ListView
         }
 
         myViewHolder.mTextView.setText(mDataset.get(i).getVillageName());
-        myViewHolder.textView2.setText("Total Hab : " + mDataset.get(i).getTotalHab() +
-                "  Touched Hab : " + mDataset.get(i).getTestedHab());
+        /*myViewHolder.textView2.setText("Total Hab : " + mDataset.get(i).getTotalHab() +
+                "  Touched Hab : " + mDataset.get(i).getTestedHab());*/
     }
 
     @Override

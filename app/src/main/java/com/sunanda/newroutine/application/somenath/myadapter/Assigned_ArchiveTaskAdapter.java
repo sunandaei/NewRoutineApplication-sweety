@@ -3,8 +3,11 @@ package com.sunanda.newroutine.application.somenath.myadapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +29,7 @@ import java.util.Date;
 public class Assigned_ArchiveTaskAdapter extends RecyclerView.Adapter<Assigned_ArchiveTaskAdapter.MyView_Holder> {
 
     private String type;
+    String villageCode;
     private ArrayList<AssignedArchiveTaskPojo> commonModelArrayList;
     private Context context;
     private String labname = CGlobal.getInstance().getPersistentPreference(context)
@@ -51,221 +55,221 @@ public class Assigned_ArchiveTaskAdapter extends RecyclerView.Adapter<Assigned_A
     @Override
     public void onBindViewHolder(final MyView_Holder holder, final int position) {
 
-        if(type.equalsIgnoreCase("CURRENT")){
-            holder.title.setText("Habitation : " + commonModelArrayList.get(position).getHabName());
-            //holder.title.setCompoundDrawablesWithIntrinsicBounds(R.drawable.circle, 0, 0, 0);
+        if (!commonModelArrayList.get(position).getVillageCode().equalsIgnoreCase(villageCode)) {
+            villageCode = commonModelArrayList.get(position).getVillageCode();
+            if (!TextUtils.isEmpty(commonModelArrayList.get(position).getVillageName())) {
+                if (type.equalsIgnoreCase("CURRENT")) {
+                    if (!TextUtils.isEmpty(commonModelArrayList.get(position).getPws_status())) {
+                        if (commonModelArrayList.get(position).getPws_status().equalsIgnoreCase("YES")) {
+                            holder.title.setText("Village : " + commonModelArrayList.get(position).getVillageName()
+                                    + " (PWSS Village)");
+                        } else {
+                            holder.title.setText("Village : " + commonModelArrayList.get(position).getVillageName());
+                        }
+                        //holder.title.setCompoundDrawablesWithIntrinsicBounds(R.drawable.circle, 0, 0, 0);
 
-            holder.title2.setText(labname + "/" + commonModelArrayList.get(position).getDistrictName() +
-                    "/" + commonModelArrayList.get(position).getBlockName() + "/" +
-                    commonModelArrayList.get(position).getPanName() + "/" +
-                    commonModelArrayList.get(position).getVillageName() + "/" +
-                    commonModelArrayList.get(position).getHabName());
+                        holder.title2.setText(labname + "/" + commonModelArrayList.get(position).getDistrictName() +
+                                "/" + commonModelArrayList.get(position).getBlockName() + "/" +
+                                commonModelArrayList.get(position).getPanName() + "/" +
+                                commonModelArrayList.get(position).getVillageName());
 
-            @SuppressLint("SimpleDateFormat")
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date date = new Date();
-            try {
-                String newDate = commonModelArrayList.get(position).getCreatedDate().split("T")[0] + " " +
-                        commonModelArrayList.get(position).getCreatedDate().split("T")[1].substring(0, 8);
+                        @SuppressLint("SimpleDateFormat")
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        Date date = new Date();
+                        try {
+                            String newDate = commonModelArrayList.get(position).getCreatedDate().split("T")[0] + " " +
+                                    commonModelArrayList.get(position).getCreatedDate().split("T")[1].substring(0, 8);
 
-                Date date1 = simpleDateFormat.parse(simpleDateFormat.format(date));
-                Date date2 = simpleDateFormat.parse(newDate);
-                holder.timeElapsed.setText("⌚ Time Elapsed : " + printDifference(date2, date1));
+                            Date date1 = simpleDateFormat.parse(simpleDateFormat.format(date));
+                            Date date2 = simpleDateFormat.parse(newDate);
+                            holder.timeElapsed.setText("⌚ Time Elapsed : " + printDifference(date2, date1));
 
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } else if (type.equalsIgnoreCase("COLLECT")) {
 
-        } else if (type.equalsIgnoreCase("COLLECT")) {
+                    holder.title.setText("Village : " + commonModelArrayList.get(position).getVillageName());
+                    //holder.title.setCompoundDrawablesWithIntrinsicBounds(R.drawable.tick, 0, 0, 0);
 
-            holder.title.setText("Habitation : " + commonModelArrayList.get(position).getHabName());
-            //holder.title.setCompoundDrawablesWithIntrinsicBounds(R.drawable.tick, 0, 0, 0);
+                    holder.title2.setText(labname + "/" + commonModelArrayList.get(position).getDistrictName() +
+                            "/" + commonModelArrayList.get(position).getBlockName() + "/" +
+                            commonModelArrayList.get(position).getPanName() + "/" +
+                            commonModelArrayList.get(position).getVillageName() + "\n\n\uD83D\uDCC5 Submission Date (To Lab) : " +
+                            commonModelArrayList.get(position).getFormSubmissionDate().split("T")[0].split("-")[2] + "/" +
+                            commonModelArrayList.get(position).getFormSubmissionDate().split("T")[0].split("-")[1] + "/" +
+                            commonModelArrayList.get(position).getFormSubmissionDate().split("T")[0].split("-")[0]);
 
-            holder.title2.setText(labname + "/" + commonModelArrayList.get(position).getDistrictName() +
-                    "/" + commonModelArrayList.get(position).getBlockName() + "/" +
-                    commonModelArrayList.get(position).getPanName() + "/" +
-                    commonModelArrayList.get(position).getVillageName() + "/" +
-                    commonModelArrayList.get(position).getHabName() + "\n\n\uD83D\uDCC5 Submission Date (To Lab) : " +
-                    commonModelArrayList.get(position).getFormSubmissionDate().split("T")[0].split("-")[2] + "/" +
-                    commonModelArrayList.get(position).getFormSubmissionDate().split("T")[0].split("-")[1] + "/" +
-                    commonModelArrayList.get(position).getFormSubmissionDate().split("T")[0].split("-")[0]);
+                    @SuppressLint("SimpleDateFormat")
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    try {
+                        String newDate = commonModelArrayList.get(position).getCreatedDate().split("T")[0] + " " +
+                                commonModelArrayList.get(position).getCreatedDate().split("T")[1].substring(0, 8);
 
-            @SuppressLint("SimpleDateFormat")
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            try {
-                String newDate = commonModelArrayList.get(position).getCreatedDate().split("T")[0] + " " +
-                        commonModelArrayList.get(position).getCreatedDate().split("T")[1].substring(0, 8);
+                        String submitDate = commonModelArrayList.get(position).getFormSubmissionDate().split("T")[0] + " " +
+                                commonModelArrayList.get(position).getFormSubmissionDate().split("T")[1].substring(0, 8);
 
-                String submitDate = commonModelArrayList.get(position).getFormSubmissionDate().split("T")[0] + " " +
-                        commonModelArrayList.get(position).getFormSubmissionDate().split("T")[1].substring(0, 8);
+                        Date date1 = simpleDateFormat.parse(submitDate);
+                        Date date2 = simpleDateFormat.parse(newDate);
+                        holder.timeElapsed.setText("⌚ Time Elapsed : " + printDifference(date2, date1));
 
-                Date date1 = simpleDateFormat.parse(submitDate);
-                Date date2 = simpleDateFormat.parse(newDate);
-                holder.timeElapsed.setText("⌚ Time Elapsed : " + printDifference(date2, date1));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
 
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+                    if (commonModelArrayList.get(position).getNoOfCollection().equalsIgnoreCase("0")) {
+                        holder.title.setTextColor(context.getResources().getColor(R.color.Red));
+                    } else if (commonModelArrayList.get(position).getNoOfSource().
+                            equalsIgnoreCase(commonModelArrayList.get(position).getNoOfCollection())) {
+                        holder.title.setTextColor(context.getResources().getColor(R.color.Green));
+                    } else {
+                        holder.title.setTextColor(context.getResources().getColor(R.color.DarkOrange));
+                    }
+                } else if (type.equalsIgnoreCase("ACCEPT")) {
 
-            if (commonModelArrayList.get(position).getNoOfCollection().equalsIgnoreCase("0")) {
-                holder.title.setTextColor(context.getResources().getColor(R.color.Red));
-            } else if (commonModelArrayList.get(position).getNoOfSource().
-                    equalsIgnoreCase(commonModelArrayList.get(position).getNoOfCollection())){
-                holder.title.setTextColor(context.getResources().getColor(R.color.Green));
-            }else{
-                holder.title.setTextColor(context.getResources().getColor(R.color.DarkOrange));
-            }
-        } else if (type.equalsIgnoreCase("ACCEPT")) {
+                    holder.title.setText("Village : " + commonModelArrayList.get(position).getVillageName());
+                    //holder.title.setCompoundDrawablesWithIntrinsicBounds(R.drawable.tick, 0, 0, 0);
 
-            holder.title.setText("Habitation : " + commonModelArrayList.get(position).getHabName());
-            //holder.title.setCompoundDrawablesWithIntrinsicBounds(R.drawable.tick, 0, 0, 0);
+                    holder.title2.setText(labname + "/" + commonModelArrayList.get(position).getDistrictName() +
+                            "/" + commonModelArrayList.get(position).getBlockName() + "/" +
+                            commonModelArrayList.get(position).getPanName() + "/" +
+                            commonModelArrayList.get(position).getVillageName() + "\n\n\uD83D\uDCC5 Accepted Date (By Lab) : " +
+                            commonModelArrayList.get(position).getFecilatorCompletedDate().split("T")[0].split("-")[2] + "/" +
+                            commonModelArrayList.get(position).getFecilatorCompletedDate().split("T")[0].split("-")[1] + "/" +
+                            commonModelArrayList.get(position).getFecilatorCompletedDate().split("T")[0].split("-")[0]);
 
-            holder.title2.setText(labname + "/" + commonModelArrayList.get(position).getDistrictName() +
-                    "/" + commonModelArrayList.get(position).getBlockName() + "/" +
-                    commonModelArrayList.get(position).getPanName() + "/" +
-                    commonModelArrayList.get(position).getVillageName() + "/" +
-                    commonModelArrayList.get(position).getHabName() + "\n\n\uD83D\uDCC5 Accepted Date (By Lab) : " +
-                    commonModelArrayList.get(position).getFecilatorCompletedDate().split("T")[0].split("-")[2] + "/" +
-                    commonModelArrayList.get(position).getFecilatorCompletedDate().split("T")[0].split("-")[1] + "/" +
-                    commonModelArrayList.get(position).getFecilatorCompletedDate().split("T")[0].split("-")[0]);
+                    @SuppressLint("SimpleDateFormat")
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    try {
+                        String newDate = commonModelArrayList.get(position).getCreatedDate().split("T")[0] + " " +
+                                commonModelArrayList.get(position).getCreatedDate().split("T")[1].substring(0, 8);
 
-            @SuppressLint("SimpleDateFormat")
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            try {
-                String newDate = commonModelArrayList.get(position).getCreatedDate().split("T")[0] + " " +
-                        commonModelArrayList.get(position).getCreatedDate().split("T")[1].substring(0, 8);
+                        String submitDate = commonModelArrayList.get(position).getFecilatorCompletedDate().split("T")[0] + " " +
+                                commonModelArrayList.get(position).getFecilatorCompletedDate().split("T")[1].substring(0, 8);
 
-                String submitDate = commonModelArrayList.get(position).getFecilatorCompletedDate().split("T")[0] + " " +
-                        commonModelArrayList.get(position).getFecilatorCompletedDate().split("T")[1].substring(0, 8);
+                        Date date1 = simpleDateFormat.parse(submitDate);
+                        Date date2 = simpleDateFormat.parse(newDate);
+                        holder.timeElapsed.setText("⌚ Time Elapsed : " + printDifference(date2, date1));
 
-                Date date1 = simpleDateFormat.parse(submitDate);
-                Date date2 = simpleDateFormat.parse(newDate);
-                holder.timeElapsed.setText("⌚ Time Elapsed : " + printDifference(date2, date1));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
 
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            if (commonModelArrayList.get(position).getNoOfCollection().equalsIgnoreCase("0")) {
-                holder.title.setTextColor(context.getResources().getColor(R.color.Red));
-            } else if (commonModelArrayList.get(position).getNoOfSource().
-                    equalsIgnoreCase(commonModelArrayList.get(position).getNoOfCollection())){
-                holder.title.setTextColor(context.getResources().getColor(R.color.Green));
-            }else{
-                holder.title.setTextColor(context.getResources().getColor(R.color.DarkOrange));
-            }
-        }else{
-            holder.title.setText("Habitation : " + commonModelArrayList.get(position).getHabName());
-            //holder.title.setCompoundDrawablesWithIntrinsicBounds(R.drawable.tick, 0, 0, 0);
-
-            holder.title2.setText(labname + "/" + commonModelArrayList.get(position).getDistrictName() +
-                    "/" + commonModelArrayList.get(position).getBlockName() + "/" +
-                    commonModelArrayList.get(position).getPanName() + "/" +
-                    commonModelArrayList.get(position).getVillageName() + "/" +
-                    commonModelArrayList.get(position).getHabName() + "\n\n\uD83D\uDCC5 Completion Date : " +
-                    commonModelArrayList.get(position).getTestCompletedDate().split("T")[0].split("-")[2] + "/" +
-                    commonModelArrayList.get(position).getTestCompletedDate().split("T")[0].split("-")[1] + "/" +
-                    commonModelArrayList.get(position).getTestCompletedDate().split("T")[0].split("-")[0]);
-
-            @SuppressLint("SimpleDateFormat")
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            try {
-                String newDate = commonModelArrayList.get(position).getCreatedDate().split("T")[0] + " " +
-                        commonModelArrayList.get(position).getCreatedDate().split("T")[1].substring(0, 8);
-
-                String submitDate = commonModelArrayList.get(position).getTestCompletedDate().split("T")[0] + " " +
-                        commonModelArrayList.get(position).getTestCompletedDate().split("T")[1].substring(0, 8);
-
-                Date date1 = simpleDateFormat.parse(submitDate);
-                Date date2 = simpleDateFormat.parse(newDate);
-                holder.timeElapsed.setText("⌚ Time Elapsed : " + printDifference(date2, date1));
-
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            if (commonModelArrayList.get(position).getNoOfCollection().equalsIgnoreCase("0")) {
-                holder.title.setTextColor(context.getResources().getColor(R.color.Red));
-            } else if (commonModelArrayList.get(position).getNoOfSource().
-                    equalsIgnoreCase(commonModelArrayList.get(position).getNoOfCollection())){
-                holder.title.setTextColor(context.getResources().getColor(R.color.Green));
-            }else{
-                holder.title.setTextColor(context.getResources().getColor(R.color.DarkOrange));
-            }
-        }
-        /*if (commonModelArrayList.get(position).isDone()) {
-            holder.title.setText(commonModelArrayList.get(position).getHabName());
-            holder.title.setCompoundDrawablesWithIntrinsicBounds(R.drawable.tick, 0, 0, 0);
-        } else {
-            holder.title.setText(commonModelArrayList.get(position).getHabName());
-            holder.title.setCompoundDrawablesWithIntrinsicBounds(R.drawable.circle, 0, 0, 0);
-        }*/
-
-        holder.noofsource.setText("✔ No of Sources : " + commonModelArrayList.get(position).getNoOfSource());
-        holder.noofcollection.setText("✔ No of Collection : " + commonModelArrayList.get(position).getNoOfCollection());
-
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (commonModelArrayList.get(position).isFlag()) {
-                    commonModelArrayList.get(position).setFlag(false);
-                    holder.llview.setVisibility(View.GONE);
-                    holder.imageView.setImageResource(R.drawable.more);
+                    if (commonModelArrayList.get(position).getNoOfCollection().equalsIgnoreCase("0")) {
+                        holder.title.setTextColor(context.getResources().getColor(R.color.Red));
+                    } else if (commonModelArrayList.get(position).getNoOfSource().
+                            equalsIgnoreCase(commonModelArrayList.get(position).getNoOfCollection())) {
+                        holder.title.setTextColor(context.getResources().getColor(R.color.Green));
+                    } else {
+                        holder.title.setTextColor(context.getResources().getColor(R.color.DarkOrange));
+                    }
                 } else {
-                    commonModelArrayList.get(position).setFlag(true);
-                    holder.llview.setVisibility(View.VISIBLE);
-                    holder.imageView.setImageResource(R.drawable.less);
-                }
-            }
-        });
+                    holder.title.setText("Habitation : " + commonModelArrayList.get(position).getVillageName());
+                    //holder.title.setCompoundDrawablesWithIntrinsicBounds(R.drawable.tick, 0, 0, 0);
 
-        holder.llview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(context, SourceListByHabitation2.class);
-                i.putExtra("FCID", commonModelArrayList.get(position).getfCID());
-                i.putExtra("HC", commonModelArrayList.get(position).getHabCode());
-                i.putExtra("HN", commonModelArrayList.get(position).getHabName());
-                i.putExtra("DC", commonModelArrayList.get(position).getDistCode());
-                i.putExtra("DN", commonModelArrayList.get(position).getDistrictName());
-                i.putExtra("BC", commonModelArrayList.get(position).getBlockCode());
-                i.putExtra("BN", commonModelArrayList.get(position).getBlockName());
-                i.putExtra("PC", commonModelArrayList.get(position).getPanCode());
-                i.putExtra("PN", commonModelArrayList.get(position).getPanName());
-                i.putExtra("VC", commonModelArrayList.get(position).getVillageCode());
-                i.putExtra("VN", commonModelArrayList.get(position).getVillageName());
-                i.putExtra("LC", commonModelArrayList.get(position).getLabCode());
-                i.putExtra("TID", commonModelArrayList.get(position).getTask_Id());
-                if (type.equalsIgnoreCase("COLLECT"))
-                    i.putExtra("TYPE", "1");
-                else if (type.equalsIgnoreCase("ACCEPT"))
-                    i.putExtra("TYPE", "2");
-                else if (type.equalsIgnoreCase("CURRENT"))
-                    i.putExtra("TYPE", "0");
-                else
-                    i.putExtra("TYPE", "3");
-                context.startActivity(i);
-            }
-        });
+                    holder.title2.setText(labname + "/" + commonModelArrayList.get(position).getDistrictName() +
+                            "/" + commonModelArrayList.get(position).getBlockName() + "/" +
+                            commonModelArrayList.get(position).getPanName() + "/" +
+                            commonModelArrayList.get(position).getVillageName() + "\n\n\uD83D\uDCC5 Completion Date : " +
+                            commonModelArrayList.get(position).getTestCompletedDate().split("T")[0].split("-")[2] + "/" +
+                            commonModelArrayList.get(position).getTestCompletedDate().split("T")[0].split("-")[1] + "/" +
+                            commonModelArrayList.get(position).getTestCompletedDate().split("T")[0].split("-")[0]);
+
+                    @SuppressLint("SimpleDateFormat")
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    try {
+                        String newDate = commonModelArrayList.get(position).getCreatedDate().split("T")[0] + " " +
+                                commonModelArrayList.get(position).getCreatedDate().split("T")[1].substring(0, 8);
+
+                        String submitDate = commonModelArrayList.get(position).getTestCompletedDate().split("T")[0] + " " +
+                                commonModelArrayList.get(position).getTestCompletedDate().split("T")[1].substring(0, 8);
+
+                        Date date1 = simpleDateFormat.parse(submitDate);
+                        Date date2 = simpleDateFormat.parse(newDate);
+                        holder.timeElapsed.setText("⌚ Time Elapsed : " + printDifference(date2, date1));
+
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (commonModelArrayList.get(position).getNoOfCollection().equalsIgnoreCase("0")) {
+                        holder.title.setTextColor(context.getResources().getColor(R.color.Red));
+                    } else if (commonModelArrayList.get(position).getNoOfSource().
+                            equalsIgnoreCase(commonModelArrayList.get(position).getNoOfCollection())) {
+                        holder.title.setTextColor(context.getResources().getColor(R.color.Green));
+                    } else {
+                        holder.title.setTextColor(context.getResources().getColor(R.color.DarkOrange));
+                    }
+                }
+
+                holder.noofsource.setText("✔ No of Sources : " + commonModelArrayList.get(position).getNoOfSource());
+                holder.noofcollection.setText("✔ No of Collection : " + commonModelArrayList.get(position).getNoOfCollection());
+
+                holder.cardView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (commonModelArrayList.get(position).isFlag()) {
+                            commonModelArrayList.get(position).setFlag(false);
+                            holder.llview.setVisibility(View.GONE);
+                            holder.imageView.setImageResource(R.drawable.more);
+                        } else {
+                            commonModelArrayList.get(position).setFlag(true);
+                            holder.llview.setVisibility(View.VISIBLE);
+                            holder.imageView.setImageResource(R.drawable.less);
+                        }
+                    }
+                });
+
+                holder.llview.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(context, SourceListByHabitation2.class);
+                        i.putExtra("FCID", commonModelArrayList.get(position).getfCID());
+                        i.putExtra("HC", commonModelArrayList.get(position).getHabCode());
+                        i.putExtra("HN", commonModelArrayList.get(position).getHabName());
+                        i.putExtra("DC", commonModelArrayList.get(position).getDistCode());
+                        i.putExtra("DN", commonModelArrayList.get(position).getDistrictName());
+                        i.putExtra("BC", commonModelArrayList.get(position).getBlockCode());
+                        i.putExtra("BN", commonModelArrayList.get(position).getBlockName());
+                        i.putExtra("PC", commonModelArrayList.get(position).getPanCode());
+                        i.putExtra("PN", commonModelArrayList.get(position).getPanName());
+                        i.putExtra("VC", commonModelArrayList.get(position).getVillageCode());
+                        i.putExtra("VN", commonModelArrayList.get(position).getVillageName());
+                        i.putExtra("LC", commonModelArrayList.get(position).getLabCode());
+                        i.putExtra("TID", commonModelArrayList.get(position).getTask_Id());
+                        if (type.equalsIgnoreCase("COLLECT"))
+                            i.putExtra("TYPE", "1");
+                        else if (type.equalsIgnoreCase("ACCEPT"))
+                            i.putExtra("TYPE", "2");
+                        else if (type.equalsIgnoreCase("CURRENT"))
+                            i.putExtra("TYPE", "0");
+                        else
+                            i.putExtra("TYPE", "3");
+                        context.startActivity(i);
+                    }
+                });
 
         /*String time = commonModelArrayList.get(position).getCreatedDate().split("T")[0].split("-")[2] + "/" +
                 commonModelArrayList.get(position).getCreatedDate().split("T")[0].split("-")[1] + "/" +
                 commonModelArrayList.get(position).getCreatedDate().split("T")[0].split("-")[0];*/
-        if (position != 0) {
-            if (commonModelArrayList.get(position - 1).getCreatedDate().split("T")[0].
-                    equalsIgnoreCase(commonModelArrayList.get(position).getCreatedDate().split("T")[0]))
-                holder.date.setVisibility(View.GONE);
-            else {
-                holder.date.setText("\uD83D\uDCC5 Assigned Date : " + commonModelArrayList.get(position).getCreatedDate().split("T")[0].split("-")[2] + "/" +
-                        commonModelArrayList.get(position).getCreatedDate().split("T")[0].split("-")[1] + "/" +
-                        commonModelArrayList.get(position).getCreatedDate().split("T")[0].split("-")[0]);
-                holder.date.setVisibility(View.VISIBLE);
+                if (position != 0) {
+                    if (commonModelArrayList.get(position - 1).getCreatedDate().split("T")[0].
+                            equalsIgnoreCase(commonModelArrayList.get(position).getCreatedDate().split("T")[0]))
+                        holder.date.setVisibility(View.GONE);
+                    else {
+                        holder.date.setText("\uD83D\uDCC5 Assigned Date : " + commonModelArrayList.get(position).getCreatedDate().split("T")[0].split("-")[2] + "/" +
+                                commonModelArrayList.get(position).getCreatedDate().split("T")[0].split("-")[1] + "/" +
+                                commonModelArrayList.get(position).getCreatedDate().split("T")[0].split("-")[0]);
+                        holder.date.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    holder.date.setText("\uD83D\uDCC5 Assigned Date : " + commonModelArrayList.get(position).getCreatedDate().split("T")[0].split("-")[2] + "/" +
+                            commonModelArrayList.get(position).getCreatedDate().split("T")[0].split("-")[1] + "/" +
+                            commonModelArrayList.get(position).getCreatedDate().split("T")[0].split("-")[0]);
+                    holder.date.setVisibility(View.VISIBLE);
+                }
             }
-        } else {
-            holder.date.setText("\uD83D\uDCC5 Assigned Date : " + commonModelArrayList.get(position).getCreatedDate().split("T")[0].split("-")[2] + "/" +
-                    commonModelArrayList.get(position).getCreatedDate().split("T")[0].split("-")[1] + "/" +
-                    commonModelArrayList.get(position).getCreatedDate().split("T")[0].split("-")[0]);
-            holder.date.setVisibility(View.VISIBLE);
         }
     }
 

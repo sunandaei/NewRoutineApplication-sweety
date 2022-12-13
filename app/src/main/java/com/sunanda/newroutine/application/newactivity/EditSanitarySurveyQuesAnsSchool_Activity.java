@@ -45,6 +45,7 @@ import com.sunanda.newroutine.application.util.Constants;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -200,54 +201,23 @@ public class EditSanitarySurveyQuesAnsSchool_Activity extends NavigationBar_Acti
         btnTakeImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                File f;
-                try {
-                    f = setUpPhotoFile();
-                    mCurrentPhotoPath = f.getAbsolutePath();
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
-                } catch (Exception e) {
-                    f = null;
-                    mCurrentPhotoPath = null;
-                    e.printStackTrace();
-                }
-                startActivityForResult(takePictureIntent, CAMERA_REQUEST);*/
-
-                if (ContextCompat.checkSelfPermission(
-                        EditSanitarySurveyQuesAnsSchool_Activity.this,
-                        Manifest.permission.CAMERA
-                ) != PackageManager.PERMISSION_GRANTED
-                ) {
-                    String[] PERMISSIONS = {
-                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                            android.Manifest.permission.CAMERA
-                    };
-                    ActivityCompat.requestPermissions(
-                            EditSanitarySurveyQuesAnsSchool_Activity.this, PERMISSIONS, 0
-                    );
-                } else {
-                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                        // Create the File where the photo should go
-                        try {
-                            File photoFile = setUpPhotoFile();
-                            // Continue only if the File was successfully created
-                            if (photoFile != null) {
-                                Uri photoURI = FileProvider.getUriForFile(
-                                        EditSanitarySurveyQuesAnsSchool_Activity.this,
-                                        "com.sunanda.newroutine.application.fileprovider",
-                                        photoFile
-                                );
-                                //mCurrentPhotoPath = photoFile.getAbsolutePath();
-                                takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                                startActivityForResult(takePictureIntent, CAMERA_REQUEST);
-                            }
-                        } catch (Exception ex) {
-                            mCurrentPhotoPath = null;
-                            // Error occurred while creating the File
-                            Toast.makeText(EditSanitarySurveyQuesAnsSchool_Activity.this, ex.getMessage(), Toast.LENGTH_LONG).show();
-                        }
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                // Ensure that there's a camera activity to handle the intent
+                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                    // Create the File where the photo should go
+                    File photoFile = null;
+                    try {
+                        photoFile = createImageFile();
+                    } catch (Exception ex) {
+                        // Error occurred while creating the File
+                    }
+                    // Continue only if the File was successfully created
+                    if (photoFile != null) {
+                        Uri photoURI = FileProvider.getUriForFile(EditSanitarySurveyQuesAnsSchool_Activity.this,
+                                "com.sunanda.newroutine.application.fileprovider",
+                                photoFile);
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                        startActivityForResult(takePictureIntent, CAMERA_REQUEST);
                     }
                 }
             }
@@ -370,7 +340,7 @@ public class EditSanitarySurveyQuesAnsSchool_Activity extends NavigationBar_Acti
     private static final String JPEG_FILE_PREFIX = "img_sanitary_";
     private static final String JPEG_FILE_SUFFIX = ".png";
 
-    private File setUpPhotoFile() {
+    /*private File setUpPhotoFile() {
         File f = null;
         try {
             f = createImageFile();
@@ -379,20 +349,22 @@ public class EditSanitarySurveyQuesAnsSchool_Activity extends NavigationBar_Acti
             e.printStackTrace();
         }
         return f;
-    }
+    }*/
 
-    private File createImageFile() {
+    private File createImageFile() throws IOException {
         // Create an image file name
-        File imageF = null;
-        try {
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            String imageFileName = JPEG_FILE_PREFIX + timeStamp + "_";
-            File albumF = getAlbumDir();
-            imageF = File.createTempFile(imageFileName, JPEG_FILE_SUFFIX, albumF);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return imageF;
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = JPEG_FILE_PREFIX + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".png",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
     }
 
     private File getAlbumDir() {

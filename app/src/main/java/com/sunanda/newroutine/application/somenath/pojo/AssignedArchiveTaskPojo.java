@@ -52,6 +52,8 @@ public class AssignedArchiveTaskPojo implements Serializable {
 	private String sampleCollectionDate;
 	@SerializedName("NoOfCollection")
 	private String NoOfCollection;
+	@SerializedName("pws_status")
+	private String pws_status;
 	@SerializedName("Remarks")
 	private String Remarks; // Accepted   Rejected
 
@@ -159,5 +161,109 @@ public class AssignedArchiveTaskPojo implements Serializable {
 
 	public void setFlag(boolean flag) {
 		this.flag = flag;
+	}
+
+	public void setDistrictName(String sDistrictName) {
+		districtName = sDistrictName;
+	}
+
+	public void setBlockName(String sBlockName) {
+		blockName = sBlockName;
+	}
+
+	public void setPanName(String panName) {
+		this.panName = panName;
+	}
+
+	public void setVillageName(String villageName) {
+		this.villageName = villageName;
+	}
+
+	public void setHabName(String habName) {
+		this.habName = habName;
+	}
+
+	public void setLogID(String logID) {
+		this.logID = logID;
+	}
+
+	public void setLabID(String labID) {
+		this.labID = labID;
+	}
+
+	public void setLabCode(String labCode) {
+		this.labCode = labCode;
+	}
+
+	public void setfCID(String fCID) {
+		this.fCID = fCID;
+	}
+
+	public void setDistCode(String distCode) {
+		this.distCode = distCode;
+	}
+
+	public void setBlockCode(String blockCode) {
+		this.blockCode = blockCode;
+	}
+
+	public void setPanCode(String panCode) {
+		this.panCode = panCode;
+	}
+
+	public void setVillageCode(String villageCode) {
+		this.villageCode = villageCode;
+	}
+
+	public void setHabCode(String habCode) {
+		this.habCode = habCode;
+	}
+
+	public void setCreatedDate(String createdDate) {
+		CreatedDate = createdDate;
+	}
+
+	public void setTask_Id(String task_Id) {
+		Task_Id = task_Id;
+	}
+
+	public void setNoOfSource(String noOfSource) {
+		NoOfSource = noOfSource;
+	}
+
+	public void setTestCompletedDate(String testCompletedDate) {
+		TestCompletedDate = testCompletedDate;
+	}
+
+	public void setFecilatorCompletedDate(String fecilatorCompletedDate) {
+		FecilatorCompletedDate = fecilatorCompletedDate;
+	}
+
+	public void setFormSubmissionDate(String formSubmissionDate) {
+		FormSubmissionDate = formSubmissionDate;
+	}
+
+	public void setSampleCollectionDate(String sampleCollectionDate) {
+		this.sampleCollectionDate = sampleCollectionDate;
+	}
+
+	public void setNoOfCollection(String noOfCollection) {
+		NoOfCollection = noOfCollection;
+	}
+
+	public void setRemarks(String remarks) {
+		Remarks = remarks;
+	}
+
+	public void setDone(boolean done) {
+		isDone = done;
+	}
+
+	public String getPws_status() {
+		return pws_status;
+	}
+
+	public void setPws_status(String pws_status) {
+		this.pws_status = pws_status;
 	}
 }

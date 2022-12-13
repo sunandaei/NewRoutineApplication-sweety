@@ -15,7 +15,7 @@ public class SampleModel_Routine {
             sub_source_type, sub_scheme_name, condition_of_source, village_code, hanitation_code, samplecollectortype,
             mobilemodelno, uniquetimestampid, residual_chlorine_tested, residual_chlorine, residual_chlorine_value,
             existing_mid, scheme_id, Task_Id, assigned_logid, facilitator_id, recycle, ars_id, ChamberAvailable, WaterLevel,
-            existing_mid_table, pin_code;
+            existing_mid_table, pin_code, FHTC_id, PWSS_status;
 
     private boolean flag = false;
 
@@ -721,5 +721,21 @@ public class SampleModel_Routine {
 
     public void setPin_code(String pin_code) {
         this.pin_code = pin_code;
+    }
+
+    public String getFHTC_id() {
+        return FHTC_id;
+    }
+
+    public void setFHTC_id(String FHTC_id) {
+        this.FHTC_id = FHTC_id;
+    }
+
+    public String getPWSS_status() {
+        return PWSS_status;
+    }
+
+    public void setPWSS_status(String PWSS_status) {
+        this.PWSS_status = PWSS_status;
     }
 }

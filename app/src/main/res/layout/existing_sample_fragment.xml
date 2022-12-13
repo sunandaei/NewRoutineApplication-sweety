@@ -97,6 +97,43 @@
 
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:id="@+id/llPWSSStatus"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/Blue"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btnPWSSVillageSource"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1"
+                            android:background="@color/MediumSlateBlue"
+                            android:fontFamily="@font/raleway"
+                            android:padding="5dp"
+                            android:text="PWSS\nVillage Source"
+                            android:textColor="@color/White"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <Button
+                            android:id="@+id/btnNonPWSSVillageSource"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1"
+                            android:background="@color/Sienna"
+                            android:fontFamily="@font/raleway"
+                            android:padding="5dp"
+                            android:text="Non PWSS\nVillage Source"
+                            android:textColor="@color/White"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/sourceRecycler"
                         android:layout_width="match_parent"

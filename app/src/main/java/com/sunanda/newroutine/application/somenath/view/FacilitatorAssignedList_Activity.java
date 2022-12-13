@@ -5,16 +5,10 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.ColorSpace;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
@@ -30,6 +24,16 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.google.android.material.snackbar.Snackbar;
 import com.sunanda.newroutine.application.R;
 import com.sunanda.newroutine.application.modal.CommonModel;
 import com.sunanda.newroutine.application.somenath.myadapter.Assigned_ArchiveTaskAdapter;
@@ -41,11 +45,14 @@ import com.sunanda.newroutine.application.util.Constants;
 import com.sunanda.newroutine.application.util.LoadingDialog;
 import com.sunanda.newroutine.application.util.PostInterface;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,7 +76,7 @@ public class FacilitatorAssignedList_Activity extends AppCompatActivity {
     String strStatus;
     TextView name, email, pass, mobile, uname;
     boolean isVisible = false, isAssigned = true, isArchive = false, isAccepted = false, isCollected = false, isAction = false;
-    String current_task_id = "";
+    String current_task_id = "", villageCode = "";
 
     CommonModel commonModel;
     ImageView show_hide_pass;
@@ -279,13 +286,13 @@ public class FacilitatorAssignedList_Activity extends AppCompatActivity {
                         .setPositiveButton("SUBMIT", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
-                                if(TextUtils.isEmpty(pan_code)){
-                                    pan_code =  commonModel.getFCPan_Codes();
-                                    pan_name=  commonModel.getFCPanNames();
-                                    sBlockCode=  commonModel.getFCBlock_Code();
-                                    districtCode=  commonModel.getFCDist_Code();
-                                    distName=  commonModel.getFCDistNam();
-                                    sBlockName=  commonModel.getFCBlockName();
+                                if (TextUtils.isEmpty(pan_code)) {
+                                    pan_code = commonModel.getFCPan_Codes();
+                                    pan_name = commonModel.getFCPanNames();
+                                    sBlockCode = commonModel.getFCBlock_Code();
+                                    districtCode = commonModel.getFCDist_Code();
+                                    distName = commonModel.getFCDistNam();
+                                    sBlockName = commonModel.getFCBlockName();
                                 }
                                 if (TextUtils.isEmpty(username.getText().toString())) {
                                     Toast.makeText(FacilitatorAssignedList_Activity.this,
@@ -305,8 +312,8 @@ public class FacilitatorAssignedList_Activity extends AppCompatActivity {
                                         Toast.makeText(FacilitatorAssignedList_Activity.this,
                                                 "Please Enter Valid Mobile Number", Toast.LENGTH_SHORT).show();
                                     } else if (TextUtils.isEmpty(pan_name)) {
-                                     Toast.makeText(FacilitatorAssignedList_Activity.this,
-                                            "Panchayat name(s) can't be elank", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(FacilitatorAssignedList_Activity.this,
+                                                "Panchayat name(s) can't be elank", Toast.LENGTH_SHORT).show();
 
                                         /*dialog.dismiss();
 
@@ -335,8 +342,8 @@ public class FacilitatorAssignedList_Activity extends AppCompatActivity {
                                         Toast.makeText(FacilitatorAssignedList_Activity.this,
                                                 "Please enter valid Email-Id", Toast.LENGTH_SHORT).show();
                                     } else if (TextUtils.isEmpty(pan_name)) {
-                                     Toast.makeText(FacilitatorAssignedList_Activity.this,
-                                            "Panchayat Name(s) Can't be Blank", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(FacilitatorAssignedList_Activity.this,
+                                                "Panchayat Name(s) Can't be Blank", Toast.LENGTH_SHORT).show();
 
                                         /*dialog.dismiss();
 
@@ -598,7 +605,7 @@ public class FacilitatorAssignedList_Activity extends AppCompatActivity {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         getAllRecords();
     }
@@ -682,56 +689,127 @@ public class FacilitatorAssignedList_Activity extends AppCompatActivity {
 
                                 if (!TextUtils.isEmpty(allTaskPojoArrayList.get(i).getTestCompletedDate())) {
                                     archiveTaskPojoArrayList.add(allTaskPojoArrayList.get(i));// Test COmpleted
+                                    if (currentTaskPojoArrayList.size() != 0) {
+                                        isAssigned = true;
+                                        isArchive = false;
+                                        isAccepted = false;
+                                        isCollected = false;
+                                    } else if (collectedTaskPojoArrayList.size() != 0) {
+                                        isAssigned = false;
+                                        isArchive = false;
+                                        isAccepted = false;
+                                        isCollected = true;
+                                    } else if (acceptedTaskPojoArrayList.size() != 0) {
+                                        isAssigned = false;
+                                        isArchive = false;
+                                        isAccepted = true;
+                                        isCollected = false;
+                                    } else {
+                                        isAssigned = false;
+                                        isArchive = true;
+                                        isAccepted = false;
+                                        isCollected = false;
+                                    }
+
+                                    if (isArchive) {
+                                        ArchiveTask();
+                                    }
+
+                                    if (allTaskPojoArrayList.size() == 0) {
+                                        isAssigned = true;
+                                        isArchive = false;
+                                        isAccepted = false;
+                                        isCollected = false;
+                                        AssignTask();
+                                    }
                                 } else if (!TextUtils.isEmpty(allTaskPojoArrayList.get(i).getFecilatorCompletedDate())) {
                                     acceptedTaskPojoArrayList.add(allTaskPojoArrayList.get(i));// FecilatorCompletedDate
+                                    if (currentTaskPojoArrayList.size() != 0) {
+                                        isAssigned = true;
+                                        isArchive = false;
+                                        isAccepted = false;
+                                        isCollected = false;
+                                    } else if (collectedTaskPojoArrayList.size() != 0) {
+                                        isAssigned = false;
+                                        isArchive = false;
+                                        isAccepted = false;
+                                        isCollected = true;
+                                    } else if (acceptedTaskPojoArrayList.size() != 0) {
+                                        isAssigned = false;
+                                        isArchive = false;
+                                        isAccepted = true;
+                                        isCollected = false;
+                                    } else {
+                                        isAssigned = false;
+                                        isArchive = true;
+                                        isAccepted = false;
+                                        isCollected = false;
+                                    }
+
+                                    if (isAccepted) {
+                                        AcceptedTask();
+                                    }
+
+                                    if (allTaskPojoArrayList.size() == 0) {
+                                        isAssigned = true;
+                                        isArchive = false;
+                                        isAccepted = false;
+                                        isCollected = false;
+                                        AssignTask();
+                                    }
                                 } else if (!TextUtils.isEmpty(allTaskPojoArrayList.get(i).getFormSubmissionDate())) {
                                     collectedTaskPojoArrayList.add(allTaskPojoArrayList.get(i)); // FormSubmissionDate
+                                    if (currentTaskPojoArrayList.size() != 0) {
+                                        isAssigned = true;
+                                        isArchive = false;
+                                        isAccepted = false;
+                                        isCollected = false;
+                                    } else if (collectedTaskPojoArrayList.size() != 0) {
+                                        isAssigned = false;
+                                        isArchive = false;
+                                        isAccepted = false;
+                                        isCollected = true;
+                                    } else if (acceptedTaskPojoArrayList.size() != 0) {
+                                        isAssigned = false;
+                                        isArchive = false;
+                                        isAccepted = true;
+                                        isCollected = false;
+                                    } else {
+                                        isAssigned = false;
+                                        isArchive = true;
+                                        isAccepted = false;
+                                        isCollected = false;
+                                    }
+
+                                    if (isCollected) {
+                                        CollectedTask();
+                                    }
+
+                                    if (allTaskPojoArrayList.size() == 0) {
+                                        isAssigned = true;
+                                        isArchive = false;
+                                        isAccepted = false;
+                                        isCollected = false;
+                                        AssignTask();
+                                    }
                                 } else {
-                                    currentTaskPojoArrayList.add(allTaskPojoArrayList.get(i));// CreatedDate
+                                    Collections.sort(allTaskPojoArrayList, new Comparator<AssignedArchiveTaskPojo>() {
+                                        @Override
+                                        public int compare(AssignedArchiveTaskPojo lhs, AssignedArchiveTaskPojo rhs) {
+                                            return lhs.getVillageCode().compareTo(rhs.getVillageCode());
+                                        }
+                                    });
+                                    if (!allTaskPojoArrayList.get(i).getVillageCode().equalsIgnoreCase(villageCode)) {
+                                        villageCode = allTaskPojoArrayList.get(i).getVillageCode();
+                                        if(!TextUtils.isEmpty(allTaskPojoArrayList.get(i).getVillageName())) {
+                                            get_horizon_head_site(allTaskPojoArrayList.get(i).getDistCode(),
+                                                    allTaskPojoArrayList.get(i).getBlockCode(),
+                                                    allTaskPojoArrayList.get(i).getPanCode(),
+                                                    allTaskPojoArrayList.get(i).getVillageCode(),
+                                                    allTaskPojoArrayList.get(i));
+                                        }
+                                    }
                                 }
-                            }
-
-                            if (currentTaskPojoArrayList.size() != 0) {
-                                isAssigned = true;
-                                isArchive = false;
-                                isAccepted = false;
-                                isCollected = false;
-                            } else if (collectedTaskPojoArrayList.size() != 0) {
-                                isAssigned = false;
-                                isArchive = false;
-                                isAccepted = false;
-                                isCollected = true;
-                            } else if (acceptedTaskPojoArrayList.size() != 0) {
-                                isAssigned = false;
-                                isArchive = false;
-                                isAccepted = true;
-                                isCollected = false;
-                            } else {
-                                isAssigned = false;
-                                isArchive = true;
-                                isAccepted = false;
-                                isCollected = false;
-                            }
-
-                            if(isAssigned) {
-                                AssignTask();
-                            }
-                            if(isCollected) {
-                                CollectedTask();
-                            }
-                            if (isAccepted) {
-                                AcceptedTask();
-                            }
-                            if(isArchive) {
-                                ArchiveTask();
-                            }
-
-                            if (allTaskPojoArrayList.size() == 0) {
-                                isAssigned = true;
-                                isArchive = false;
-                                isAccepted = false;
-                                isCollected = false;
-                                AssignTask();
                             }
                         } else {
                             Log.i("onEmptyResponse", "Returned empty response");
@@ -1243,5 +1321,214 @@ public class FacilitatorAssignedList_Activity extends AppCompatActivity {
             finish();
         }
         return (super.onOptionsItemSelected(menuItem));
+    }
+
+    int sCount1 = 0, sCount2 = 0;
+
+    private void get_horizon_head_site(String dist_code, String block_code,
+                                       String pan_code, String vill_code,
+                                       AssignedArchiveTaskPojo allTaskPojoArrayList1) {
+        String sUrl = "https://phed.sunandainternational.org/api/get-horizon-head-site?dist_code="
+                + dist_code + "&block_code=" + block_code + "&pan_code=" + pan_code
+                + "&vill_code=" + vill_code + "";
+
+        StringRequest postRequest = new StringRequest(com.android.volley.Request.Method.GET,
+                sUrl, new com.android.volley.Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    String resCode = jsonObject.getString("resCode");
+                    String message = jsonObject.getString("message");
+                    String error = jsonObject.getString("error");
+                    if (jsonObject.has("data")) {
+                        JSONArray dataJSONArray = jsonObject.getJSONArray("data");
+                        sCount1 = dataJSONArray.length();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                get_horizon_source_by_vill(dist_code, block_code, pan_code,
+                        vill_code, sCount1, allTaskPojoArrayList1);
+            }
+        }, new com.android.volley.Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                get_horizon_source_by_vill(dist_code, block_code, pan_code,
+                        vill_code, 0, allTaskPojoArrayList1);
+                try {
+                    new AlertDialog.Builder(FacilitatorAssignedList_Activity.this)
+                            .setMessage("Downloading error. Please try again")
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+                } catch (Exception e) {
+                    Log.e("SyncOnlineData_", e.getMessage());
+                }
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                /*params.put("dist_code", dist_code);
+                params.put("block_code", block_code);
+                params.put("pan_code", pan_code);
+                params.put("vill_code", vill_code);*/
+                return CGlobal.getInstance().checkParams(params);
+            }
+        };
+        CGlobal.getInstance().addVolleyRequest(postRequest, false, FacilitatorAssignedList_Activity.this);
+    }
+
+    private void get_horizon_source_by_vill(String dist_code, String block_code,
+                                            String pan_code, String vill_code,
+                                            int count, AssignedArchiveTaskPojo allTaskPojoArrayList1) {
+        String sUrl = "https://phed.sunandainternational.org/api/get-horizon-source-by-vill?dist_code="
+                + dist_code + "&block_code=" + block_code + "&pan_code=" + pan_code
+                + "&vill_code=" + vill_code + "";
+
+        StringRequest postRequest = new StringRequest(com.android.volley.Request.Method.GET,
+                sUrl, new com.android.volley.Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    String resCode = jsonObject.getString("resCode");
+                    String message = jsonObject.getString("message");
+                    String error = jsonObject.getString("error");
+                    JSONObject jsonObjectdata = jsonObject.getJSONObject("data");
+                    if (jsonObjectdata.has("data")) {
+                        JSONArray dataJSONArray = jsonObjectdata.getJSONArray("data");
+                        sCount2 = dataJSONArray.length();
+                    }
+                } catch (Exception e) {
+
+                    e.printStackTrace();
+                }
+
+                if (allTaskPojoArrayList1.getDistCode().equalsIgnoreCase(dist_code)) {
+                    if (allTaskPojoArrayList1.getBlockCode().equalsIgnoreCase(block_code)) {
+                        if (allTaskPojoArrayList1.getPanCode().equalsIgnoreCase(pan_code)) {
+                            if (allTaskPojoArrayList1.getVillageCode().equalsIgnoreCase(vill_code)) {
+                                int xCount = 0;
+                                if (!TextUtils.isEmpty(allTaskPojoArrayList1.getNoOfSource())) {
+                                    if (!TextUtils.isEmpty(allTaskPojoArrayList1.getPws_status())) {
+                                        if (allTaskPojoArrayList1.getPws_status().equalsIgnoreCase("YES")) {
+                                            xCount = sCount2 + count;
+                                        } else {
+                                            xCount = Integer.parseInt(allTaskPojoArrayList1.getNoOfSource());
+                                        }
+                                    }
+                                } else {
+                                    if (!TextUtils.isEmpty(allTaskPojoArrayList1.getPws_status())) {
+                                        if (allTaskPojoArrayList1.getPws_status().equalsIgnoreCase("YES")) {
+                                            xCount = sCount2 + count;
+                                        } else {
+                                            xCount = 0;
+                                        }
+                                    }
+                                }
+                                allTaskPojoArrayList1.setNoOfSource(String.valueOf(xCount));
+                            }
+                        }
+                    }
+                }
+                currentTaskPojoArrayList.add(allTaskPojoArrayList1);// CreatedDate
+                if (currentTaskPojoArrayList.size() != 0) {
+                    isAssigned = true;
+                    isArchive = false;
+                    isAccepted = false;
+                    isCollected = false;
+                } else if (collectedTaskPojoArrayList.size() != 0) {
+                    isAssigned = false;
+                    isArchive = false;
+                    isAccepted = false;
+                    isCollected = true;
+                } else if (acceptedTaskPojoArrayList.size() != 0) {
+                    isAssigned = false;
+                    isArchive = false;
+                    isAccepted = true;
+                    isCollected = false;
+                } else {
+                    isAssigned = false;
+                    isArchive = true;
+                    isAccepted = false;
+                    isCollected = false;
+                }
+
+                if (isAssigned) {
+                    AssignTask();
+                }
+
+                if (allTaskPojoArrayList.size() == 0) {
+                    isAssigned = true;
+                    isArchive = false;
+                    isAccepted = false;
+                    isCollected = false;
+                    AssignTask();
+                }
+            }
+        }, new com.android.volley.Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (currentTaskPojoArrayList.size() != 0) {
+                    isAssigned = true;
+                    isArchive = false;
+                    isAccepted = false;
+                    isCollected = false;
+                } else if (collectedTaskPojoArrayList.size() != 0) {
+                    isAssigned = false;
+                    isArchive = false;
+                    isAccepted = false;
+                    isCollected = true;
+                } else if (acceptedTaskPojoArrayList.size() != 0) {
+                    isAssigned = false;
+                    isArchive = false;
+                    isAccepted = true;
+                    isCollected = false;
+                } else {
+                    isAssigned = false;
+                    isArchive = true;
+                    isAccepted = false;
+                    isCollected = false;
+                }
+
+                if (isAssigned) {
+                    AssignTask();
+                }
+
+                if (allTaskPojoArrayList.size() == 0) {
+                    isAssigned = true;
+                    isArchive = false;
+                    isAccepted = false;
+                    isCollected = false;
+                    AssignTask();
+                }
+                try {
+                    new AlertDialog.Builder(FacilitatorAssignedList_Activity.this)
+                            .setMessage("Downloading error. Please try again")
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+                } catch (Exception e) {
+                    Log.e("SyncOnlineData_", e.getMessage());
+                }
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                return CGlobal.getInstance().checkParams(params);
+            }
+        };
+        CGlobal.getInstance().addVolleyRequest(postRequest, false, FacilitatorAssignedList_Activity.this);
     }
 }

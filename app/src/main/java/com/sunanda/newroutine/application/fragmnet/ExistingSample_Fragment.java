@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.sunanda.newroutine.application.R;
@@ -47,8 +48,9 @@ public class ExistingSample_Fragment extends Fragment {
     private String jsonresponse = "";
     ArrayList<CommonModel> modelArrayList;
     ArrayList<SampleModel> modelArrayListComplete, modelArrayListCompleteRoutine, modelArrayListCompleteOmas, modelArrayListCompleteSchool;
-    Button btnCompleteSample, btnInCompleteSample;
+    Button btnCompleteSample, btnInCompleteSample, btnPWSSVillageSource, btnNonPWSSVillageSource;
     String sTaskId = "";
+    LinearLayout llPWSSStatus;
 
 
     @Override
@@ -61,15 +63,22 @@ public class ExistingSample_Fragment extends Fragment {
         location = myView.findViewById(R.id.location);
         labDetail = myView.findViewById(R.id.labDetail);
 
+        llPWSSStatus = myView.findViewById(R.id.llPWSSStatus);
+
         btnInCompleteSample = myView.findViewById(R.id.btnInCompleteSample);
         btnCompleteSample = myView.findViewById(R.id.btnCompleteSample);
+        btnPWSSVillageSource = myView.findViewById(R.id.btnPWSSVillageSource);
+        btnNonPWSSVillageSource = myView.findViewById(R.id.btnNonPWSSVillageSource);
 
         btnInCompleteSample.setCompoundDrawablesWithIntrinsicBounds(R.drawable.checked, 0, 0, 0);
         btnCompleteSample.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        btnPWSSVillageSource.setCompoundDrawablesWithIntrinsicBounds(R.drawable.checked, 0, 0, 0);
+        btnNonPWSSVillageSource.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
 
         btnCompleteSample.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                llPWSSStatus.setVisibility(View.GONE);
                 btnCompleteSample.setCompoundDrawablesWithIntrinsicBounds(R.drawable.checked, 0, 0, 0);
                 btnInCompleteSample.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                 modelArrayListCompleteRoutine = new ArrayList<>();
@@ -109,12 +118,13 @@ public class ExistingSample_Fragment extends Fragment {
         btnInCompleteSample.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                llPWSSStatus.setVisibility(View.VISIBLE);
                 btnInCompleteSample.setCompoundDrawablesWithIntrinsicBounds(R.drawable.checked, 0, 0, 0);
                 btnCompleteSample.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                 if (DashBoard_Facilitator_Activity.mCurrentLocation != null) {
                     modelArrayList = new ArrayList<>();
                     DatabaseHandler databaseHandler = new DatabaseHandler(getActivity());
-                    modelArrayList = databaseHandler.getAssignHabitationList();
+                    modelArrayList = databaseHandler.getAssignHabitationList("YES");
 
                     Collections.sort(modelArrayList, new Comparator<CommonModel>() {
 
@@ -125,7 +135,76 @@ public class ExistingSample_Fragment extends Fragment {
                     });
 
                     AssignedHabitationList_Adapter sourceDataAdapter = new AssignedHabitationList_Adapter(modelArrayList, getActivity(), "0",
-                            DashBoard_Facilitator_Activity.mCurrentLocation.getLatitude(), DashBoard_Facilitator_Activity.mCurrentLocation.getLongitude());
+                            DashBoard_Facilitator_Activity.mCurrentLocation.getLatitude(),
+                            DashBoard_Facilitator_Activity.mCurrentLocation.getLongitude(), "YES");
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+                    sourceRecycler.setLayoutManager(linearLayoutManager);
+                    sourceRecycler.setItemAnimator(new DefaultItemAnimator());
+                    sourceRecycler.setAdapter(sourceDataAdapter);
+
+                    String labName = CGlobal.getInstance().getPersistentPreference(getActivity())
+                            .getString(Constants.PREFS_USER_LAB_NAME, "");
+                    labDetail.setText(labName);
+                }
+            }
+        });
+
+        btnPWSSVillageSource.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                llPWSSStatus.setVisibility(View.VISIBLE);
+                btnPWSSVillageSource.setCompoundDrawablesWithIntrinsicBounds(R.drawable.checked, 0, 0, 0);
+                btnNonPWSSVillageSource.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                if (DashBoard_Facilitator_Activity.mCurrentLocation != null) {
+                    modelArrayList = new ArrayList<>();
+                    DatabaseHandler databaseHandler = new DatabaseHandler(getActivity());
+                    modelArrayList = databaseHandler.getAssignHabitationList("YES");
+
+                    Collections.sort(modelArrayList, new Comparator<CommonModel>() {
+
+                        @Override
+                        public int compare(CommonModel arg0, CommonModel arg1) {
+                            return arg0.getCreatedDate().compareTo(arg1.getCreatedDate());
+                        }
+                    });
+
+                    AssignedHabitationList_Adapter sourceDataAdapter = new AssignedHabitationList_Adapter(modelArrayList, getActivity(), "0",
+                            DashBoard_Facilitator_Activity.mCurrentLocation.getLatitude(),
+                            DashBoard_Facilitator_Activity.mCurrentLocation.getLongitude(), "YES");
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+                    sourceRecycler.setLayoutManager(linearLayoutManager);
+                    sourceRecycler.setItemAnimator(new DefaultItemAnimator());
+                    sourceRecycler.setAdapter(sourceDataAdapter);
+
+                    String labName = CGlobal.getInstance().getPersistentPreference(getActivity())
+                            .getString(Constants.PREFS_USER_LAB_NAME, "");
+                    labDetail.setText(labName);
+                }
+            }
+        });
+
+        btnNonPWSSVillageSource.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                llPWSSStatus.setVisibility(View.VISIBLE);
+                btnNonPWSSVillageSource.setCompoundDrawablesWithIntrinsicBounds(R.drawable.checked, 0, 0, 0);
+                btnPWSSVillageSource.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                if (DashBoard_Facilitator_Activity.mCurrentLocation != null) {
+                    modelArrayList = new ArrayList<>();
+                    DatabaseHandler databaseHandler = new DatabaseHandler(getActivity());
+                    modelArrayList = databaseHandler.getAssignHabitationList("");
+
+                    Collections.sort(modelArrayList, new Comparator<CommonModel>() {
+
+                        @Override
+                        public int compare(CommonModel arg0, CommonModel arg1) {
+                            return arg0.getCreatedDate().compareTo(arg1.getCreatedDate());
+                        }
+                    });
+
+                    AssignedHabitationList_Adapter sourceDataAdapter = new AssignedHabitationList_Adapter(modelArrayList, getActivity(), "0",
+                            DashBoard_Facilitator_Activity.mCurrentLocation.getLatitude(),
+                            DashBoard_Facilitator_Activity.mCurrentLocation.getLongitude(), "NO");
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
                     sourceRecycler.setLayoutManager(linearLayoutManager);
                     sourceRecycler.setItemAnimator(new DefaultItemAnimator());
@@ -141,7 +220,7 @@ public class ExistingSample_Fragment extends Fragment {
         if (DashBoard_Facilitator_Activity.mCurrentLocation != null) {
             modelArrayList = new ArrayList<>();
             DatabaseHandler databaseHandler = new DatabaseHandler(getActivity());
-            modelArrayList = databaseHandler.getAssignHabitationList();
+            modelArrayList = databaseHandler.getAssignHabitationList("YES");
 
             Collections.sort(modelArrayList, new Comparator<CommonModel>() {
 
@@ -152,7 +231,7 @@ public class ExistingSample_Fragment extends Fragment {
             });
 
             AssignedHabitationList_Adapter sourceDataAdapter = new AssignedHabitationList_Adapter(modelArrayList, getActivity(), "0",
-                    DashBoard_Facilitator_Activity.mCurrentLocation.getLatitude(), DashBoard_Facilitator_Activity.mCurrentLocation.getLongitude());
+                    DashBoard_Facilitator_Activity.mCurrentLocation.getLatitude(), DashBoard_Facilitator_Activity.mCurrentLocation.getLongitude(), "YES");
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
             sourceRecycler.setLayoutManager(linearLayoutManager);
             sourceRecycler.setItemAnimator(new DefaultItemAnimator());

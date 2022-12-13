@@ -24,6 +24,7 @@ public interface PostInterface {
     String IMAGEURL_OMAS = "http://images.sunandainternational.org:8088/Omas/";
 
     String URL_RNJ = "http://13.232.198.224/webservices/routineNew/";
+    String URL_RNJ_NEW = "https://phed.sunandainternational.org/api/";
 
     @FormUrlEncoded
     @POST("CreateFacilator")
@@ -88,8 +89,23 @@ public interface PostInterface {
             @Field("FCID") String FCID/*, @Field("AppKey") String AppKey*/);
 
     @FormUrlEncoded
+    @POST("New_AssignTaskToFacilitor")
+    Call<ResponseBody> New_AssignTaskToFacilitor(
+            @Field("HabCodes") String HabCodes, @Field("dist_code") String dist_code, @Field("block_code") String block_code,
+            @Field("pan_code") String pan_code, @Field("village_code") String village_code, @Field("LabId") String LabId,
+            @Field("FCID") String FCID/*, @Field("AppKey") String AppKey*/);
+
+    @FormUrlEncoded
     @POST("AddMoreHabitationInSameTask")
     Call<ResponseBody> AddMoreHabitationInSameTask(
+            @Field("HabCodes") String HabCodes, @Field("dist_code") String dist_code, @Field("block_code") String block_code,
+            @Field("pan_code") String pan_code, @Field("village_code") String village_code, @Field("LabId") String LabId,
+            @Field("FCID") String FCID, @Field("TaskId") String TaskId, @Field("AppKey") String AppKey
+    );
+
+    @FormUrlEncoded
+    @POST("New_AddMoreHabitationInSameTask")
+    Call<ResponseBody> New_AddMoreHabitationInSameTask(
             @Field("HabCodes") String HabCodes, @Field("dist_code") String dist_code, @Field("block_code") String block_code,
             @Field("pan_code") String pan_code, @Field("village_code") String village_code, @Field("LabId") String LabId,
             @Field("FCID") String FCID, @Field("TaskId") String TaskId, @Field("AppKey") String AppKey
@@ -163,4 +179,15 @@ public interface PostInterface {
     Call<String> getSource(
             @Field("hab_id") String hab_code
     );
+
+    @FormUrlEncoded
+    @POST("get-airp-app-village")
+    Call<ResponseBody> get_airp_app_village(
+            @Field("dist_code") String dist_code,
+            @Field("block_code") String block_code,
+            @Field("pan_code") String pan_code
+    );
+
+    //https://phed.sunandainternational.org/api/get-airp-app-village
+
 }

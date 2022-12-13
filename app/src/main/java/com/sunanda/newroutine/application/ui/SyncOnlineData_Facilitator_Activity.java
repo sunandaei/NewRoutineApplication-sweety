@@ -18,6 +18,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.sunanda.newroutine.application.R;
 import com.sunanda.newroutine.application.database.DatabaseHandler;
+import com.sunanda.newroutine.application.modal.CommonModel;
 import com.sunanda.newroutine.application.util.CGlobal;
 import com.sunanda.newroutine.application.util.CommonURL;
 import com.sunanda.newroutine.application.util.Constants;
@@ -26,6 +27,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,6 +44,7 @@ public class SyncOnlineData_Facilitator_Activity extends AppCompatActivity {
     String sDistrictId = "", sLabId = "", fcID = "";
     boolean isTrue = false;
     DatabaseHandler databaseHandler;
+    ArrayList<CommonModel> commonModelArrayList;
 
     @Override
     protected void onResume() {
@@ -122,7 +125,7 @@ public class SyncOnlineData_Facilitator_Activity extends AppCompatActivity {
     }
 
     private void getAssignHabitationListFCWiseResponse(String response) {
-        Log.d("TAG", "getAssignHabitationListFCWiseResponse: "+response);
+        Log.d("TAG", "getAssignHabitationListFCWiseResponse: " + response);
         try {
             databaseHandler.deleteAssignHabitationList();
             response = response.replaceAll("\r\n", "");
@@ -148,21 +151,270 @@ public class SyncOnlineData_Facilitator_Activity extends AppCompatActivity {
                 String sFinishedDate = CGlobal.getInstance().isNullNotDefined(sLocality_obj, "FinishedDate") ? "" : sLocality_obj.getString("FinishedDate");
                 String sTask_Id = CGlobal.getInstance().isNullNotDefined(sLocality_obj, "Task_Id") ? "" : sLocality_obj.getString("Task_Id");
                 String sFormSubmissionDate = CGlobal.getInstance().isNullNotDefined(sLocality_obj, "FormSubmissionDate") ? "" : sLocality_obj.getString("FormSubmissionDate");
+                String pws_status = CGlobal.getInstance().isNullNotDefined(sLocality_obj, "pws_status") ? "" : sLocality_obj.getString("pws_status");
                 if (TextUtils.isEmpty(sFormSubmissionDate)) {
                     databaseHandler.addAssignHabitationList(sDist_code, sDistrictName.toUpperCase(), sBlock_code, sBlockName.toUpperCase(),
                             sPan_code, sPanName.toUpperCase(),
                             sVillageName.toUpperCase(), sVillage_code, sHabName.toUpperCase(), sHab_code, sLabCode, sLabID,
                             sFCID, sLogID, sIsDone, sTask_Id,
-                            sCreatedDate, sFinishedDate, "0");
-                }else{
-                    Log.d("SyncExc","Form Submission Date is Empty"+sFormSubmissionDate);
+                            sCreatedDate, sFinishedDate, pws_status, "0");
+                } else {
+                    Log.d("SyncExc", "Form Submission Date is Empty" + sFormSubmissionDate);
                 }
             }
         } catch (Exception e) {
             Log.e("SyncError", e.getMessage());
         }
         progressdialog.dismiss();
-        getSourceForFacilitator();
+
+        commonModelArrayList = new ArrayList<>();
+        commonModelArrayList = databaseHandler.getVillageCodeList();
+        databaseHandler.deleteSourceForFacilitator();
+        if (commonModelArrayList.size() > 0) {
+            for (int k = 0; k < commonModelArrayList.size(); k++) {
+                get_horizon_source_by_vill(commonModelArrayList.get(k).getDistrictcode(),
+                        commonModelArrayList.get(k).getBlockcode(),
+                        commonModelArrayList.get(k).getPancode(),
+                        commonModelArrayList.get(k).getVillagecode(),
+                        commonModelArrayList.get(k).getHabecode(),
+                        commonModelArrayList.get(k).getTask_Id());
+
+                get_horizon_head_site(commonModelArrayList.get(k).getDistrictcode(),
+                        commonModelArrayList.get(k).getBlockcode(),
+                        commonModelArrayList.get(k).getPancode(),
+                        commonModelArrayList.get(k).getVillagecode(),
+                        commonModelArrayList.get(k).getHabecode(),
+                        commonModelArrayList.get(k).getTask_Id());
+            }
+            getSourceForFacilitator();
+        } else {
+            getSourceForFacilitator();
+        }
+    }
+
+    private void get_horizon_head_site(String dist_code, String block_code,
+                                       String pan_code, String vill_code,
+                                       String hab_code, String sTaskId) {
+        String sUrl = "https://phed.sunandainternational.org/api/get-horizon-head-site?dist_code="
+                + dist_code + "&block_code=" + block_code + "&pan_code=" + pan_code
+                + "&vill_code=" + vill_code + "";
+
+        StringRequest postRequest = new StringRequest(Request.Method.GET,
+                sUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                get_horizon_head_siteResponse(response, hab_code, sTaskId);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                try {
+                    new AlertDialog.Builder(SyncOnlineData_Facilitator_Activity.this)
+                            .setMessage("Downloading error. Please try again")
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+                } catch (Exception e) {
+                    Log.e("SyncOnlineData_", e.getMessage());
+                }
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                /*params.put("dist_code", dist_code);
+                params.put("block_code", block_code);
+                params.put("pan_code", pan_code);
+                params.put("vill_code", vill_code);*/
+                return CGlobal.getInstance().checkParams(params);
+            }
+        };
+        CGlobal.getInstance().addVolleyRequest(postRequest, false, SyncOnlineData_Facilitator_Activity.this);
+    }
+
+    private void get_horizon_head_siteResponse(String response, String sHabCode, String sTaskId) {
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            String resCode = jsonObject.getString("resCode");
+            String message = jsonObject.getString("message");
+            String error = jsonObject.getString("error");
+            if (jsonObject.has("data")) {
+                JSONArray dataJSONArray = jsonObject.getJSONArray("data");
+                for (int i = 0; i < dataJSONArray.length(); i++) {
+                    JSONObject dataJsonObject = dataJSONArray.getJSONObject(i);
+                    String _id = isNullNotDefined(dataJsonObject, "_id") ? "" : dataJsonObject.getString("_id");
+                    String slNo = isNullNotDefined(dataJsonObject, "slNo") ? "" : dataJsonObject.getString("slNo");
+                    String dist_code = isNullNotDefined(dataJsonObject, "dist_code") ? "" : dataJsonObject.getString("dist_code");
+                    String dist_name = isNullNotDefined(dataJsonObject, "dist_name") ? "" : dataJsonObject.getString("dist_name");
+                    String block_code = isNullNotDefined(dataJsonObject, "block_code") ? "" : dataJsonObject.getString("block_code");
+                    String block_name = isNullNotDefined(dataJsonObject, "block_name") ? "" : dataJsonObject.getString("block_name");
+                    String pan_code = isNullNotDefined(dataJsonObject, "pan_code") ? "" : dataJsonObject.getString("pan_code");
+                    String pan_name = isNullNotDefined(dataJsonObject, "pan_name") ? "" : dataJsonObject.getString("pan_name");
+                    String vill_code = isNullNotDefined(dataJsonObject, "vill_code") ? "" : dataJsonObject.getString("vill_code");
+                    String vill_name = isNullNotDefined(dataJsonObject, "vill_name") ? "" : dataJsonObject.getString("vill_name");
+                    String hab_name = isNullNotDefined(dataJsonObject, "hab_name") ? "" : dataJsonObject.getString("hab_name");
+                    String scheme_code = isNullNotDefined(dataJsonObject, "scheme_code") ? "" : dataJsonObject.getString("scheme_code");
+                    String Scheme = isNullNotDefined(dataJsonObject, "scheme") ? "" : dataJsonObject.getString("scheme");
+                    String latitude = isNullNotDefined(dataJsonObject, "latitude") ? "" : dataJsonObject.getString("latitude");
+                    String longitude = isNullNotDefined(dataJsonObject, "longitude") ? "" : dataJsonObject.getString("longitude");
+                    String tubewell_site = isNullNotDefined(dataJsonObject, "tubewell_site") ? "" : dataJsonObject.getString("tubewell_site");
+
+                    databaseHandler.addSourceForFacilitator("Routine", "", "",
+                            block_code, "", "", tubewell_site, dist_code,
+                            hab_name.toUpperCase(), "", "", "",
+                            "", slNo, "", "", latitude,
+                            tubewell_site, longitude, _id, "", pan_code, "",
+                            "", "", Scheme, scheme_code, "", "FHTC",
+                            "No", "", "", "",
+                            "10:00", "", "RURAL", vill_name.toUpperCase(),
+                            "", "PIPED WATER SUPPLY", "",
+                            "", "", vill_code, "", "", "",
+                            "", "", "", "", "", "", "",
+                            "", "", "", "", "",
+                            "", fcID, "",
+                            "", "", "", sLabId, "",
+                            "", "", "",
+                            "", "", "",
+                            "", "", "",
+                            "", "",
+                            "", "",
+                            "", "",
+                            "", "",
+                            "", "",
+                            "", "",
+                            "", "",
+                            "", "",
+                            "", "", "",
+                            "", "", "",
+                            "", "", sTaskId, "", "",
+                            "", "", "head_site", "0");
+
+                }
+            }
+        } catch (Exception e) {
+            Log.e("SyncOnlineData_", e.getMessage());
+        }
+    }
+
+    private void get_horizon_source_by_vill(String dist_code, String block_code,
+                                            String pan_code, String vill_code,
+                                            String hab_code, String sTaskId) {
+        String sUrl = "https://phed.sunandainternational.org/api/get-horizon-source-by-vill?dist_code="
+                + dist_code + "&block_code=" + block_code + "&pan_code=" + pan_code
+                + "&vill_code=" + vill_code + "";
+
+        StringRequest postRequest = new StringRequest(Request.Method.GET,
+                sUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                get_horizon_source_by_villResponse(response, hab_code, sTaskId);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                try {
+                    new AlertDialog.Builder(SyncOnlineData_Facilitator_Activity.this)
+                            .setMessage("Downloading error. Please try again")
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+                } catch (Exception e) {
+                    Log.e("SyncOnlineData_", e.getMessage());
+                }
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                return CGlobal.getInstance().checkParams(params);
+            }
+        };
+        CGlobal.getInstance().addVolleyRequest(postRequest, false, SyncOnlineData_Facilitator_Activity.this);
+    }
+
+    private void get_horizon_source_by_villResponse(String response, String sHabCode, String sTaskId) {
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            String resCode = jsonObject.getString("resCode");
+            String message = jsonObject.getString("message");
+            String error = jsonObject.getString("error");
+            JSONObject jsonObjectdata = jsonObject.getJSONObject("data");
+            String current_page = isNullNotDefined(jsonObjectdata, "current_page") ? "" : jsonObjectdata.getString("current_page");
+            if (jsonObjectdata.has("data")) {
+                JSONArray dataJSONArray = jsonObjectdata.getJSONArray("data");
+                for (int i = 0; i < dataJSONArray.length(); i++) {
+                    JSONObject dataJsonObject = dataJSONArray.getJSONObject(i);
+                    String _id = isNullNotDefined(dataJsonObject, "_id") ? "" : dataJsonObject.getString("_id");
+                    String Unique_Id = isNullNotDefined(dataJsonObject, "Unique_Id") ? "" : dataJsonObject.getString("Unique_Id");
+                    String ID = isNullNotDefined(dataJsonObject, "ID") ? "" : dataJsonObject.getString("ID");
+                    String ExistingNewhousehold = isNullNotDefined(dataJsonObject, "ExistingNewhousehold") ? "" : dataJsonObject.getString("ExistingNewhousehold");
+                    String ExistingNewhouseholdType = isNullNotDefined(dataJsonObject, "ExistingNewhouseholdType") ? "" : dataJsonObject.getString("ExistingNewhouseholdType");
+                    String dist_code = isNullNotDefined(dataJsonObject, "dist_code") ? "" : dataJsonObject.getString("dist_code");
+                    String dist_name = isNullNotDefined(dataJsonObject, "dist_name") ? "" : dataJsonObject.getString("dist_name");
+                    String block_code = isNullNotDefined(dataJsonObject, "block_code") ? "" : dataJsonObject.getString("block_code");
+                    String block_name = isNullNotDefined(dataJsonObject, "block_name") ? "" : dataJsonObject.getString("block_name");
+                    String pan_code = isNullNotDefined(dataJsonObject, "pan_code") ? "" : dataJsonObject.getString("pan_code");
+                    String pan_name = isNullNotDefined(dataJsonObject, "pan_name") ? "" : dataJsonObject.getString("pan_name");
+                    String vill_code = isNullNotDefined(dataJsonObject, "vill_code") ? "" : dataJsonObject.getString("vill_code");
+                    String vill_name = isNullNotDefined(dataJsonObject, "vill_name") ? "" : dataJsonObject.getString("vill_name");
+                    String hab_code = isNullNotDefined(dataJsonObject, "hab_code") ? "" : dataJsonObject.getString("hab_code");
+                    String IMIShabCode = isNullNotDefined(dataJsonObject, "IMIShabCode") ? "" : dataJsonObject.getString("IMIShabCode");
+                    String hab_name = isNullNotDefined(dataJsonObject, "hab_name") ? "" : dataJsonObject.getString("hab_name");
+                    String scheme_code = isNullNotDefined(dataJsonObject, "scheme_code") ? "" : dataJsonObject.getString("scheme_code");
+                    String IMISschemeCode = isNullNotDefined(dataJsonObject, "IMISschemeCode") ? "" : dataJsonObject.getString("IMISschemeCode");
+                    String Scheme = isNullNotDefined(dataJsonObject, "Scheme") ? "" : dataJsonObject.getString("Scheme");
+                    String Latitude = isNullNotDefined(dataJsonObject, "Latitude") ? "" : dataJsonObject.getString("Latitude");
+                    String Longitude = isNullNotDefined(dataJsonObject, "Longitude") ? "" : dataJsonObject.getString("Longitude");
+                    String Nameofthefamilyhead = isNullNotDefined(dataJsonObject, "Nameofthefamilyhead") ? "" : dataJsonObject.getString("Nameofthefamilyhead");
+                    String WaterSourceType = isNullNotDefined(dataJsonObject, "WaterSourceType") ? "" : dataJsonObject.getString("WaterSourceType");
+                    String WaterSourceTypeName = isNullNotDefined(dataJsonObject, "WaterSourceTypeName") ? "" : dataJsonObject.getString("WaterSourceTypeName");
+                    String Locality = isNullNotDefined(dataJsonObject, "Locality") ? "" : dataJsonObject.getString("Locality");
+                    String created_at = isNullNotDefined(dataJsonObject, "created_at") ? "" : dataJsonObject.getString("created_at");
+                    String updated_at = isNullNotDefined(dataJsonObject, "updated_at") ? "" : dataJsonObject.getString("updated_at");
+
+                    databaseHandler.addSourceForFacilitator("Routine", "", "",
+                            block_code, "", updated_at, Nameofthefamilyhead, dist_code,
+                            hab_name.toUpperCase(), "", "", "",
+                            "", ID, "", "", Latitude,
+                            Nameofthefamilyhead, Longitude, _id, "", pan_code, "",
+                            "", "", Scheme, scheme_code, "", "FHTC",
+                            "No", "", "", "",
+                            "10:00", "", "RURAL", vill_name.toUpperCase(),
+                            "", "PIPED WATER SUPPLY", "",
+                            "", "", vill_code, hab_code, "", "",
+                            "", "", "", "", "", "", "",
+                            "", "", "", "", created_at,
+                            "", fcID, "",
+                            "", "", "", sLabId, "",
+                            "", "", "",
+                            "", "", "",
+                            "", "", "",
+                            "", "",
+                            "", "",
+                            "", "",
+                            "", "",
+                            "", "",
+                            "", "",
+                            "", "",
+                            "", "",
+                            "", "", "",
+                            "", "", "",
+                            "", "", sTaskId, "", "",
+                            "", "", "YES", "0");
+
+                }
+            }
+        } catch (Exception e) {
+            Log.e("SyncOnlineData_", e.getMessage());
+        }
     }
 
     private void getSourceForFacilitator() {
@@ -209,7 +461,6 @@ public class SyncOnlineData_Facilitator_Activity extends AppCompatActivity {
 
     private void getSourceForFacilitatorResponse(String response) {
         try {
-            databaseHandler.deleteSourceForFacilitator();
             response = response.replaceAll("\r\n", "");
             JSONArray sourceLocalityArray = new JSONArray(response);
             for (int i = 0; i < sourceLocalityArray.length(); i++) {
@@ -351,7 +602,7 @@ public class SyncOnlineData_Facilitator_Activity extends AppCompatActivity {
                             ImageofToilet_q_w_2d, Ishandwashingfacility_q_w_3, Isrunningwateravailable_q_w_3a,
                             Isthewashbasinwithin_q_w_3b, ImageofWashBasin_q_w_3c, IswaterinKitchen_q_w_4,
                             Remarks, sampleCollectorId, Task_Id, TestCompletedDate, TestTime,
-                            OtherSchoolName, OtherAnganwadiName, "0");
+                            OtherSchoolName, OtherAnganwadiName, "NO", "0");
 
                 } else if (AppName.equalsIgnoreCase("SC")) {
 
@@ -381,7 +632,7 @@ public class SyncOnlineData_Facilitator_Activity extends AppCompatActivity {
                             ImageofToilet_q_w_2d, Ishandwashingfacility_q_w_3, Isrunningwateravailable_q_w_3a,
                             Isthewashbasinwithin_q_w_3b, ImageofWashBasin_q_w_3c, IswaterinKitchen_q_w_4,
                             Remarks, sampleCollectorId, Task_Id, TestCompletedDate, TestTime,
-                            OtherSchoolName, OtherAnganwadiName, "0");
+                            OtherSchoolName, OtherAnganwadiName, "NO", "0");
 
                 } else if (AppName.equalsIgnoreCase("OM")) {
 
@@ -411,7 +662,7 @@ public class SyncOnlineData_Facilitator_Activity extends AppCompatActivity {
                             ImageofToilet_q_w_2d, Ishandwashingfacility_q_w_3, Isrunningwateravailable_q_w_3a,
                             Isthewashbasinwithin_q_w_3b, ImageofWashBasin_q_w_3c, IswaterinKitchen_q_w_4,
                             Remarks, sampleCollectorId, Task_Id, TestCompletedDate, TestTime,
-                            OtherSchoolName, OtherAnganwadiName, "0");
+                            OtherSchoolName, OtherAnganwadiName, "NO", "0");
 
                 }
 

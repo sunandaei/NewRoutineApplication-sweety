@@ -214,8 +214,6 @@ public class AddnewTaskToFC extends AppCompatActivity {
         tvLabName.setText(CGlobal.getInstance().getPersistentPreference(this)
                 .getString(Constants.PREFS_USER_LAB_NAME, ""));
 
-        btnNext.setVisibility(View.GONE);
-
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -226,7 +224,7 @@ public class AddnewTaskToFC extends AppCompatActivity {
                     //Toast.makeText(getActivity(), "Please Select Village", Toast.LENGTH_SHORT).show();
                     showMessage("Please Select Village");
                 } else {
-                    backAction = true;
+                    backAction = false;
                     //getHabitation();
                     submitData("");
                 }
@@ -237,9 +235,7 @@ public class AddnewTaskToFC extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (cbNonPwssVillage.isChecked()) {
-                    btnNext.setVisibility(View.VISIBLE);
-                    btnNext.setText("SUBMIT TO ALLOCATION");
-                    sVillage = "NonPwss";
+                    sVillage = "NO";
                     cbPwssVillage.setChecked(false);
                 }
             }
@@ -249,9 +245,7 @@ public class AddnewTaskToFC extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (cbPwssVillage.isChecked()) {
-                    btnNext.setVisibility(View.VISIBLE);
-                    btnNext.setText("PWSS SOURCE ALLOCATION");
-                    sVillage = "Pwss";
+                    sVillage = "YES";
                     cbNonPwssVillage.setChecked(false);
                 }
             }
@@ -334,7 +328,7 @@ public class AddnewTaskToFC extends AppCompatActivity {
                                             + "#" + districtCode + "#" + selectedBlockCode + "#" + pan_code + "#" + vill_code
                                             + "#" + getIntent().getStringExtra("TASKID"));*/
 
-                                    submitData(String.valueOf(stringBuilder));
+                                    //submitData(String.valueOf(stringBuilder));
                                 } else {
                                     //showToast("Please select Habitation to assign");
                                     showMessage("Please Select Habitation to assign");
@@ -705,14 +699,14 @@ public class AddnewTaskToFC extends AppCompatActivity {
                         .build();
 
                 Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl(PostInterface.URL_RNJ)
+                        .baseUrl(PostInterface.URL_RNJ_NEW)
                         .client(httpClient)
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
 
                 PostInterface api = retrofit.create(PostInterface.class);
 
-                Call<ResponseBody> call = api.lab_by_village(districtCode, selectedBlockCode, pan_code);
+                Call<ResponseBody> call = api.get_airp_app_village(districtCode, selectedBlockCode, pan_code);
                 //Log.d("Responsestring", districtCode + " " + selectedBlockCode + " " + pan_code);
 
                 call.enqueue(new Callback<ResponseBody>() {
@@ -723,28 +717,37 @@ public class AddnewTaskToFC extends AppCompatActivity {
 
                         if (response.body() != null) {
                             try {
-                                JSONArray jsonArray = new JSONArray(response.body().string());
-                                for (int i = 0; i < jsonArray.length(); i++) {
-                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                    cmaVillageName.add(jsonObject.getString("vill_name"));
-                                    cmaVillageCode.add(jsonObject.getString("vill_code"));
-                                    ResponseVillage responseVillage = new ResponseVillage();
-                                    responseVillage.setVillCode(jsonObject.getString("vill_code"));
-                                    responseVillage.setVillName(jsonObject.getString("vill_name"));
-                                    responseVillage.setTotalHab(jsonObject.getString("total_hab"));
-                                    responseVillage.setTouchedCurrentYear(jsonObject.getString("touched_current_year"));
-
-                                    if (jsonObject.getString("total_hab")
-                                            .equalsIgnoreCase(jsonObject.getString("touched_current_year")))
-                                        firstList.add(responseVillage);
-                                    else
-                                        otherList.add(responseVillage);
-                                    //responseVillageArrayList.add(responseVillage);
+                                JSONObject jsonObject = new JSONObject(response.body().string());
+                                String resCode = jsonObject.getString("resCode");
+                                String message = jsonObject.getString("message");
+                                String error = jsonObject.getString("error");
+                                if (jsonObject.has("data")) {
+                                    JSONArray dataJSONArray = jsonObject.getJSONArray("data");
+                                    for (int i = 0; i < dataJSONArray.length(); i++) {
+                                        JSONObject dataJsonObject = dataJSONArray.getJSONObject(i);
+                                        cmaVillageName.add(dataJsonObject.getString("vill_name"));
+                                        cmaVillageCode.add(dataJsonObject.getString("vill_code"));
+                                        ResponseVillage responseVillage = new ResponseVillage();
+                                        responseVillage.setVillCode(dataJsonObject.getString("vill_code"));
+                                        responseVillage.setVillName(dataJsonObject.getString("vill_name"));
+                                        responseVillage.setTotal_test(dataJsonObject.getString("2022-23_total_test"));
+                                        responseVillage.setPws_status(dataJsonObject.getString("pws_status"));
+                                        if (sVillage.equalsIgnoreCase(dataJsonObject.getString("pws_status"))) {
+                                            if (dataJsonObject.getString("2022-23_total_test")
+                                                    .equalsIgnoreCase("0"))
+                                                firstList.add(responseVillage);
+                                        }
+                                    }
                                 }
 
                                 responseVillageArrayList.clear();
                                 responseVillageArrayList.addAll(otherList);
                                 responseVillageArrayList.addAll(firstList);
+
+                                if(responseVillageArrayList.size() == 0){
+                                    showMessage("No Village found");
+                                    return;
+                                }
 
                                 NewVillageAdapter dataAdapter = new NewVillageAdapter(AddnewTaskToFC.this, responseVillageArrayList,
                                         new NewVillageAdapter.RecyclerViewItemClickListener() {
@@ -933,10 +936,10 @@ public class AddnewTaskToFC extends AppCompatActivity {
 
             Call<ResponseBody> call;
             if (TextUtils.isEmpty(getIntent().getStringExtra("TASKID")))
-                call = api.AssignTaskToFacilitator(HabIds, districtCode, selectedBlockCode, pan_code,
+                call = api.New_AssignTaskToFacilitor("", districtCode, selectedBlockCode, pan_code,
                         vill_code, sLabId, facilitatorId/*, "Idgz1PE3zO9iNc0E3oeH3CHDPX9MzZe3"*/);
             else
-                call = api.AddMoreHabitationInSameTask(HabIds, districtCode, selectedBlockCode, pan_code, vill_code, sLabId,
+                call = api.New_AddMoreHabitationInSameTask("", districtCode, selectedBlockCode, pan_code, vill_code, sLabId,
                         facilitatorId, getIntent().getStringExtra("TASKID"), "Idgz1PE3zO9iNc0E3oeH3CHDPX9MzZe3");
 
             call.enqueue(new Callback<ResponseBody>() {

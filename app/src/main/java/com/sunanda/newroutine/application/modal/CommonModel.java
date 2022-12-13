@@ -37,7 +37,7 @@ public class CommonModel implements Serializable {
     private boolean flag = false;
 
     public String email, password, mobile, user_type, user_name, is_active, LabCode, LabId, habitation_Code, Complete,
-            FCPan_Codes, FCBlock_Code, FCPanNames, FCBlockName, FCDist_Code, FCDistNam;
+            FCPan_Codes, FCBlock_Code, FCPanNames, FCBlockName, FCDist_Code, FCDistNam, PWSS_STATUS;
 
     private String app_name;
 
@@ -1616,6 +1616,14 @@ public class CommonModel implements Serializable {
 
     public void setOtherAnganwadiName(String otherAnganwadiName) {
         OtherAnganwadiName = otherAnganwadiName;
+    }
+
+    public String getPWSS_STATUS() {
+        return PWSS_STATUS;
+    }
+
+    public void setPWSS_STATUS(String PWSS_STATUS) {
+        this.PWSS_STATUS = PWSS_STATUS;
     }
 }
 

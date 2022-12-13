@@ -66,17 +66,15 @@ public class NewVillageAdapter extends RecyclerView.Adapter<NewVillageAdapter.Li
         }
 
         //if (mDataset.get(i).getTotalHab().equalsIgnoreCase(mDataset.get(i).getTouchedCurrentYear()))
-        if (!TextUtils.isEmpty(mDataset.get(i).getTouchedCurrentYear())) {
-            int iTouchedCurrentYear = Integer.parseInt(mDataset.get(i).getTouchedCurrentYear());
-            if (iTouchedCurrentYear >= 1)
-                myViewHolder.card_view.setBackgroundResource(R.drawable.rectangle5);
-            else
+        if (!TextUtils.isEmpty(mDataset.get(i).getTotal_test())) {
+            if (mDataset.get(i).getTotal_test().equalsIgnoreCase("0"))
                 myViewHolder.card_view.setBackgroundResource(R.drawable.rectangle2);
+            else
+                myViewHolder.card_view.setBackgroundResource(R.drawable.rectangle5);
         }
 
         myViewHolder.mTextView.setText(mDataset.get(i).getVillName());
-        myViewHolder.textView2.setText("Total Hab : " + mDataset.get(i).getTotalHab() +
-                "  Covered Hab : " + mDataset.get(i).getTouchedCurrentYear());
+        myViewHolder.textView2.setText("Total Test : " + mDataset.get(i).getTotal_test());
     }
 
     @Override
@@ -102,13 +100,12 @@ public class NewVillageAdapter extends RecyclerView.Adapter<NewVillageAdapter.Li
 
         @Override
         public void onClick(View v) {
-            if (mDataset.get(getAdapterPosition()).getTotalHab()
-                    .equalsIgnoreCase(mDataset.get(getAdapterPosition()).getTouchedCurrentYear())) {
+            if (!mDataset.get(getAdapterPosition()).getTotal_test().equalsIgnoreCase("0")) {
                 new AlertDialog.Builder(context)
                         //.setTitle("Unable to assign")
                         /*.setMessage("Total Habitation in this Village is already covered in current financial year. " +
                                 "Please choose different Village to assign.")*/
-                        .setMessage("Total Habitation in this Village is already covered in current financial year. " +
+                        .setMessage("This Village is already covered in current financial year. " +
                                 "Do you still want to proceed?")
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
