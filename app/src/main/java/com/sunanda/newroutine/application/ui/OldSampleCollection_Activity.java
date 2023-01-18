@@ -348,10 +348,11 @@ public class OldSampleCollection_Activity extends AppCompatActivity implements G
             llSharedWith.setVisibility(View.VISIBLE);
             llOthersType.setVisibility(View.VISIBLE);
             llListShow.setVisibility(View.VISIBLE);
-            llAppType.setVisibility(View.GONE);
+            llAppType.setVisibility(View.VISIBLE);
             llChamberAvailable.setVisibility(View.GONE);
             llWaterLevel.setVisibility(View.GONE);
             getSharedSource();
+            getAppType("School");
         } else {
             llSchoolNameAndAnganwadiName.setVisibility(View.GONE);
             llSharedSource.setVisibility(View.GONE);
@@ -361,7 +362,7 @@ public class OldSampleCollection_Activity extends AppCompatActivity implements G
             llAppType.setVisibility(View.VISIBLE);
             llChamberAvailable.setVisibility(View.GONE);
             llWaterLevel.setVisibility(View.GONE);
-            getAppType();
+            getAppType("");
         }
 
         if (responseSourceData.getName_of_special_drive().equalsIgnoreCase("ARSENIC TREND STATION")) {
@@ -869,10 +870,15 @@ public class OldSampleCollection_Activity extends AppCompatActivity implements G
 
     ArrayList<CommonModel> cmaSpecialDrive = new ArrayList<>();
 
-    private void getAppType() {
+    private void getAppType(String appType) {
         ArrayList<String> stringArrayList = new ArrayList<>();
-        stringArrayList.add("Routine");
-        stringArrayList.add("OMAS");
+        if (appType.equalsIgnoreCase("School")) {
+            stringArrayList.add("School");
+            stringArrayList.add("SchoolOMAS");
+        } else {
+            stringArrayList.add("Routine");
+            stringArrayList.add("OMAS");
+        }
 
         ArrayAdapter<String> adapter_IsItSpecialDrive = new ArrayAdapter<>(
                 OldSampleCollection_Activity.this, android.R.layout.simple_spinner_item, stringArrayList);
@@ -1603,6 +1609,13 @@ public class OldSampleCollection_Activity extends AppCompatActivity implements G
             e.printStackTrace();
         }
 
+        String sSourceName = "";
+        if (responseSourceData.getSource_site().equalsIgnoreCase("FHTC")) {
+            sSourceName = "DISTRIBUTION SYSTEM";
+        } else {
+            sSourceName = responseSourceData.getSourceselect();
+        }
+
         if (responseSourceData.getName_of_special_drive().equalsIgnoreCase("ARSENIC TREND STATION")) {
             sIsItSpecialDrive = responseSourceData.getSpecial_drive();
             sSpecialDrive = responseSourceData.getName_of_special_drive();
@@ -1971,7 +1984,7 @@ public class OldSampleCollection_Activity extends AppCompatActivity implements G
         String sFCID = CGlobal.getInstance().getPersistentPreference(OldSampleCollection_Activity.this)
                 .getString(Constants.PREFS_USER_FACILITATOR_ID, "");
 
-        if (responseSourceData.getApp_name().equalsIgnoreCase("School")) {
+        if (sAppType.equalsIgnoreCase("School")) {
 
             CGlobal.getInstance().getPersistentPreferenceEditor(OldSampleCollection_Activity.this)
                     .putString(Constants.PREFS_SOURCE_SITE_SCHOOL, responseSourceData.getSource_site()).commit();
@@ -1979,7 +1992,76 @@ public class OldSampleCollection_Activity extends AppCompatActivity implements G
             CGlobal.getInstance().getPersistentPreferenceEditor(OldSampleCollection_Activity.this)
                     .putString(Constants.PREFS_UDISE_CODE_SCHOOL, responseSourceData.getIsnewlocation_School_UdiseCode()).commit();
 
-            databaseHandler.addSchoolAppDataCollection(responseSourceData.getApp_name(), uTime, responseSourceData.getSource_site(), sIsItSpecialDrive,
+            databaseHandler.addSchoolAppDataCollection(sAppType, uTime, responseSourceData.getSource_site(), sIsItSpecialDrive,
+                    sSpecialDrive, formattedDate, formattedTime,
+                    responseSourceData.getType_of_locality(), responseSourceData.getWater_source_type(), responseSourceData.getDistrictcode(),
+                    responseSourceData.getBlockcode(),
+                    responseSourceData.getPancode(), responseSourceData.getVillagename(), responseSourceData.getHabitationname(),
+                    responseSourceData.getIsnewlocation_School_UdiseCode(),
+                    responseSourceData.getAnganwadi_name_q_12b(), responseSourceData.getAnganwadi_code_q_12c(), responseSourceData.getAnganwadi_sectorcode_q_12d(),
+                    responseSourceData.getTown_name(), responseSourceData.getWard_no(), sSchemeCode,
+                    responseSourceData.getZoneCategory(),
+                    responseSourceData.getZone(), responseSourceData.getSourceselect(), responseSourceData.getStandpostsituated_q_13e(),
+                    responseSourceData.getLocationDescription(), responseSourceData.getHandPumpCategory(), sample_bottle_number_q_16,
+                    mCurrentPhotoPath, lat, lng, sAccuracy,
+                    sCollectingSample, responseSourceData.getBig_dia_tube_well_no(), how_many_pipes_q_21,
+                    String.valueOf(total_depth_q_22), mCurrentPhotoPath, uTime, versionName,
+                    sMobileSerialNo, sMobileModelNo, sMobileIMEI, sResidualChlorineTestedValue,
+                    sResidualChlorine, sResidualChlorineValue, sSharedSource, sSharedWith,
+                    sSchool_Anganwadi_Name_SharedWith, sSampleCollectorId, responseSourceData.getSub_source_type(),
+                    sSubSchemeName, sTaskId, responseSourceData.getMiD(), "", sFCID,
+                    responseSourceData.getVillagecode(), responseSourceData.getHabitation_Code(), sConditionOfSource,
+                    responseSourceData.getApp_name(), sPinCode, responseSourceData.getOtherSchoolName(),
+                    responseSourceData.getOtherAnganwadiName(), "0");
+
+            databaseHandler.updateSourceForFacilitator("1", responseSourceData.getMiD());
+
+            int lastIndexSampleCollectionId = databaseHandler.getLastSchoolAppDataCollectionId();
+
+            CGlobal.getInstance().getPersistentPreferenceEditor(OldSampleCollection_Activity.this)
+                    .putInt(Constants.PREFS_LAST_INDEX_SCHOOL_SAMPLE_COLLECTION_ID_SCHOOL, lastIndexSampleCollectionId).commit();
+
+            CGlobal.getInstance().getPersistentPreferenceEditor(OldSampleCollection_Activity.this)
+                    .putString(Constants.PREFS_MID, responseSourceData.getMiD()).commit();
+
+            CGlobal.getInstance().getPersistentPreferenceEditor(OldSampleCollection_Activity.this)
+                    .putBoolean(Constants.PREFS_RESTART_FRAGMENT, true).commit();
+
+            if (responseSourceData.getWater_source_type().equalsIgnoreCase("TUBE WELL MARK II") ||
+                    responseSourceData.getWater_source_type().equalsIgnoreCase("TUBE WELL ORDINARY")) {
+                if (sConditionOfSource.equalsIgnoreCase("DEFUNCT")) {
+                    new AlertDialog.Builder(OldSampleCollection_Activity.this)
+                            .setMessage("You have selected the Source as 'DEFUNCT', you can't proceed further!!\n\nSuccessfully Saved")
+                            .setCancelable(false)
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(OldSampleCollection_Activity.this, SchoolInfo_Activity.class);
+                                    startActivity(intent);
+                                    overridePendingTransition(R.anim.slide_right, R.anim.slide_left);
+                                    dialog.dismiss();
+                                }
+                            }).show();
+                } else {
+                    Intent intent = new Intent(OldSampleCollection_Activity.this, ExsitingSanitarySurveyQuesAnsSchool_Activity.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.slide_right, R.anim.slide_left);
+                }
+            } else {
+                Intent intent = new Intent(OldSampleCollection_Activity.this, ExsitingSanitarySurveyQuesAnsSchool_Activity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_right, R.anim.slide_left);
+            }
+
+        } else if (sAppType.equalsIgnoreCase("SchoolOMAS")) {
+
+            CGlobal.getInstance().getPersistentPreferenceEditor(OldSampleCollection_Activity.this)
+                    .putString(Constants.PREFS_SOURCE_SITE_SCHOOL, responseSourceData.getSource_site()).commit();
+
+            CGlobal.getInstance().getPersistentPreferenceEditor(OldSampleCollection_Activity.this)
+                    .putString(Constants.PREFS_UDISE_CODE_SCHOOL, responseSourceData.getIsnewlocation_School_UdiseCode()).commit();
+
+            databaseHandler.addSchoolAppDataCollection(sAppType, uTime, responseSourceData.getSource_site(), sIsItSpecialDrive,
                     sSpecialDrive, formattedDate, formattedTime,
                     responseSourceData.getType_of_locality(), responseSourceData.getWater_source_type(), responseSourceData.getDistrictcode(),
                     responseSourceData.getBlockcode(),
@@ -2146,7 +2228,7 @@ public class OldSampleCollection_Activity extends AppCompatActivity implements G
                         responseSourceData.getDistrictcode(), responseSourceData.getBlockcode(), responseSourceData.getPancode(),
                         responseSourceData.getVillagename(), responseSourceData.getHabitationname(), responseSourceData.getTown_name(),
                         responseSourceData.getWard_no(), responseSourceData.getHealth_facility_name(), sScheme, sSchemeCode,
-                        responseSourceData.getZoneCategory(), responseSourceData.getZone(), responseSourceData.getSourceselect(),
+                        responseSourceData.getZoneCategory(), responseSourceData.getZone(), sSourceName,
                         "", responseSourceData.getDescriptionofthelocation(),
                         responseSourceData.getLocationDescription(), responseSourceData.getHandPumpCategory(), sample_bottle_number_q_16,
                         mCurrentPhotoPath, lat, lng, sAccuracy, sCollectingSample, responseSourceData.getBig_dia_tube_well_no(),

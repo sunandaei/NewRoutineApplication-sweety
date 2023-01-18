@@ -60,12 +60,7 @@ public class Assigned_ArchiveTaskAdapter extends RecyclerView.Adapter<Assigned_A
             if (!TextUtils.isEmpty(commonModelArrayList.get(position).getVillageName())) {
                 if (type.equalsIgnoreCase("CURRENT")) {
                     if (!TextUtils.isEmpty(commonModelArrayList.get(position).getPws_status())) {
-                        if (commonModelArrayList.get(position).getPws_status().equalsIgnoreCase("YES")) {
-                            holder.title.setText("Village : " + commonModelArrayList.get(position).getVillageName()
-                                    + " (PWSS Village)");
-                        } else {
-                            holder.title.setText("Village : " + commonModelArrayList.get(position).getVillageName());
-                        }
+                        holder.title.setText("Village : " + commonModelArrayList.get(position).getVillageName());
                         //holder.title.setCompoundDrawablesWithIntrinsicBounds(R.drawable.circle, 0, 0, 0);
 
                         holder.title2.setText(labname + "/" + commonModelArrayList.get(position).getDistrictName() +
@@ -243,7 +238,11 @@ public class Assigned_ArchiveTaskAdapter extends RecyclerView.Adapter<Assigned_A
                         else if (type.equalsIgnoreCase("ACCEPT"))
                             i.putExtra("TYPE", "2");
                         else if (type.equalsIgnoreCase("CURRENT"))
-                            i.putExtra("TYPE", "0");
+                            if (commonModelArrayList.get(position).getPws_status().equalsIgnoreCase("YES")) {
+                                i.putExtra("TYPE", "5");
+                            } else {
+                                i.putExtra("TYPE", "0");
+                            }
                         else
                             i.putExtra("TYPE", "3");
                         context.startActivity(i);

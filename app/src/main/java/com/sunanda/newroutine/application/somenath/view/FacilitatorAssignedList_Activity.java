@@ -801,7 +801,7 @@ public class FacilitatorAssignedList_Activity extends AppCompatActivity {
                                     });
                                     if (!allTaskPojoArrayList.get(i).getVillageCode().equalsIgnoreCase(villageCode)) {
                                         villageCode = allTaskPojoArrayList.get(i).getVillageCode();
-                                        if(!TextUtils.isEmpty(allTaskPojoArrayList.get(i).getVillageName())) {
+                                        if (!TextUtils.isEmpty(allTaskPojoArrayList.get(i).getVillageName())) {
                                             get_horizon_head_site(allTaskPojoArrayList.get(i).getDistCode(),
                                                     allTaskPojoArrayList.get(i).getBlockCode(),
                                                     allTaskPojoArrayList.get(i).getPanCode(),
@@ -1406,7 +1406,6 @@ public class FacilitatorAssignedList_Activity extends AppCompatActivity {
                         sCount2 = dataJSONArray.length();
                     }
                 } catch (Exception e) {
-
                     e.printStackTrace();
                 }
 
@@ -1415,24 +1414,39 @@ public class FacilitatorAssignedList_Activity extends AppCompatActivity {
                         if (allTaskPojoArrayList1.getPanCode().equalsIgnoreCase(pan_code)) {
                             if (allTaskPojoArrayList1.getVillageCode().equalsIgnoreCase(vill_code)) {
                                 int xCount = 0;
+                                String sPws_status = "";
                                 if (!TextUtils.isEmpty(allTaskPojoArrayList1.getNoOfSource())) {
                                     if (!TextUtils.isEmpty(allTaskPojoArrayList1.getPws_status())) {
                                         if (allTaskPojoArrayList1.getPws_status().equalsIgnoreCase("YES")) {
                                             xCount = sCount2 + count;
+                                            sPws_status = "YES";
+                                            if (xCount == 0) {
+                                                xCount = Integer.parseInt(allTaskPojoArrayList1.getNoOfSource());
+                                                sPws_status = "NO";
+                                            }
                                         } else {
                                             xCount = Integer.parseInt(allTaskPojoArrayList1.getNoOfSource());
+                                            sPws_status = "NO";
                                         }
                                     }
                                 } else {
                                     if (!TextUtils.isEmpty(allTaskPojoArrayList1.getPws_status())) {
                                         if (allTaskPojoArrayList1.getPws_status().equalsIgnoreCase("YES")) {
                                             xCount = sCount2 + count;
+                                            sPws_status = "YES";
+                                            if (xCount == 0) {
+                                                xCount = Integer.parseInt(allTaskPojoArrayList1.getNoOfSource());
+                                                sPws_status = "NO";
+                                            }
                                         } else {
-                                            xCount = 0;
+                                            xCount = Integer.parseInt(allTaskPojoArrayList1.getNoOfSource());
+                                            sPws_status = "NO";
+
                                         }
                                     }
                                 }
                                 allTaskPojoArrayList1.setNoOfSource(String.valueOf(xCount));
+                                allTaskPojoArrayList1.setPws_status(sPws_status);
                             }
                         }
                     }

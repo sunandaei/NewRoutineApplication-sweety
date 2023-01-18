@@ -116,7 +116,7 @@ public class AddnewTaskToFC extends AppCompatActivity {
     String[] alertDialogItems1;
     String pan_name = "", pan_code = "", vill_name = "";
     String districtCode = "", vill_code = "", hab_code = "", hab_name = "", facilitatorName = "", facilitatorId = "";
-    String sVillage = "";
+    //String sVillage = "";
     String selectedPanCodes[], selectedBlockCode = "", selectedBlockName = "";
 
     private EasyFlipView easyFlipView;
@@ -235,7 +235,7 @@ public class AddnewTaskToFC extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (cbNonPwssVillage.isChecked()) {
-                    sVillage = "NO";
+                    //sVillage = "NO";
                     cbPwssVillage.setChecked(false);
                 }
             }
@@ -245,7 +245,7 @@ public class AddnewTaskToFC extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (cbPwssVillage.isChecked()) {
-                    sVillage = "YES";
+                    //sVillage = "YES";
                     cbNonPwssVillage.setChecked(false);
                 }
             }
@@ -359,7 +359,7 @@ public class AddnewTaskToFC extends AppCompatActivity {
         tvVillage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getVillage(sVillage);
+                getVillage();
             }
         });
 
@@ -657,12 +657,12 @@ public class AddnewTaskToFC extends AppCompatActivity {
         }
     }
 
-    private void getVillage(String sVillage) {
+    private void getVillage() {
 
-        if (TextUtils.isEmpty(sVillage) || sVillage.equalsIgnoreCase("")) {
+        /*if (TextUtils.isEmpty(sVillage) || sVillage.equalsIgnoreCase("")) {
             showMessage("Please Select PWSS/Non PWSS Village");
             return;
-        }
+        }*/
 
         cmaVillageName = new ArrayList<>();
         cmaVillageCode = new ArrayList<>();
@@ -732,20 +732,24 @@ public class AddnewTaskToFC extends AppCompatActivity {
                                         responseVillage.setVillName(dataJsonObject.getString("vill_name"));
                                         responseVillage.setTotal_test(dataJsonObject.getString("2022-23_total_test"));
                                         responseVillage.setPws_status(dataJsonObject.getString("pws_status"));
-                                        if (sVillage.equalsIgnoreCase(dataJsonObject.getString("pws_status"))) {
+                                        if (dataJsonObject.getString("pws_status").equalsIgnoreCase("YES") ||
+                                                dataJsonObject.getString("pws_status").equalsIgnoreCase("NO")) {
                                             if (dataJsonObject.getString("2022-23_total_test")
-                                                    .equalsIgnoreCase("0"))
+                                                    .equalsIgnoreCase("0")) {
                                                 firstList.add(responseVillage);
+                                            } else {
+                                                otherList.add(responseVillage);
+                                            }
                                         }
                                     }
                                 }
 
                                 responseVillageArrayList.clear();
-                                responseVillageArrayList.addAll(otherList);
                                 responseVillageArrayList.addAll(firstList);
+                                responseVillageArrayList.addAll(otherList);
 
-                                if(responseVillageArrayList.size() == 0){
-                                    showMessage("No Village found");
+                                if (responseVillageArrayList.size() == 0) {
+                                    showMessage("No source found");
                                     return;
                                 }
 

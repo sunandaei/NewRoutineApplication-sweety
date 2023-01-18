@@ -22,7 +22,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     private Context mContext;
     private static final String TAG = "DatabaseHandler: ";
-    private static final int DATABASE_VERSION = 17;
+    private static final int DATABASE_VERSION = 18;
     public static final String DATABASE_NAME = "sunanda_roution_app_new";
 
     //AssignHabitationListFCWise
@@ -1382,6 +1382,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         } catch (Exception e) {
             db.close();
             Log.e(TAG, " updateAssignHabitationList:- ", e);
+        }
+    }
+
+    public void updatePWSStatus(String distCode, String blockCode,
+                                String panCode, String villCode) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            String strAQL = "UPDATE AssignHabitationList SET pws_status = 'NO' WHERE Dist_code = '" + distCode + "' " +
+                    "and Block_code = '" + blockCode + "' and Pan_code = '" + panCode + "' and Village_code = '" + villCode + "'";
+            db.execSQL(strAQL);
+            db.close();
+        } catch (Exception e) {
+            db.close();
+            Log.e(TAG, " updatePWSStatus:- ", e);
         }
     }
 
@@ -4637,6 +4651,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     String sHabName = cursor.getString(cursor.getColumnIndex("HabName"));
                     String sComplete = cursor.getString(cursor.getColumnIndex("Complete"));
                     String sCreatedDate = cursor.getString(cursor.getColumnIndex("CreatedDate"));
+                    String pws_status = cursor.getString(cursor.getColumnIndex("pws_status"));
 
                     commonModel.setAssignHabitationList_id(iAssignHabitationList_id);
                     commonModel.setDistrictcode(sDist_code);
@@ -4655,6 +4670,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     commonModel.setHabecode(sHab_code);
                     commonModel.setHabitationname(sHabName);
                     commonModel.setCreatedDate(sCreatedDate);
+                    commonModel.setPWSS_STATUS(pws_status);
 
                     commonModelArrayList.add(commonModel);
                 } while (cursor.moveToNext());
@@ -4675,7 +4691,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             String rsql = "";
             if (sPWSS_Status.equalsIgnoreCase("YES")) {
                 rsql = "select  b.Dist_code, b.Block_code, b.Pan_code, b.VillageName, b.HabName, count(a.VillageName) as SourceCount from AssignHabitationList as b " +
-                        "LEFT JOIN SourceForFacilitator as a ON a.Village_Code = b.Village_code WHERE a.PWSS_STATUS = '" + sPWSS_Status + "' or a.PWSS_STATUS = 'head_site'  group by  a.Village_Code";
+                        "LEFT JOIN SourceForFacilitator as a ON a.Village_Code = b.Village_code" +
+                        " WHERE a.PWSS_STATUS = '" + sPWSS_Status + "' or a.PWSS_STATUS = 'head_site'  " +
+                        "group by  a.Village_Code";
             } else {
                 rsql = "select  b.Dist_code, b.Block_code, b.Pan_code, b.VillageName, b.HabName, count(a.Habitation) as SourceCount from AssignHabitationList as b " +
                         "LEFT JOIN SourceForFacilitator as a ON a.Habitation = b.HabName and a.VillageName = b.VillageName WHERE a.PWSS_STATUS = '" + sPWSS_Status + "' group by  a.Habitation";
@@ -4719,7 +4737,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             String rsql = "";
             if (sPWSS_Status.equalsIgnoreCase("YES")) {
                 rsql = "select  b.Dist_code, b.Block_code, b.Pan_code, b.VillageName, b.HabName, count(a.VillageName) as SourceCount from AssignHabitationList as b " +
-                        "LEFT JOIN SourceForFacilitator as a ON a.Village_Code = b.Village_code where a.Complete = '0' and (a.PWSS_STATUS = '" + sPWSS_Status + "' or a.PWSS_STATUS = 'head_site') group by  b.Village_Code";
+                        "LEFT JOIN SourceForFacilitator as a ON a.Village_Code = b.Village_code where a.Complete = '0' " +
+                        "and (a.PWSS_STATUS = '" + sPWSS_Status + "' or a.PWSS_STATUS = 'head_site') group by  b.Village_Code";
             } else {
                 rsql = "select  b.Dist_code, b.Block_code, b.Pan_code, b.VillageName, b.HabName, count(a.Habitation) as SourceCount from AssignHabitationList as b " +
                         "LEFT JOIN SourceForFacilitator as a ON a.Habitation = b.HabName and a.VillageName = b.VillageName where a.Complete = '0' and a.PWSS_STATUS = '" + sPWSS_Status + "' group by  b.HabName";
@@ -4763,7 +4782,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             String rsql = "";
             if (sPWSS_Status.equalsIgnoreCase("YES")) {
                 rsql = "select  b.Dist_code, b.Block_code, b.Pan_code, b.VillageName, b.HabName, count(a.VillageName) as SourceCount from AssignHabitationList as b " +
-                        "LEFT JOIN SourceForFacilitator as a ON a.Village_Code = b.Village_code where a.Complete = '1' and (a.PWSS_STATUS = '" + sPWSS_Status + "' or a.PWSS_STATUS = 'head_site') group by  b.Village_Code";
+                        "LEFT JOIN SourceForFacilitator as a ON a.Village_Code = b.Village_code where a.Complete = '1' " +
+                        "and (a.PWSS_STATUS = '" + sPWSS_Status + "' or a.PWSS_STATUS = 'head_site') group by  b.Village_Code";
             } else {
                 rsql = "select  b.Dist_code, b.Block_code, b.Pan_code, b.VillageName, b.HabName, count(a.Habitation) as SourceCount from AssignHabitationList as b " +
                         "LEFT JOIN SourceForFacilitator as a ON a.Habitation = b.HabName and a.VillageName = b.VillageName where a.Complete = '1' and a.PWSS_STATUS = '" + sPWSS_Status + "' group by  b.HabName";

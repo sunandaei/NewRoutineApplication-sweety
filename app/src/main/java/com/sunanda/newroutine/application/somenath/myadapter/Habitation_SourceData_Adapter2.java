@@ -3,8 +3,10 @@ package com.sunanda.newroutine.application.somenath.myadapter;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,12 +55,14 @@ public class Habitation_SourceData_Adapter2 extends RecyclerView.Adapter<Habitat
                 } else {
                     viewHolder.tvName.setText(modelsArray.get(position).getLocationDescription() + " (ROUTINE)");
                 }
-            } else { //OM
+            } else if (modelsArray.get(position).getAppName().equalsIgnoreCase("OM")) { //OM
                 if (modelsArray.get(position).getIsnewlocation().equalsIgnoreCase("NO")) {
                     viewHolder.tvName.setText(modelsArray.get(position).getDescriptionofthelocation() + " (OMAS)");
                 } else {
                     viewHolder.tvName.setText(modelsArray.get(position).getLocationDescription() + " (OMAS)");
                 }
+            } else {
+                viewHolder.tvName.setText(modelsArray.get(position).getLocationDescription());
             }
         } catch (Exception e) {
             viewHolder.tvName.setText(modelsArray.get(position).getLocationDescription());
@@ -151,6 +155,14 @@ public class Habitation_SourceData_Adapter2 extends RecyclerView.Adapter<Habitat
                         Glide.with(_ctx).load(url).placeholder(R.drawable.no_image).into(viewHolder.imageView);
                     } else {
                         String url = PostInterface.IMAGEURL_ROUTINE + modelsArray.get(position).getImg_source() + ".jpg";
+                        Glide.with(_ctx).load(url).placeholder(R.drawable.no_image).into(viewHolder.imageView);
+                    }
+                } else if (modelsArray.get(position).getAppName().equalsIgnoreCase("OM")) { //OM
+                    if (modelsArray.get(position).getImg_source().contains(".")) {
+                        String url = PostInterface.IMAGEURL_OMAS + modelsArray.get(position).getImg_source();
+                        Glide.with(_ctx).load(url).placeholder(R.drawable.no_image).into(viewHolder.imageView);
+                    } else {
+                        String url = PostInterface.IMAGEURL_OMAS + modelsArray.get(position).getImg_source() + ".jpg";
                         Glide.with(_ctx).load(url).placeholder(R.drawable.no_image).into(viewHolder.imageView);
                     }
                 } else { //OM
